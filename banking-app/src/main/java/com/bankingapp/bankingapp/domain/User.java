@@ -1,18 +1,19 @@
 package com.bankingapp.bankingapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity(name = "AppUser")
 @Table(name = "app_user")
 public class User extends DomainObject {
-
 
     @NotNull
     @Column(unique = true)
@@ -31,6 +32,14 @@ public class User extends DomainObject {
     @Email
     @NotNull
     private String email;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "app_user_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "name")
+    )
+    private Set<Authority> authorities = new HashSet<>();
 
     public String getLogin() {
         return login;
@@ -70,5 +79,17 @@ public class User extends DomainObject {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
+    }
+
+    public List<SimpleGrantedAuthority> getGrantedAuthorities() {
+        return getAuthorities().stream().map(authority -> new SimpleGrantedAuthority(authority.getName())).toList();
     }
 }
