@@ -1,6 +1,8 @@
 package com.bankingapp.bankingapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
+import lombok.Getter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
@@ -11,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Builder
 @Entity(name = "AppUser")
 @Table(name = "app_user")
 public class User extends DomainObject {
