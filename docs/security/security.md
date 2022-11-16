@@ -7,7 +7,7 @@ Komponent tworzony zgodnie z dokumentacją [Spring Security](https://docs.spring
 #### Spis treści 
 
  - [Authentication](#authentication)
-   - [Login i Pozyskiwanie tokenu JWT](#login-i-pozyskiwanie tokenu-JWT)
+   - [Login i Pozyskiwanie tokenu JWT](#login-i-pozyskiwanie-tokenu-JWT)
    - [Mechanizm Autentykacji w Spring Security](#diagram)
    - [Custom Authentication Provider](#custom-authentication-provider)
  - [Authorization](#authorization)
