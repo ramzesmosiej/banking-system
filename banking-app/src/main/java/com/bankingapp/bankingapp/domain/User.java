@@ -33,7 +33,7 @@ public class User extends DomainObject {
     @NotNull
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany
     @JoinTable(
             name = "app_user_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),

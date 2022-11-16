@@ -21,6 +21,11 @@ public class Authority {
     @Id
     private String name;
 
+
+    public Authority() {
+
+    }
+
     public Authority(String name) {
         this.name = name;
     }
