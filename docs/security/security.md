@@ -41,7 +41,7 @@ który szuka usera po username w bazie, a następnie porównuje wpisane hasło z
 #### Diagram
 Poniższy diagram przedstawia mechanizm autentykacji w Spring Security:
 
-![Authorization Architecture](docs\security\mechanism.PNG "Authorization architecture")
+![Authorization Architecture](mechanism.PNG "Authorization architecture")
 
 #### Custom authentication provider
 
