@@ -7,9 +7,9 @@ Komponent tworzony zgodnie z dokumentacją [Spring Security](https://docs.spring
 #### Spis treści 
 
  - [Authentication](#authentication)
-   - [Login i Pozyskiwanie tokenu JWT](#login i pozyskiwanie tokenu JWT)
+   - [Login i Pozyskiwanie tokenu JWT](#login-i-pozyskiwanie tokenu-JWT)
    - [Mechanizm Autentykacji w Spring Security](#diagram)
-   - [Custom Authentication Provider](#custom authentication provider)
+   - [Custom Authentication Provider](#custom-authentication-provider)
  - [Authorization](#authorization)
    - [Weryfikacja Tokenem JWT](#weryfikacja tokenem JWT)
    - [Weryfikowanie Ról](#weryfikowanie ról)
@@ -41,7 +41,7 @@ który szuka usera po username w bazie, a następnie porównuje wpisane hasło z
 #### Diagram
 Poniższy diagram przedstawia mechanizm autentykacji w Spring Security:
 
-![Authorization Architecture](docs/security/mechanism.png "Authorization architecture")
+![Authorization Architecture](C:\Users\RMo\IdeaProjects\banking-system\docs\security\mechanism.PNG "Authorization architecture")
 
 #### Custom authentication provider
 
