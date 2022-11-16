@@ -38,12 +38,14 @@ public class BankingAppApplication {
 			authorityRepository.save(Authority.EMPLOYEE_AUTHORITY);
 			authorityRepository.save(Authority.USER_AUTHORITY);
 
-			User admin = new User();
-			admin.setLogin("admin");
-			admin.setPassword(passwordService.hashPassword("admin"));
-			admin.setFirstName("Admin");
-			admin.setLastName("Adminowaty");
-			admin.setEmail("admin@gmail.com");
+			User admin = User.builder()
+					.login("admin")
+					.password("admin")
+					.firstName("Admin")
+					.lastName("Adminowaty")
+					.email("admin@gmail.com")
+					.build()
+					;
 			final var authority = authorityRepository.findById(Role.ADMIN.getAuthority()).get();
 			admin.setAuthorities(Set.of(authority));
 			userRepository.save(admin);
