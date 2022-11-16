@@ -1,8 +1,6 @@
 package com.bankingapp.bankingapp.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
@@ -16,5 +14,7 @@ public class Card extends DomainObject {
     @Size(min = 4, max = 4)
     private Integer PIN;
 
+    @OneToOne(mappedBy = "userCard")
+    private User user;
 
 }

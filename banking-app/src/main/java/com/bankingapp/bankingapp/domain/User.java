@@ -41,6 +41,10 @@ public class User extends DomainObject {
     )
     private Set<Authority> authorities = new HashSet<>();
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "card_id", referencedColumnName = "id")
+    private Card userCard;
+
     public String getLogin() {
         return login;
     }
