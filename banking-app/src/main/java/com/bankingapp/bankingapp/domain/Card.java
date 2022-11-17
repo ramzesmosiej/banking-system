@@ -15,7 +15,6 @@ import javax.validation.constraints.*;
 public class Card extends DomainObject {
 
     @NotNull
-    @Positive
     @Min(0)
     @Max(9999)
     private Integer PIN;
