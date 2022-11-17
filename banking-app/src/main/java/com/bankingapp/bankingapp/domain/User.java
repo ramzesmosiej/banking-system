@@ -39,6 +39,9 @@ public class User extends DomainObject {
     @NotNull
     private String email;
 
+    @NotNull
+    private Double amountOfMoney;
+
     @ManyToMany
     @JoinTable(
             name = "app_user_roles",
