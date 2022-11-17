@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Builder
 @Entity(name = "UserCard")
@@ -18,7 +16,8 @@ public class Card extends DomainObject {
 
     @NotNull
     @Positive
-    @Size(min = 4, max = 4)
+    @Min(0)
+    @Max(9999)
     private Integer PIN;
 
     @OneToOne(mappedBy = "userCard")
