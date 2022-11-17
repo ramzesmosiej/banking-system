@@ -1,6 +1,7 @@
 package com.bankingapp.bankingapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
@@ -11,7 +12,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@AllArgsConstructor
+@Builder
 @Entity(name = "AppUser")
+@Getter
+@NoArgsConstructor
+@Setter
 @Table(name = "app_user")
 public class User extends DomainObject {
 
@@ -41,52 +47,21 @@ public class User extends DomainObject {
     )
     private Set<Authority> authorities = new HashSet<>();
 
-    public String getLogin() {
-        return login;
-    }
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "card_id", referencedColumnName = "id")
+    private Card userCard;
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Set<Authority> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(Set<Authority> authorities) {
-        this.authorities = authorities;
+    @Override
+    public String toString() {
+        return "User{" +
+                "login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", authorities=" + authorities +
+                ", userCard=" + userCard +
+                '}';
     }
 
     public List<SimpleGrantedAuthority> getGrantedAuthorities() {
