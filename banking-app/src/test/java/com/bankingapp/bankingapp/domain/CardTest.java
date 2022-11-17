@@ -22,7 +22,7 @@ class CardTest {
         assertThat(user.getUserCard().getPIN()).isEqualTo(VALID_PIN);
     }
 
-    private static final Integer VALID_PIN = 1234;
+    private static final String VALID_PIN = "1234";
     private static final Card VALID_CARD = Card.builder().PIN(VALID_PIN).build();
     private static final User VALID_USER_WITH_VALID_CARD = User.builder()
             .firstName("Jan")
