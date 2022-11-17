@@ -48,6 +48,27 @@ public class User extends DomainObject {
     @JoinColumn(name = "card_id", referencedColumnName = "id")
     private Card userCard;
 
+    public Card getUserCard() {
+        return userCard;
+    }
+
+    public void setUserCard(Card userCard) {
+        this.userCard = userCard;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", authorities=" + authorities +
+                ", userCard=" + userCard +
+                '}';
+    }
+
     public String getLogin() {
         return login;
     }

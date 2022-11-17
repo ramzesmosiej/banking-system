@@ -24,4 +24,11 @@ public class Card extends DomainObject {
     @OneToOne(mappedBy = "userCard")
     private User user;
 
+    @Override
+    public String toString() {
+        return "Card{" +
+                "PIN=" + PIN +
+                ", user=" + user +
+                '}';
+    }
 }
