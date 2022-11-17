@@ -44,6 +44,7 @@ public class BankingAppApplication {
 					.firstName("Admin")
 					.lastName("Adminowaty")
 					.email("admin@gmail.com")
+					.isActive(true)
 					.build()
 					;
 			final var authority = authorityRepository.findById(Role.ADMIN.getAuthority()).get();

@@ -31,6 +31,7 @@ class CardTest {
             .login("janN")
             .password("abcd")
             .userCard(VALID_CARD)
+            .isActive(true)
             .build();
 
 }
