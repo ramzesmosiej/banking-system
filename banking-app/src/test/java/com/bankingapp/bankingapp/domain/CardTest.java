@@ -32,6 +32,7 @@ class CardTest {
             .password("abcd")
             .userCard(VALID_CARD)
             .isActive(true)
+            .amountOfMoney(0.0)
             .build();
 
 }
