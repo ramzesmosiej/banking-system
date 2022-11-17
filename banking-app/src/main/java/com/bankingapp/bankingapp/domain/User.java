@@ -47,7 +47,7 @@ public class User extends DomainObject {
     )
     private Set<Authority> authorities = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "card_id", referencedColumnName = "id")
     private Card userCard;
 
