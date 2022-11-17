@@ -132,7 +132,19 @@ określony w konfiguracji tworzenia tokenu (u nas 30 minut)
 
 #### Weryfikowanie ról
 
-// t.b.d
+Aplikacja na razie definiuje następujące role:
+
+1. ROLE_ADMIN, ma role:
+   - ROLE_EMPLOYEE
+   - ROLE_USER
+2. ROLE_EMPLOYEE, ma role:
+   - ROLE_USER
+3. ROLE_USER
+
+Za pomocą adnotacji `@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)`
+możemy ustalać która rola ma dostęp do danego endpointu za pomocą adnotacji 
+
+`@PreAuthorize("hasRole('ROLE_EMPLOYEE')")`
 
 
 
