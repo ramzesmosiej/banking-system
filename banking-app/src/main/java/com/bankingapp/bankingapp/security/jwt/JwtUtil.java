@@ -1,7 +1,9 @@
 package com.bankingapp.bankingapp.security.jwt;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -26,10 +28,14 @@ public class JwtUtil {
     public String generateAccessToken(String login) {
         Algorithm algorithm = Algorithm.HMAC512(jwtSecret.getBytes());
 
+        List<String> claims = new ArrayList<>();
+        userRepository.findUserByLogin(login).get().getGrantedAuthorities().forEach(role -> {
+            claims.add(role.getAuthority());
+        });
 
         return JWT.create()
                 .withSubject(login)
-                .withClaim("roles", userRepository.findUserByLogin(login).get().getGrantedAuthorities())
+                .withClaim("roles", claims)
                 .withExpiresAt(new Date(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(30)))
                 .sign(algorithm);
     }
