@@ -42,6 +42,7 @@ public class UserService {
                     .password(encoder.encode(registrationRequest.getPassword()))
                     .firstName(registrationRequest.getFirstName())
                     .lastName(registrationRequest.getLastName())
+                    .email(registrationRequest.getEmail())
                     .isActive(false)
                     .amountOfMoney((double) 0).build();
             final var authority = authorityRepository.findById(Authority.USER_AUTHORITY.getName()).get();

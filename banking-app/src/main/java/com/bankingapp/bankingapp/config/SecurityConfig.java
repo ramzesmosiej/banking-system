@@ -17,8 +17,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private static final String[] PERMITTED = {
-            "api/auth/register",
-            "api/auth/login"
+            "/api/auth/register",
+            "/api/auth/login"
     };
 
     private final BankAuthenticationProvider bankAuthenticationProvider;
