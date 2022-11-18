@@ -41,7 +41,9 @@ public class UserService {
                     .login(registrationRequest.getLogin())
                     .password(encoder.encode(registrationRequest.getPassword()))
                     .firstName(registrationRequest.getFirstName())
-                    .lastName(registrationRequest.getLastName()).build();
+                    .lastName(registrationRequest.getLastName())
+                    .isActive(false)
+                    .amountOfMoney((double) 0).build();
             final var authority = authorityRepository.findById(Authority.USER_AUTHORITY.getName()).get();
             newUser.setAuthorities(new HashSet<>(Set.of(authority)));
             return userRepository.save(newUser);

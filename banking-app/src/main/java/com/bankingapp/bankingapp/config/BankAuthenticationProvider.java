@@ -9,18 +9,19 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
+@Service
 public class BankAuthenticationProvider implements AuthenticationProvider {
 
     private final UserRepository userRepository;
 
-    private final BCryptPasswordEncoder encoder;
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public BankAuthenticationProvider(UserRepository userRepository, BCryptPasswordEncoder encoder) {
+    public BankAuthenticationProvider(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.encoder = encoder;
     }
 
     @Override
