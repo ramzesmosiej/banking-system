@@ -4,6 +4,8 @@ import com.bankingapp.bankingapp.domain.Card;
 import com.bankingapp.bankingapp.domain.User;
 
 public class TestConsts {
+
+    // Creation consts
     private static final String VALID_PIN = "1234";
     private static final Card VALID_CARD = Card.builder().PIN(VALID_PIN).build();
     public static final User VALID_USER_WITH_VALID_CARD = User.builder()
@@ -15,5 +17,10 @@ public class TestConsts {
             .userCard(VALID_CARD)
             .amountOfMoney(500.0)
             .build();
+
+    // Service consts
+    public static final Long VALID_USER_ID = 2L;
+    public static final Double VALID_CASH = 200.0;
+    public static final Double CASH_FOR_RICH = 20000.0;
 
 }

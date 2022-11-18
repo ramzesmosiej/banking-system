@@ -12,7 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static com.bankingapp.bankingapp.service.TestConsts.VALID_USER_WITH_VALID_CARD;
+import static com.bankingapp.bankingapp.service.TestConsts.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -33,11 +33,16 @@ class UserAccountServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(VALID_USER_WITH_VALID_CARD));
         when(userRepository.save(ArgumentMatchers.any())).thenReturn(VALID_USER_WITH_VALID_CARD);
 
-        var serverResponse = userAccountService.addCashToUser(2L, 1000.0);
+        var initalAmountOfMoney = userRepository.findById(VALID_USER_ID)
+                .orElseThrow(() -> new UserNotFoundException("")).getAmountOfMoney();
+
+        var serverResponse = userAccountService.addCashToUser(VALID_USER_ID, VALID_CASH);
         assertThat(serverResponse).contains("Operation successful");
 
         var actualAmountOfMoney = serverResponse.split(":");
-        assertThat(Double.parseDouble(actualAmountOfMoney[1].trim())).isEqualTo(1500.0);
+        assertThat(Double.parseDouble(actualAmountOfMoney[1].trim())).isEqualTo(
+                initalAmountOfMoney + VALID_CASH
+        );
 
     }
 
@@ -47,7 +52,7 @@ class UserAccountServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThat(catchThrowable(() ->
-                userAccountService.addCashToUser(3L, 1200.0)
+                userAccountService.addCashToUser(VALID_USER_ID, VALID_CASH)
         ))
                 .isInstanceOf(UserNotFoundException.class)
                 .hasMessageContaining("dosen't exists in db");
@@ -60,13 +65,15 @@ class UserAccountServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(VALID_USER_WITH_VALID_CARD));
         when(userRepository.save(ArgumentMatchers.any())).thenReturn(VALID_USER_WITH_VALID_CARD);
 
-        var initalAmountOfMoney = userRepository.findById(2L)
+        var initalAmountOfMoney = userRepository.findById(VALID_USER_ID)
                 .orElseThrow(() -> new UserNotFoundException("")).getAmountOfMoney();
-        var serverResponse = userAccountService.takeCashFromAccount(2L, 200.0);
+        var serverResponse = userAccountService.takeCashFromAccount(VALID_USER_ID, VALID_CASH);
         assertThat(serverResponse).contains("Operation successful");
 
         var actualAmountOfMoney = serverResponse.split(":");
-        assertThat(Double.parseDouble(actualAmountOfMoney[1].trim())).isEqualTo(initalAmountOfMoney - 200.0);
+        assertThat(Double.parseDouble(actualAmountOfMoney[1].trim())).isEqualTo(
+                initalAmountOfMoney - VALID_CASH
+        );
 
     }
 
@@ -76,7 +83,7 @@ class UserAccountServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThat(catchThrowable(() ->
-                userAccountService.takeCashFromAccount(3L, 1200.0)
+                userAccountService.takeCashFromAccount(VALID_USER_ID, VALID_CASH)
         ))
                 .isInstanceOf(UserNotFoundException.class)
                 .hasMessageContaining("dosen't exists in db");
@@ -89,7 +96,7 @@ class UserAccountServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(VALID_USER_WITH_VALID_CARD));
 
         assertThat(catchThrowable(() ->
-                userAccountService.takeCashFromAccount(3L, 12000.0)
+                userAccountService.takeCashFromAccount(VALID_USER_ID, CASH_FOR_RICH)
         ))
                 .isInstanceOf(NotEnoughMoneyException.class)
                 .hasMessageContaining("Not enough money");
