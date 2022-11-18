@@ -1,4 +1,4 @@
-package com.bankingapp.bankingapp.service;
+package com.bankingapp.bankingapp;
 
 import com.bankingapp.bankingapp.domain.Card;
 import com.bankingapp.bankingapp.domain.User;
@@ -6,8 +6,8 @@ import com.bankingapp.bankingapp.domain.User;
 public class TestConsts {
 
     // Creation consts
-    private static final String VALID_PIN = "1234";
-    private static final Card VALID_CARD = Card.builder().PIN(VALID_PIN).build();
+    public static final String VALID_PIN = "1234";
+    public static final Card VALID_CARD = Card.builder().PIN(VALID_PIN).build();
     public static final User VALID_USER_WITH_VALID_CARD = User.builder()
             .firstName("Jan")
             .lastName("Nowak")
