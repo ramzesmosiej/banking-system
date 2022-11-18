@@ -43,7 +43,8 @@ public class UserService {
                     .firstName(registrationRequest.getFirstName())
                     .lastName(registrationRequest.getLastName())
                     .email(registrationRequest.getEmail())
-                    .isActive(false)
+                    // setting active to true, functionality to activate account will be added later
+                    .isActive(true)
                     .amountOfMoney((double) 0).build();
             final var authority = authorityRepository.findById(Authority.USER_AUTHORITY.getName()).get();
             newUser.setAuthorities(new HashSet<>(Set.of(authority)));
