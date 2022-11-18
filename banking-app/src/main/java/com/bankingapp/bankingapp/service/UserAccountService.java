@@ -23,7 +23,7 @@ public class UserAccountService {
         user.setAmountOfMoney(user.getAmountOfMoney() + cash);
         userRepository.save(user);
 
-        return "Operation successful!";
+        return "Operation successful! Cash was added successfuly! Now you have: " + user.getAmountOfMoney();
 
     }
 
