@@ -18,6 +18,16 @@ public class TestConsts {
             .amountOfMoney(500.0)
             .build();
 
+    public static final User VALID_USER_WITHOUT_CARD = User.builder()
+            .firstName("Jan")
+            .lastName("Nowak")
+            .email("jan.nowak@gmail.com")
+            .login("janN")
+            .password("abcd")
+            .userCard(VALID_CARD)
+            .amountOfMoney(500.0)
+            .build();
+
     // Service consts
     public static final Long VALID_USER_ID = 2L;
     public static final Double VALID_CASH = 200.0;

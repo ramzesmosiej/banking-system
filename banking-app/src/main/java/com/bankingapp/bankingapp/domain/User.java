@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.List;
@@ -38,6 +39,9 @@ public class User extends DomainObject {
     @Email
     @NotNull
     private String email;
+
+    @NotNull
+    private Boolean isActive;
 
     @NotNull
     private Double amountOfMoney;

@@ -2,7 +2,6 @@ package com.bankingapp.bankingapp.domain;
 
 import org.junit.jupiter.api.Test;
 
-
 import static com.bankingapp.bankingapp.TestConsts.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
