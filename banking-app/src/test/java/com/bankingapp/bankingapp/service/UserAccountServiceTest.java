@@ -57,11 +57,13 @@ class UserAccountServiceTest {
 
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(VALID_USER_WITH_VALID_CARD));
 
+        var initalAmountOfMoney = userRepository.findById(2L)
+                .orElseThrow(() -> new UserNotFoundException("")).getAmountOfMoney();
         var serverResponse = userAccountService.takeCashFromAccount(2L, 200.0);
         assertThat(serverResponse).contains("Operation successful");
 
         var actualAmountOfMoney = serverResponse.split(":");
-        assertThat(Double.parseDouble(actualAmountOfMoney[1].trim())).isEqualTo(300.0);
+        assertThat(Double.parseDouble(actualAmountOfMoney[1].trim())).isEqualTo(initalAmountOfMoney - 200.0);
 
     }
 
@@ -84,10 +86,10 @@ class UserAccountServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(VALID_USER_WITH_VALID_CARD));
 
         assertThat(catchThrowable(() ->
-                userAccountService.takeCashFromAccount(3L, 1200.0)
+                userAccountService.takeCashFromAccount(3L, 12000.0)
         ))
                 .isInstanceOf(NotEnoughMoneyException.class)
-                .hasMessageContaining("not enough money");
+                .hasMessageContaining("Not enough money");
 
     }
 
