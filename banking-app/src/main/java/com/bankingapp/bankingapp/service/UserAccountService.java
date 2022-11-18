@@ -22,12 +22,14 @@ public class UserAccountService {
         );
 
         user.setAmountOfMoney(user.getAmountOfMoney() + cash);
-        userRepository.save(user);
+        var userAfterOperation = userRepository.save(user);
 
-        return "Operation successful! Cash was added successfuly! Now you have: " + user.getAmountOfMoney();
+        return "Operation successful! Cash was added successfuly! Now you have: " +
+                userAfterOperation.getAmountOfMoney();
 
     }
 
+    @Transactional
     public String takeCashFromAccount(long userId, double cash) {
 
         var user = userRepository.findById(userId).orElseThrow(() ->
@@ -41,7 +43,7 @@ public class UserAccountService {
         var userAfterOperation = userRepository.save(user);
 
         return "Operation successful! Cash was added successfuly! Now you have: "
-                + user.getAmountOfMoney();
+                + userAfterOperation.getAmountOfMoney();
 
     }
 

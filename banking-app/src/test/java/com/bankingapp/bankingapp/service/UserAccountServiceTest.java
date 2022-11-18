@@ -5,6 +5,7 @@ import com.bankingapp.bankingapp.exceptions.UserNotFoundException;
 import com.bankingapp.bankingapp.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -30,6 +31,7 @@ class UserAccountServiceTest {
     void addCashToUser_validUserID() {
 
         when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(VALID_USER_WITH_VALID_CARD));
+        when(userRepository.save(ArgumentMatchers.any())).thenReturn(VALID_USER_WITH_VALID_CARD);
 
         var serverResponse = userAccountService.addCashToUser(2L, 1000.0);
         assertThat(serverResponse).contains("Operation successful");
@@ -56,6 +58,7 @@ class UserAccountServiceTest {
     void takeCashFromAccount_validUserID() {
 
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(VALID_USER_WITH_VALID_CARD));
+        when(userRepository.save(ArgumentMatchers.any())).thenReturn(VALID_USER_WITH_VALID_CARD);
 
         var initalAmountOfMoney = userRepository.findById(2L)
                 .orElseThrow(() -> new UserNotFoundException("")).getAmountOfMoney();
