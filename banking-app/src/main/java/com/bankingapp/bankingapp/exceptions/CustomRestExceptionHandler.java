@@ -1,6 +1,5 @@
 package com.bankingapp.bankingapp.exceptions;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
