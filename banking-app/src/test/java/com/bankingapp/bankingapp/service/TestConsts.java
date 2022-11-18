@@ -13,7 +13,7 @@ public class TestConsts {
             .login("janN")
             .password("abcd")
             .userCard(VALID_CARD)
-            .amountOfMoney(0.0)
+            .amountOfMoney(500.0)
             .build();
 
 }

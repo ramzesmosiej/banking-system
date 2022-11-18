@@ -14,10 +14,10 @@ public class UserAccountService {
     private final UserRepository userRepository;
 
     @Transactional
-    public String addCashToUser(Long user_id, Double cash) {
+    public String addCashToUser(Long userId, Double cash) {
 
-        var user = userRepository.findById(user_id).orElseThrow(() ->
-                new UserNotFoundException("User with the id: " + user_id + " dosen't exists in db")
+        var user = userRepository.findById(userId).orElseThrow(() ->
+                new UserNotFoundException("User with the id: " + userId + " dosen't exists in db")
         );
 
         user.setAmountOfMoney(user.getAmountOfMoney() + cash);
@@ -25,6 +25,10 @@ public class UserAccountService {
 
         return "Operation successful! Cash was added successfuly! Now you have: " + user.getAmountOfMoney();
 
+    }
+
+    public String takeCashFromAccount(long userId, double cash) {
+        return null;
     }
 
 }
