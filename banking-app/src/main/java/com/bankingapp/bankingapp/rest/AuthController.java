@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +43,16 @@ public class AuthController {
         authenticationManager.authenticate(token);
         String jwtToken = jwtUtil.generateAccessToken(loginRequest.getLogin());
         return ResponseEntity.ok(jwtToken);
+    }
 
+    @GetMapping("/ping/admin")
+    public ResponseEntity<String> pingAdmin() {
+        return ResponseEntity.ok("Hello from admin");
+    }
+
+    @GetMapping("/ping")
+    public ResponseEntity<String> ping() {
+        return ResponseEntity.ok("Hello from secured request");
     }
 
 

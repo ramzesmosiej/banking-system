@@ -5,11 +5,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.bankingapp.bankingapp.repository.UserRepository;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 
@@ -28,14 +30,13 @@ public class JwtUtil {
     public String generateAccessToken(String login) {
         Algorithm algorithm = Algorithm.HMAC512(jwtSecret.getBytes());
 
-        List<String> claims = new ArrayList<>();
-        userRepository.findUserByLogin(login).get().getGrantedAuthorities().forEach(role -> {
-            claims.add(role.getAuthority());
-        });
+        String claims = userRepository.findUserByLogin(login).get().getGrantedAuthorities().stream().map(SimpleGrantedAuthority::getAuthority).collect(Collectors.joining(","));
+
+        System.out.println(claims);
 
         return JWT.create()
                 .withSubject(login)
-                .withClaim("roles", claims)
+                .withClaim("auth", claims)
                 .withExpiresAt(new Date(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(30)))
                 .sign(algorithm);
     }
