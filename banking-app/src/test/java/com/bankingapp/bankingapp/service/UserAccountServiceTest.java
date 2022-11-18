@@ -1,5 +1,6 @@
 package com.bankingapp.bankingapp.service;
 
+import com.bankingapp.bankingapp.exceptions.UserNotFoundException;
 import com.bankingapp.bankingapp.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +12,7 @@ import java.util.Optional;
 
 import static com.bankingapp.bankingapp.service.TestConsts.VALID_USER_WITH_VALID_CARD;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -24,7 +26,7 @@ class UserAccountServiceTest {
     UserAccountService userAccountService;
 
     @Test
-    void addCashToUser() {
+    void addCashToUser_validUserID() {
 
         when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(VALID_USER_WITH_VALID_CARD));
 
@@ -33,6 +35,19 @@ class UserAccountServiceTest {
 
         var actualAmountOfMoney = serverResponse.split(":");
         assertThat(Double.parseDouble(actualAmountOfMoney[1].trim())).isEqualTo(1000.0);
+
+    }
+
+    @Test
+    void addCahToUser_invalidUserID() {
+
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThat(catchThrowable(() ->
+                userAccountService.addCashToUser(3L, 1200.0)
+        ))
+                .isInstanceOf(UserNotFoundException.class)
+                .hasMessageContaining("dosen't exists in db");
 
     }
 
