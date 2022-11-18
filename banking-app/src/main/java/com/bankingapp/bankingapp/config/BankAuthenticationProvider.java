@@ -1,6 +1,7 @@
 package com.bankingapp.bankingapp.config;
 
 import com.bankingapp.bankingapp.domain.User;
+import com.bankingapp.bankingapp.exceptions.UserNotActivatedException;
 import com.bankingapp.bankingapp.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -33,6 +34,9 @@ public class BankAuthenticationProvider implements AuthenticationProvider {
                 .orElseThrow(() -> new BadCredentialsException("login not found in database"));
 
         Collection<SimpleGrantedAuthority> authorities = userToAuthenticate.getGrantedAuthorities();
+        if (!userToAuthenticate.getIsActive()) {
+            throw new UserNotActivatedException("User " + userToAuthenticate.getLogin() + " was not activated");
+        }
         if (encoder.matches(password, userToAuthenticate.getPassword())) {
             return new UsernamePasswordAuthenticationToken(login, password, authorities);
         } else {

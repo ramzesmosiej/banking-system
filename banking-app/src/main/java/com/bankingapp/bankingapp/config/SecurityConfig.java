@@ -1,5 +1,7 @@
 package com.bankingapp.bankingapp.config;
 
+import com.bankingapp.bankingapp.security.Role;
+import com.bankingapp.bankingapp.security.jwt.JwtTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -19,14 +22,18 @@ public class SecurityConfig {
     private static final String[] PERMITTED = {
             "/api/auth/register",
             "/api/auth/login",
+            "/console"
             "/api/operations/payment",
             "/api/operations/paycheck"
     };
 
     private final BankAuthenticationProvider bankAuthenticationProvider;
 
-    public SecurityConfig(BankAuthenticationProvider bankAuthenticationProvider) {
+    private final JwtTokenFilter jwtTokenFilter;
+
+    public SecurityConfig(BankAuthenticationProvider bankAuthenticationProvider, JwtTokenFilter jwtTokenFilter) {
         this.bankAuthenticationProvider = bankAuthenticationProvider;
+        this.jwtTokenFilter = jwtTokenFilter;
     }
 
     @Bean
@@ -36,8 +43,10 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests()
                 .antMatchers(PERMITTED).permitAll()
+                .antMatchers("/api/auth/ping/admin").hasAuthority(Role.ADMIN.getAuthority())
                 .anyRequest().authenticated().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
