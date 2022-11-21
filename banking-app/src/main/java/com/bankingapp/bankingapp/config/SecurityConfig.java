@@ -23,6 +23,8 @@ public class SecurityConfig {
             "/api/auth/register",
             "/api/auth/login",
             "/console"
+            "/api/operations/payment",
+            "/api/operations/paycheck"
     };
 
     private final BankAuthenticationProvider bankAuthenticationProvider;
