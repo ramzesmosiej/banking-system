@@ -5,10 +5,7 @@ import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,28 +19,30 @@ import java.util.Set;
 @Table(name = "app_user")
 public class User extends DomainObject {
 
-    @NotNull
+    @NotEmpty
     @Column(unique = true)
     private String login;
 
     @JsonIgnore
+    @NotEmpty
     @Column(name = "password_hash")
     private String password;
 
     @Size(max = 40)
+    @NotEmpty
     private String firstName;
 
     @Size(max = 40)
+    @NotEmpty
     private String lastName;
 
     @Email
-    @NotNull
+    @NotEmpty
     private String email;
 
-    @NotNull
     private Boolean isActive;
 
-    @NotNull
+
     private Double amountOfMoney;
 
     @ManyToMany
