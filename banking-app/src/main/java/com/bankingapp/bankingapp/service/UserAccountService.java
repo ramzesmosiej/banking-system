@@ -1,18 +1,33 @@
 package com.bankingapp.bankingapp.service;
 
+import com.bankingapp.bankingapp.domain.User;
 import com.bankingapp.bankingapp.exceptions.NotEnoughMoneyException;
 import com.bankingapp.bankingapp.exceptions.UserNotFoundException;
 import com.bankingapp.bankingapp.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import javax.transaction.Transactional;
+import java.util.Locale;
 
 @AllArgsConstructor
 @Service
 public class UserAccountService {
 
     private final UserRepository userRepository;
+
+    private final Logger logger = LoggerFactory.getLogger(UserAccountService.class);
+    private final ResourceBundleMessageSource resourceBundleMessageSource;
+    private final LocaleChangeInterceptor localeChangeInterceptor;
+
+    private final MessageSource messageSource;
+    private final LocaleResolver localeResolver;
 
     @Transactional
     public String addCashToUser(Long userId, Double cash) {
@@ -24,7 +39,9 @@ public class UserAccountService {
         user.setAmountOfMoney(user.getAmountOfMoney() + cash);
         var userAfterOperation = userRepository.save(user);
 
-        return "Operation successful! Cash was added successfuly! Now you have: " +
+        //logger.info(messageSource.getMessage("successfulOperation", ));
+
+        return resourceBundleMessageSource.getMessage("successfulOperation", null, Locale.GERMAN)+
                 userAfterOperation.getAmountOfMoney();
 
     }
@@ -42,7 +59,7 @@ public class UserAccountService {
         user.setAmountOfMoney(user.getAmountOfMoney() - cash);
         var userAfterOperation = userRepository.save(user);
 
-        return "Operation successful! Cash was added successfuly! Now you have: "
+        return "Operation successful! Now you have: "
                 + userAfterOperation.getAmountOfMoney();
 
     }
