@@ -43,8 +43,9 @@ public class BankingAppApplication {
 					.amountOfMoney(0.0)
 					.build();
 
-			final var authority = authorityRepository.findById(Role.ADMIN.getAuthority()).get();
-			admin.setAuthorities(Set.of(authority));
+			final var authorityAdmin = authorityRepository.findById(Role.ADMIN.getAuthority()).get();
+			final var authorityUser = authorityRepository.findById(Role.USER.getAuthority()).get();
+			admin.setAuthorities(Set.of(authorityAdmin, authorityUser));
 			userRepository.save(admin);
 		};
 	}

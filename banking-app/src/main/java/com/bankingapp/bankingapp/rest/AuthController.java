@@ -42,6 +42,7 @@ public class AuthController {
         );
         authenticationManager.authenticate(token);
         String jwtToken = jwtUtil.generateAccessToken(loginRequest.getLogin());
+        System.out.println(jwtUtil.parseClaims(jwtToken));
         return ResponseEntity.ok(jwtToken);
     }
 
