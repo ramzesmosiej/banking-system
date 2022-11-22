@@ -42,7 +42,8 @@ public class AccountOperationController {
     ) {
         return ResponseEntity.ok(userAccountService.takeCashFromAccount(
                 cashOperationRequest.getUserId(),
-                cashOperationRequest.getCash())
+                cashOperationRequest.getCash(),
+                locale)
         );
     }
 

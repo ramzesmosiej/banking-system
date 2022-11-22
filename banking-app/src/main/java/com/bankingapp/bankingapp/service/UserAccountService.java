@@ -36,7 +36,8 @@ public class UserAccountService {
         user.setAmountOfMoney(user.getAmountOfMoney() + cash);
         var userAfterOperation = userRepository.save(user);
 
-        var msg = resourceBundleMessageSource.getMessage("successfulOperation", null, locale[0]);
+        var msg = resourceBundleMessageSource.getMessage(
+                "successfulPaymentOperation", null, locale[0]);
         logger.info(msg);
 
         return  msg + " " + userAfterOperation.getAmountOfMoney();
@@ -44,7 +45,7 @@ public class UserAccountService {
     }
 
     @Transactional
-    public String takeCashFromAccount(long userId, double cash) {
+    public String takeCashFromAccount(Long userId, Double cash, Locale... locale) {
 
         var user = userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException("User with the id: " + userId + " dosen't exists in db")
@@ -56,8 +57,11 @@ public class UserAccountService {
         user.setAmountOfMoney(user.getAmountOfMoney() - cash);
         var userAfterOperation = userRepository.save(user);
 
-        return "Operation successful! Now you have: "
-                + userAfterOperation.getAmountOfMoney();
+        var msg = resourceBundleMessageSource.getMessage(
+                "successfulPaycheckOperation", null, locale[0]);
+        logger.info(msg);
+
+        return msg + " " + userAfterOperation.getAmountOfMoney();
 
     }
 
