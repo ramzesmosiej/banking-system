@@ -9,11 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.Locale;
 
 @AllArgsConstructor
@@ -21,16 +23,11 @@ import java.util.Locale;
 public class UserAccountService {
 
     private final UserRepository userRepository;
-
     private final Logger logger = LoggerFactory.getLogger(UserAccountService.class);
     private final ResourceBundleMessageSource resourceBundleMessageSource;
-    private final LocaleChangeInterceptor localeChangeInterceptor;
-
-    private final MessageSource messageSource;
-    private final LocaleResolver localeResolver;
 
     @Transactional
-    public String addCashToUser(Long userId, Double cash) {
+    public String addCashToUser(Long userId, Double cash, Locale... locale) {
 
         var user = userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException("User with the id: " + userId + " dosen't exists in db")
@@ -39,10 +36,10 @@ public class UserAccountService {
         user.setAmountOfMoney(user.getAmountOfMoney() + cash);
         var userAfterOperation = userRepository.save(user);
 
-        //logger.info(messageSource.getMessage("successfulOperation", ));
+        var msg = resourceBundleMessageSource.getMessage("successfulOperation", null, locale[0]);
+        logger.info(msg);
 
-        return resourceBundleMessageSource.getMessage("successfulOperation", null, Locale.GERMAN)+
-                userAfterOperation.getAmountOfMoney();
+        return  msg + " " + userAfterOperation.getAmountOfMoney();
 
     }
 
