@@ -14,7 +14,7 @@
     <module>cashmachine</module>
   </modules>
 
-  <name>banking-app</name>
+  <name>banking-system</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
