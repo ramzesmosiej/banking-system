@@ -11,6 +11,7 @@
 
   <modules>
     <module>banking-app</module>
+    <module>cashmachine</module>
   </modules>
 
   <name>banking-app</name>
