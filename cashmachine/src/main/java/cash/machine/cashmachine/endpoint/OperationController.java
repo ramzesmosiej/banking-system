@@ -1,8 +1,14 @@
 package cash.machine.cashmachine.endpoint;
 
+import cash.machine.cashmachine.models.OperationEntity;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import org.json.JSONObject;
+import org.springframework.boot.jackson.JsonObjectSerializer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.net.URI;
@@ -19,8 +25,10 @@ public class OperationController {
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
-    @GetMapping("/payment")
-    public ResponseEntity<String> makeAPayment() throws URISyntaxException {
+    @PostMapping("/payment")
+    public ResponseEntity<String> makeAPayment(
+            @RequestBody OperationEntity operationEntity
+            ) throws URISyntaxException {
 
         var request = HttpRequest.newBuilder()
                 .uri(new URI("http://localhost:8081/api/operations/payment"))
@@ -28,12 +36,10 @@ public class OperationController {
                         "Content-Type", "application/json"
                 )
                 .POST(HttpRequest.BodyPublishers.ofString(
-                        """
-                                {
-                                    "userId": "2",
-                                    "cash": "100"
-                                }
-                             """
+                        new JSONObject()
+                                .put("userId", operationEntity.getCardId())
+                                .put("cash", operationEntity.getAmountOfMoney())
+                                .toString()
                 ))
                 .build();
 
