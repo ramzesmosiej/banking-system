@@ -1,12 +1,9 @@
 package cash.machine.cashmachine.endpoint;
 
 import cash.machine.cashmachine.models.OperationEntity;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.json.JSONObject;
-import org.springframework.boot.jackson.JsonObjectSerializer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,17 +25,34 @@ public class OperationController {
     @PostMapping("/payment")
     public ResponseEntity<String> makeAPayment(
             @RequestBody OperationEntity operationEntity
-            ) throws URISyntaxException {
+            ) throws URISyntaxException, ExecutionException, InterruptedException {
+
+
+        // TODO to remove quickly
+        var getToken = HttpRequest.newBuilder()
+                .uri(new URI("http://localhost:8081/api/auth/login"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(
+                        new JSONObject()
+                                .put("login", "remmo1")
+                                .put("password", "1234abcd")
+                                .toString()
+                ))
+                .build();
+
+        CompletableFuture<HttpResponse<String>> token = HttpClient.newBuilder()
+                .build()
+                .sendAsync(getToken, HttpResponse.BodyHandlers.ofString());
+        System.out.println(token.get().body());
 
         var request = HttpRequest.newBuilder()
                 .uri(new URI("http://localhost:8081/api/operations/payment"))
-                .headers(
-                        "Content-Type", "application/json"
-                )
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + token.get().body())
                 .POST(HttpRequest.BodyPublishers.ofString(
                         new JSONObject()
-                                .put("userId", operationEntity.getCardId())
-                                .put("cash", operationEntity.getAmountOfMoney())
+                                .put("userId", 2)
+                                .put("cash", 100)
                                 .toString()
                 ))
                 .build();
