@@ -44,6 +44,7 @@ public class UserAccountService {
 
     }
 
+    // TODO: Correct tests, multilanguage locale[0] causes tests fail
     @Transactional
     public String takeCashFromAccount(Long userId, Double cash, Locale... locale) {
 
