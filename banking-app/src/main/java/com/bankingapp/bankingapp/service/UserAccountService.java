@@ -1,21 +1,14 @@
 package com.bankingapp.bankingapp.service;
 
-import com.bankingapp.bankingapp.domain.User;
 import com.bankingapp.bankingapp.exceptions.NotEnoughMoneyException;
 import com.bankingapp.bankingapp.exceptions.UserNotFoundException;
 import com.bankingapp.bankingapp.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.MessageSource;
-import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
 import java.util.Locale;
 
 @AllArgsConstructor
@@ -24,7 +17,7 @@ public class UserAccountService {
 
     private final UserRepository userRepository;
     private final Logger logger = LoggerFactory.getLogger(UserAccountService.class);
-    private final ResourceBundleMessageSource resourceBundleMessageSource;
+    private final PropertiesLanguageConnector propertiesLanguageConnector;
 
     @Transactional
     public String addCashToUser(Long userId, Double cash, Locale... locale) {
@@ -37,15 +30,14 @@ public class UserAccountService {
         var userAfterOperation = userRepository.save(user);
 
         var msg = locale == null || locale.length == 0 ?
-                resourceBundleMessageSource.getMessage("successfulPaymentOperation", null, Locale.US) :
-                resourceBundleMessageSource.getMessage("successfulPaymentOperation", null, locale[0]);
+                propertiesLanguageConnector.getMessageOnLanguage("successfulPaymentOperation", Locale.US) :
+                propertiesLanguageConnector.getMessageOnLanguage("successfulPaymentOperation", locale[0]);
         logger.info(msg);
 
         return  msg + " " + userAfterOperation.getAmountOfMoney();
 
     }
 
-    // TODO: Correct tests, multilanguage locale[0] causes tests fail
     @Transactional
     public String takeCashFromAccount(Long userId, Double cash, Locale... locale) {
 
@@ -59,9 +51,10 @@ public class UserAccountService {
         user.setAmountOfMoney(user.getAmountOfMoney() - cash);
         var userAfterOperation = userRepository.save(user);
 
-        var msg = locale.length != 0 ?
-                resourceBundleMessageSource.getMessage("successfulPaycheckOperation", null, locale[0]) :
-                resourceBundleMessageSource.getMessage("successfulPaycheckOperation", null, Locale.US);
+        var msg = locale == null || locale.length == 0 ?
+                propertiesLanguageConnector.getMessageOnLanguage("successfulPaycheckOperation", Locale.US) :
+                propertiesLanguageConnector.getMessageOnLanguage("successfulPaycheckOperation", locale[0]);
+
         logger.info(msg);
 
         return msg + " " + userAfterOperation.getAmountOfMoney();
