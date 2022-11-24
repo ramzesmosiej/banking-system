@@ -1,8 +1,6 @@
 package com.bankingapp.bankingapp.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -12,11 +10,14 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "UserCard")
 @Getter
 @Setter
 @Table(name = "user_card")
 public class Card extends DomainObject {
+
 
     @NotNull
     @Pattern(regexp = "\\d\\d\\d\\d")
