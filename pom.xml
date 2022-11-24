@@ -12,6 +12,7 @@
   <modules>
     <module>banking-app</module>
     <module>cashmachine</module>
+    <module>open-feign</module>
   </modules>
 
   <name>banking-system</name>
