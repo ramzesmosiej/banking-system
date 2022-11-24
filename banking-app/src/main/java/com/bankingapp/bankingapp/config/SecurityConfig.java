@@ -20,9 +20,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private static final String[] PERMITTED = {
-            "/api/auth/register",
-            "/api/auth/login",
-            "/console"
+            "/console",
+            "/api/operations/payment",
+            "/api/operations/paycheck",
+            "/machine/auth/card",
+            "/machine/add/cash"
     };
 
     private final BankAuthenticationProvider bankAuthenticationProvider;
@@ -38,9 +40,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.cors().and()
-                .csrf().disable()
+                .csrf().disable().headers().frameOptions().disable().and()
                 .authorizeHttpRequests()
-                .antMatchers(PERMITTED).permitAll()
+                .antMatchers(PERMITTED).permitAll().antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/api/auth/ping/admin").hasAuthority(Role.ADMIN.getAuthority())
                 .anyRequest().authenticated().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
