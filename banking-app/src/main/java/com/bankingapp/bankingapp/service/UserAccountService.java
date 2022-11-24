@@ -36,8 +36,9 @@ public class UserAccountService {
         user.setAmountOfMoney(user.getAmountOfMoney() + cash);
         var userAfterOperation = userRepository.save(user);
 
-        var msg = resourceBundleMessageSource.getMessage(
-                "successfulPaymentOperation", null, locale[0]);
+        var msg = locale == null || locale.length == 0 ?
+                resourceBundleMessageSource.getMessage("successfulPaymentOperation", null, Locale.US) :
+                resourceBundleMessageSource.getMessage("successfulPaymentOperation", null, locale[0]);
         logger.info(msg);
 
         return  msg + " " + userAfterOperation.getAmountOfMoney();
@@ -58,8 +59,9 @@ public class UserAccountService {
         user.setAmountOfMoney(user.getAmountOfMoney() - cash);
         var userAfterOperation = userRepository.save(user);
 
-        var msg = resourceBundleMessageSource.getMessage(
-                "successfulPaycheckOperation", null, locale[0]);
+        var msg = locale.length != 0 ?
+                resourceBundleMessageSource.getMessage("successfulPaycheckOperation", null, locale[0]) :
+                resourceBundleMessageSource.getMessage("successfulPaycheckOperation", null, Locale.US);
         logger.info(msg);
 
         return msg + " " + userAfterOperation.getAmountOfMoney();

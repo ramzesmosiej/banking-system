@@ -9,20 +9,32 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.AbstractMessageSource;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.Locale;
 import java.util.Optional;
 
 import static com.bankingapp.bankingapp.TestConsts.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
+@TestPropertySource(locations = "resources/language/message.properties",
+        properties = "successfulPaymentOperation=Operation successful! Cash was added successfuly! Now you have:")
 class UserAccountServiceTest {
 
     @Mock
     UserRepository userRepository;
+
+    @Mock
+    ResourceBundleMessageSource resourceBundleMessageSource;
 
     @InjectMocks
     UserAccountService userAccountService;
@@ -32,6 +44,9 @@ class UserAccountServiceTest {
 
         when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(VALID_USER_WITH_VALID_CARD));
         when(userRepository.save(ArgumentMatchers.any())).thenReturn(VALID_USER_WITH_VALID_CARD);
+        when(resourceBundleMessageSource.getMessage("successfulPaymentOperation", null, Locale.US)).thenReturn(
+                "Operation successful! Cash was added successfuly! Now you have:"
+        );
 
         var initalAmountOfMoney = userRepository.findById(VALID_USER_ID)
                 .orElseThrow(() -> new UserNotFoundException("")).getAmountOfMoney();
