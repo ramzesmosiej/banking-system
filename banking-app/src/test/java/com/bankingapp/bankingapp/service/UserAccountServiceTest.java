@@ -32,10 +32,8 @@ class UserAccountServiceTest {
 
     @Mock
     UserRepository userRepository;
-
     @Mock
-    ResourceBundleMessageSource resourceBundleMessageSource;
-
+    PropertiesLanguageConnector propertiesLanguageConnector;
     @InjectMocks
     UserAccountService userAccountService;
 
@@ -44,7 +42,7 @@ class UserAccountServiceTest {
 
         when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(VALID_USER_WITH_VALID_CARD));
         when(userRepository.save(ArgumentMatchers.any())).thenReturn(VALID_USER_WITH_VALID_CARD);
-        when(resourceBundleMessageSource.getMessage("successfulPaymentOperation", null, Locale.US)).thenReturn(
+        when(propertiesLanguageConnector.getMessageOnLanguage(any(), any())).thenReturn(
                 "Operation successful! Cash was added successfuly! Now you have:"
         );
 
@@ -79,6 +77,9 @@ class UserAccountServiceTest {
 
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(VALID_USER_WITH_VALID_CARD));
         when(userRepository.save(ArgumentMatchers.any())).thenReturn(VALID_USER_WITH_VALID_CARD);
+        when(propertiesLanguageConnector.getMessageOnLanguage(any(), any())).thenReturn(
+                "Operation successful! Cash was added successfuly! Now you have:"
+        );
 
         var initalAmountOfMoney = userRepository.findById(VALID_USER_ID)
                 .orElseThrow(() -> new UserNotFoundException("")).getAmountOfMoney();
