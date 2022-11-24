@@ -1,24 +1,25 @@
 package cash.machine.cashmachine.endpoint;
 
+import cash.machine.cashmachine.models.AuthenticationEntity;
+import cash.machine.cashmachine.models.MoneyEntity;
 import cash.machine.cashmachine.models.OperationEntity;
-import org.json.JSONObject;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+@AllArgsConstructor
 @Controller
 @RequestMapping("/cash-machine-api")
 public class OperationController {
+
+    private final SystemAppProxy systemAppProxy;
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
@@ -27,7 +28,19 @@ public class OperationController {
             @RequestBody OperationEntity operationEntity
             ) throws URISyntaxException, ExecutionException, InterruptedException {
 
+        var verifying = systemAppProxy.verifyCardAndTransaction(
+                new AuthenticationEntity(operationEntity.getCardID(), operationEntity.getCardPIN())
+        ).getBody();
 
+        if (verifying == null || !verifying)
+            return ResponseEntity.status(403).build();
+
+        var response = systemAppProxy.addCashToAccount(
+                new MoneyEntity(operationEntity.getCardID(), operationEntity.getAmountOfMoney())
+        ).getBody();
+
+        return ResponseEntity.ok(response);
+/*
         // TODO to remove quickly
         var getToken = HttpRequest.newBuilder()
                 .uri(new URI("http://localhost:8081/api/auth/login"))
@@ -65,7 +78,8 @@ public class OperationController {
             return ResponseEntity.ok(response.get().body());
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
-        }
+        }*/
+
     }
 
 }
