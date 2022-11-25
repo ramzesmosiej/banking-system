@@ -14,8 +14,6 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Entity
 @Getter
-@NoArgsConstructor
-@Setter
 @Table(name = "user_authority")
 public class Authority {
 
