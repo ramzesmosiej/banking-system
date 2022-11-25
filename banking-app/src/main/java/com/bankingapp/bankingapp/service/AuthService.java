@@ -19,7 +19,7 @@ public class AuthService {
     private final UserService userService;
 
     public String loginIntoSystem(String login, String password) {
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(login, password);
+        var token = new UsernamePasswordAuthenticationToken(login, password);
         authenticationManager.authenticate(token);
         String jwtToken = jwtUtil.generateAccessToken(login);
         System.out.println(jwtUtil.parseClaims(jwtToken));
