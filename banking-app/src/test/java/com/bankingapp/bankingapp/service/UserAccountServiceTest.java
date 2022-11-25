@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.TestPropertySource;
 
+import java.util.Locale;
 import java.util.Optional;
 
 import static com.bankingapp.bankingapp.TestConsts.*;
@@ -35,16 +36,30 @@ class UserAccountServiceTest {
     @Test
     void addCashToUser_validUserID() {
 
-        when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(VALID_USER_WITH_VALID_CARD));
-        when(userRepository.save(ArgumentMatchers.any())).thenReturn(VALID_USER_WITH_VALID_CARD);
-        when(propertiesLanguageConnector.getMessageOnLanguage(any(), any())).thenReturn(
-                "Operation successful! Cash was added successfuly! Now you have:"
-        );
+        mocking();
 
         var initalAmountOfMoney = userRepository.findById(VALID_USER_ID)
                 .orElseThrow(() -> new UserNotFoundException("")).getAmountOfMoney();
 
         var serverResponse = userAccountService.addCashToUser(VALID_USER_ID, VALID_CASH);
+        assertThat(serverResponse).contains("Operation successful");
+
+        var actualAmountOfMoney = serverResponse.split(":");
+        assertThat(Double.parseDouble(actualAmountOfMoney[1].trim())).isEqualTo(
+                initalAmountOfMoney + VALID_CASH
+        );
+
+    }
+
+    @Test
+    void addCashToUser_validUserID_and_validLocale() {
+
+        mocking();
+
+        var initalAmountOfMoney = userRepository.findById(VALID_USER_ID)
+                .orElseThrow(() -> new UserNotFoundException("")).getAmountOfMoney();
+
+        var serverResponse = userAccountService.addCashToUser(VALID_USER_ID, VALID_CASH, Locale.US);
         assertThat(serverResponse).contains("Operation successful");
 
         var actualAmountOfMoney = serverResponse.split(":");
@@ -70,15 +85,28 @@ class UserAccountServiceTest {
     @Test
     void takeCashFromAccount_validUserID() {
 
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(VALID_USER_WITH_VALID_CARD));
-        when(userRepository.save(ArgumentMatchers.any())).thenReturn(VALID_USER_WITH_VALID_CARD);
-        when(propertiesLanguageConnector.getMessageOnLanguage(any(), any())).thenReturn(
-                "Operation successful! Cash was added successfuly! Now you have:"
-        );
+        mocking();
 
         var initalAmountOfMoney = userRepository.findById(VALID_USER_ID)
                 .orElseThrow(() -> new UserNotFoundException("")).getAmountOfMoney();
         var serverResponse = userAccountService.takeCashFromAccount(VALID_USER_ID, VALID_CASH);
+        assertThat(serverResponse).contains("Operation successful");
+
+        var actualAmountOfMoney = serverResponse.split(":");
+        assertThat(Double.parseDouble(actualAmountOfMoney[1].trim())).isEqualTo(
+                initalAmountOfMoney - VALID_CASH
+        );
+
+    }
+
+    @Test
+    void takeCashFromAccount_validUserID_and_validLocale() {
+
+        mocking();
+
+        var initalAmountOfMoney = userRepository.findById(VALID_USER_ID)
+                .orElseThrow(() -> new UserNotFoundException("")).getAmountOfMoney();
+        var serverResponse = userAccountService.takeCashFromAccount(VALID_USER_ID, VALID_CASH, Locale.US);
         assertThat(serverResponse).contains("Operation successful");
 
         var actualAmountOfMoney = serverResponse.split(":");
@@ -112,6 +140,14 @@ class UserAccountServiceTest {
                 .isInstanceOf(NotEnoughMoneyException.class)
                 .hasMessageContaining("Not enough money");
 
+    }
+
+    private void mocking() {
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(VALID_USER_WITH_VALID_CARD));
+        when(userRepository.save(ArgumentMatchers.any())).thenReturn(VALID_USER_WITH_VALID_CARD);
+        when(propertiesLanguageConnector.getMessageOnLanguage(any(), any())).thenReturn(
+                "Operation successful! Cash was added successfuly! Now you have:"
+        );
     }
 
 }
