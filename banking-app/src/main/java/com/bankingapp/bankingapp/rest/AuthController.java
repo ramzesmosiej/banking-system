@@ -27,7 +27,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody RegistrationRequest inputUser) {
-        return ResponseEntity.ok(userService.registerUser(inputUser));
+        return ResponseEntity.ok(authService.registerUser(inputUser));
     }
 
     @PostMapping("/login")
@@ -37,12 +37,12 @@ public class AuthController {
 
     @GetMapping("/ping/admin")
     public ResponseEntity<String> pingAdmin() {
-        return ResponseEntity.ok("Hello from admin");
+        return ResponseEntity.ok(authService.sendPingToAdmin());
     }
 
     @GetMapping("/ping")
     public ResponseEntity<String> ping() {
-        return ResponseEntity.ok("Hello from secured request");
+        return ResponseEntity.ok(authService.sendPing());
     }
 
 
