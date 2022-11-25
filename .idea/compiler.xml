@@ -12,9 +12,6 @@
         <module name="cashmachine" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="open-feign" target="17" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

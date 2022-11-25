@@ -2,10 +2,10 @@ package com.client.openfeign.clients;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 
 @FeignClient(name = "banking-app", url = "http://localhost:8081")
 public interface BankingAppClient {
@@ -14,6 +14,6 @@ public interface BankingAppClient {
     ResponseEntity<Boolean> isPINCorrect(@RequestParam(name = "cardID") Long cardID, @RequestParam(name = "cardPIN") String cardPIN);
 
     @PostMapping("/machine/add/cash")
-    ResponseEntity<?> addCashToAccount(@RequestParam(name = "cardID") Long cardID, @RequestParam(name = "amount") Double amount);
+    ResponseEntity<String> addCashToAccount(@RequestParam(name = "cardID") Long cardID, @RequestParam(name = "amount") Double amount);
 
 }

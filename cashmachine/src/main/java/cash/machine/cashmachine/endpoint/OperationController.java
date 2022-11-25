@@ -19,7 +19,7 @@ public class OperationController {
 
     private final BankingAppClient bankingAppClient;
 
-    private final HttpClient httpClient = HttpClient.newHttpClient();
+    // private final HttpClient httpClient = HttpClient.newHttpClient();
 
     @PostMapping("/payment")
     public ResponseEntity<String> makeAPayment(
