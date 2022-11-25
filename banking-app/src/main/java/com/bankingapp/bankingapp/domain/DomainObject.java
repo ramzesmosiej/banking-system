@@ -10,7 +10,6 @@ import javax.persistence.*;
  */
 @Getter
 @MappedSuperclass
-@Setter
 public abstract class DomainObject {
 
     @Id

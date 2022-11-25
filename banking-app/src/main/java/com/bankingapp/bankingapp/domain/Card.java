@@ -18,7 +18,6 @@ import javax.validation.constraints.Size;
 @Table(name = "user_card")
 public class Card extends DomainObject {
 
-
     @NotNull
     @Pattern(regexp = "\\d\\d\\d\\d")
     @Size(min = 4, max = 4)
