@@ -7,9 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.net.http.HttpClient;
+import java.util.Locale;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -19,12 +20,12 @@ public class OperationController {
 
     private final BankingAppClient bankingAppClient;
 
-    // private final HttpClient httpClient = HttpClient.newHttpClient();
-
     @PostMapping("/payment")
     public ResponseEntity<String> makeAPayment(
-            @RequestBody OperationEntity operationEntity
+            @RequestBody OperationEntity operationEntity,
+            @RequestHeader(required = false) Locale lang
             ) {
+        var language = lang == null ? Locale.US : lang;
 
         var verifying = bankingAppClient.isPINCorrect(
                 operationEntity.getCardID(), operationEntity.getCardPIN()
@@ -34,8 +35,8 @@ public class OperationController {
             return ResponseEntity.status(403).build();
 
         var response = Objects.requireNonNull(bankingAppClient.addCashToAccount(
-                operationEntity.getCardID(), operationEntity.getAmountOfMoney()
-        ).getBody()).toString();
+                operationEntity.getCardID(), operationEntity.getAmountOfMoney(), language
+        ).getBody());
 
         return ResponseEntity.ok(response);
     }

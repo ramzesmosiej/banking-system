@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Locale;
 import java.util.Optional;
 
 @RestController
@@ -28,8 +29,10 @@ public class CashMachineAuthorityController {
     }
 
     @GetMapping("/auth/card")
-    public ResponseEntity<Boolean> isPINCorrect(@RequestParam(name = "cardID") Long cardID,
-                                @RequestParam(name = "cardPIN") String cardPIN) {
+    public ResponseEntity<Boolean> isPINCorrect(
+            @RequestParam(name = "cardID") Long cardID,
+            @RequestParam(name = "cardPIN") String cardPIN
+    ) {
         Optional<Card> optionalCard = cardRepository.findById(cardID);
         if (optionalCard.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -38,10 +41,13 @@ public class CashMachineAuthorityController {
     }
 
     @PostMapping("/add/cash")
-    public ResponseEntity<?> addCashToAccount(@RequestParam(name = "cardID") Long cardID,
-                                              @RequestParam(name = "amount") Double amount) {
+    public ResponseEntity<?> addCashToAccount(
+            @RequestParam(name = "cardID") Long cardID,
+            @RequestParam(name = "amount") Double amount,
+            @RequestHeader Locale lang
+    ) {
         User accountOwner = userRepository.findUserByCard(cardID);
         // transactional method
-        return ResponseEntity.ok(userAccountService.addCashToUser(accountOwner.getId(), amount));
+        return ResponseEntity.ok(userAccountService.addCashToUser(accountOwner.getId(), amount, lang));
     }
 }
