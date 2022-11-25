@@ -1,7 +1,5 @@
 package com.bankingapp.bankingapp.service;
 
-import com.bankingapp.bankingapp.DTO.RegistrationRequest;
-import com.bankingapp.bankingapp.domain.User;
 import com.bankingapp.bankingapp.security.jwt.JwtUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,8 +8,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 
+import static com.bankingapp.bankingapp.TestConsts.VALID_USER_REQUEST;
+import static com.bankingapp.bankingapp.TestConsts.VALID_USER_WITHOUT_CARD;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -38,7 +37,7 @@ class AuthServiceTest {
 
     @Test
     void registerUser() {
-        when(userService.registerUser(any())).thenReturn(VALID_USER());
+        when(userService.registerUser(any())).thenReturn(VALID_USER_WITHOUT_CARD);
         var registeredUser = authService.registerUser(VALID_USER_REQUEST());
 
         assertThat(registeredUser).isNotNull();
@@ -53,25 +52,6 @@ class AuthServiceTest {
     @Test
     void sendPing() {
         assertThat(authService.sendPing()).isEqualTo("Hello from secured request");
-    }
-
-    private RegistrationRequest VALID_USER_REQUEST() {
-        var requestUser = new RegistrationRequest();
-        requestUser.setFirstName("Jan");
-        requestUser.setLastName("Nowak");
-        requestUser.setLogin("janN");
-        requestUser.setEmail("jan.nowak@gmail.com");
-        requestUser.setPassword("3214");
-        return requestUser;
-    }
-
-    private User VALID_USER() {
-        return User.builder()
-                .firstName("Jan")
-                .lastName("Nowak")
-                .login("janN")
-                .email("jan.nowak@gmail.com")
-                .build();
     }
 
 }

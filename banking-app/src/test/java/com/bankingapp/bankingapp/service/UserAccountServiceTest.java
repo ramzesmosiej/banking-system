@@ -22,8 +22,6 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@TestPropertySource(locations = "resources/language/message.properties",
-        properties = "successfulPaymentOperation=Operation successful! Cash was added successfuly! Now you have:")
 class UserAccountServiceTest {
 
     @Mock
