@@ -152,7 +152,8 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     ) {
         List<String> errors = new ArrayList<>();
 
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, propertiesLanguageConnector.getMessageOnLanguage(
+                "notEnoughMoneyException", resolveLanguage(request)), errors);
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
