@@ -3,13 +3,9 @@ package com.bankingapp.bankingapp.rest;
 import com.bankingapp.bankingapp.DTO.LoginRequest;
 import com.bankingapp.bankingapp.DTO.RegistrationRequest;
 import com.bankingapp.bankingapp.domain.User;
-import com.bankingapp.bankingapp.security.jwt.JwtUtil;
 import com.bankingapp.bankingapp.service.AuthService;
-import com.bankingapp.bankingapp.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AuthController {
 
     private final AuthService authService;
-
-    private final UserService userService;
 
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody RegistrationRequest inputUser) {
