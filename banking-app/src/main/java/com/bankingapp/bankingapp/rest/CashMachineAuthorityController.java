@@ -50,4 +50,15 @@ public class CashMachineAuthorityController {
         // transactional method
         return ResponseEntity.ok(userAccountService.addCashToUser(accountOwner.getId(), amount, lang));
     }
+
+    @PostMapping("/withdraw/cash")
+    public ResponseEntity<?> withdrawCash(
+            @RequestParam(name = "cardID") Long cardID,
+            @RequestParam(name = "amount") Double amount,
+            @RequestHeader Locale lang
+    ) {
+        User accountOwner = userRepository.findUserByCard(cardID);
+        // transactional method
+        return ResponseEntity.ok(userAccountService.takeCashFromAccount(accountOwner.getId(), amount, lang));
+    }
 }

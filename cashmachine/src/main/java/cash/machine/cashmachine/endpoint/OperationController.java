@@ -2,6 +2,7 @@ package cash.machine.cashmachine.endpoint;
 
 import cash.machine.cashmachine.models.OperationEntity;
 import com.client.openfeign.clients.BankingAppClient;
+import com.client.openfeign.dto.CashOperationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,7 @@ public class OperationController {
     public ResponseEntity<String> makeAPayment(
             @RequestBody OperationEntity operationEntity,
             @RequestHeader(required = false) Locale lang
-            ) {
+    ) {
         var language = lang == null ? Locale.US : lang;
 
         var verifying = bankingAppClient.isPINCorrect(
@@ -41,4 +42,24 @@ public class OperationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/withdrawal")
+    public ResponseEntity<String> withdrawMoney(
+            @RequestBody OperationEntity operationEntity,
+            @RequestHeader(required = false) Locale lang
+    ) {
+        var language = lang == null ? Locale.US : lang;
+
+        var verifying = bankingAppClient.isPINCorrect(
+                operationEntity.getCardID(), operationEntity.getCardPIN()
+        ).getBody();
+
+        if (verifying == null || !verifying)
+            return ResponseEntity.status(403).build();
+
+        var response = Objects.requireNonNull(bankingAppClient.withdrawCash(
+                operationEntity.getCardID(),operationEntity.getAmountOfMoney(), language
+        ).getBody());
+
+        return ResponseEntity.ok(response);
+    }
 }
