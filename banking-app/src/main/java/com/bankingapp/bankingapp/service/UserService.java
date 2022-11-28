@@ -3,8 +3,10 @@ package com.bankingapp.bankingapp.service;
 
 import com.bankingapp.bankingapp.DTO.RegistrationRequest;
 import com.bankingapp.bankingapp.domain.Authority;
+import com.bankingapp.bankingapp.domain.Card;
 import com.bankingapp.bankingapp.domain.User;
 import com.bankingapp.bankingapp.repository.AuthorityRepository;
+import com.bankingapp.bankingapp.repository.CardRepository;
 import com.bankingapp.bankingapp.repository.UserRepository;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,11 +23,14 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
+    private final CardRepository cardRepository;
+
     private final BCryptPasswordEncoder encoder;
 
-    public UserService(UserRepository userRepository, AuthorityRepository authorityRepository, BCryptPasswordEncoder encoder) {
+    public UserService(UserRepository userRepository, AuthorityRepository authorityRepository, CardRepository cardRepository, BCryptPasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.authorityRepository = authorityRepository;
+        this.cardRepository = cardRepository;
         this.encoder = encoder;
     }
 
@@ -48,7 +53,9 @@ public class UserService {
                     .amountOfMoney((double) 0).build();
             final var authority = authorityRepository.findById(Authority.USER_AUTHORITY.getName()).get();
             newUser.setAuthorities(new HashSet<>(Set.of(authority)));
-            return userRepository.save(newUser);
+            User savedUser = userRepository.save(newUser);
+            savedUser.setUserCard(Card.builder().user(savedUser).PIN(registrationRequest.getCardPIN()).build());
+            return userRepository.save(savedUser);
         }
     }
 }
