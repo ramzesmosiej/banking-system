@@ -44,7 +44,6 @@ public class BankingAppApplication {
 					.lastName("Adminowaty")
 					.email("admin@gmail.com")
 					.isActive(true)
-					.userCard(Card.builder().PIN("1234").build())
 					.amountOfMoney(0.0)
 					.build();
 

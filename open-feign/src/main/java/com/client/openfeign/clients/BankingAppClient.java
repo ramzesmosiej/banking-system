@@ -26,11 +26,11 @@ public interface BankingAppClient {
             @RequestHeader(name = "lang") Locale lang
     );
 
-    @PostMapping("/withdraw/cash")
+    @PostMapping("/machine/withdraw/cash")
     ResponseEntity<String> withdrawCash(
             @RequestParam(name = "cardID") Long cardID,
             @RequestParam(name = "amount") Double amount,
-            @RequestHeader Locale lang
+            @RequestHeader(name = "lang") Locale lang
     );
 
 }
