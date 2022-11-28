@@ -11,7 +11,7 @@ import java.util.Locale;
 public class PropertiesLanguageConnector {
     private final ResourceBundleMessageSource resourceBundleMessageSource;
 
-    String getMessageOnLanguage(String code, Locale locale) {
+    public String getMessageOnLanguage(String code, Locale locale) {
         return resourceBundleMessageSource.getMessage(code, null, locale);
     }
 

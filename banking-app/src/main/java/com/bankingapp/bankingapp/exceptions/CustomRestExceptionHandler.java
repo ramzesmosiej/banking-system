@@ -1,5 +1,7 @@
 package com.bankingapp.bankingapp.exceptions;
 
+import com.bankingapp.bankingapp.service.PropertiesLanguageConnector;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +22,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
+@AllArgsConstructor
 @ControllerAdvice
 public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
+
+    private final PropertiesLanguageConnector propertiesLanguageConnector;
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
@@ -133,7 +140,8 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     ) {
         List<String> errors = new ArrayList<>();
 
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, propertiesLanguageConnector.getMessageOnLanguage(
+                "userNotFoundException", resolveLanguage(request)), errors);
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
@@ -144,7 +152,8 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     ) {
         List<String> errors = new ArrayList<>();
 
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, propertiesLanguageConnector.getMessageOnLanguage(
+                "notEnoughMoneyException", resolveLanguage(request)), errors);
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
@@ -154,6 +163,11 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occurred"
         );
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
+    private Locale resolveLanguage(WebRequest request) {
+        return request.getHeader("lang") == null ? Locale.US :
+                new Locale(Objects.requireNonNull(request.getHeader("lang")));
     }
 
 }

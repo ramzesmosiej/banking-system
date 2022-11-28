@@ -21,7 +21,7 @@ public class SecurityConfig {
 
     private static final String[] PERMITTED = {
             "/api/auth/register",
-            "api/auth/login",
+            "/api/auth/login",
             "/console",
             "/api/operations/payment",
             "/api/operations/paycheck",
