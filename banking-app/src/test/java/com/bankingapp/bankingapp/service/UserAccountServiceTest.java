@@ -9,7 +9,6 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.TestPropertySource;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -22,8 +21,6 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@TestPropertySource(locations = "resources/language/message.properties",
-        properties = "successfulPaymentOperation=Operation successful! Cash was added successfuly! Now you have:")
 class UserAccountServiceTest {
 
     @Mock
