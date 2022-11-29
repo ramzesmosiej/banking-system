@@ -1,5 +1,7 @@
 package com.client.openfeign.clients;
 
+import com.client.openfeign.errors.FeignSupportConfig;
+import com.client.openfeign.errors.FileUploadClientFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +14,9 @@ import java.util.Locale;
 import static com.client.openfeign.clients.PropertiesConnector.BANK_APP_ADDRESS;
 import static com.client.openfeign.clients.PropertiesConnector.BANK_APP_NAME;
 
-@FeignClient(name = BANK_APP_NAME, url = BANK_APP_ADDRESS)
+@FeignClient(name = BANK_APP_NAME, url = BANK_APP_ADDRESS,
+        configuration = FeignSupportConfig.class,
+        fallbackFactory = FileUploadClientFallbackFactory.class)
 public interface BankingAppClient {
 
     @GetMapping("/machine/auth/card")
