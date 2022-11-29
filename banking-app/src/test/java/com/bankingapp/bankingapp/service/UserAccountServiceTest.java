@@ -9,7 +9,6 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.TestPropertySource;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -32,7 +31,7 @@ class UserAccountServiceTest {
     UserAccountService userAccountService;
 
     @Test
-    void addCashToUser_validUserID() {
+    void addCashToUser_validUserID() throws InterruptedException {
 
         mocking();
 
@@ -50,7 +49,7 @@ class UserAccountServiceTest {
     }
 
     @Test
-    void addCashToUser_validUserID_and_validLocale() {
+    void addCashToUser_validUserID_and_validLocale() throws InterruptedException {
 
         mocking();
 
@@ -81,7 +80,7 @@ class UserAccountServiceTest {
     }
 
     @Test
-    void takeCashFromAccount_validUserID() {
+    void takeCashFromAccount_validUserID() throws InterruptedException {
 
         mocking();
 
@@ -98,7 +97,7 @@ class UserAccountServiceTest {
     }
 
     @Test
-    void takeCashFromAccount_validUserID_and_validLocale() {
+    void takeCashFromAccount_validUserID_and_validLocale() throws InterruptedException {
 
         mocking();
 

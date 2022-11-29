@@ -26,7 +26,9 @@ public class SecurityConfig {
             "/api/operations/payment",
             "/api/operations/paycheck",
             "/machine/auth/card",
-            "/machine/add/cash"
+            "/machine/add/cash",
+            "/machine/withdraw/cash",
+            "/machine/transfer/money"
     };
 
     private final BankAuthenticationProvider bankAuthenticationProvider;

@@ -3,8 +3,10 @@ package com.bankingapp.bankingapp.service;
 
 import com.bankingapp.bankingapp.DTO.RegistrationRequest;
 import com.bankingapp.bankingapp.domain.Authority;
+import com.bankingapp.bankingapp.domain.Card;
 import com.bankingapp.bankingapp.domain.User;
 import com.bankingapp.bankingapp.repository.AuthorityRepository;
+import com.bankingapp.bankingapp.repository.CardRepository;
 import com.bankingapp.bankingapp.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,8 +23,8 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
+    private final CardRepository cardRepository;
     private final BCryptPasswordEncoder encoder;
-
     private final UserRepository userRepository;
 
 
@@ -44,7 +46,9 @@ public class UserService {
             final var authority = authorityRepository.findById(Authority.USER_AUTHORITY.getName())
                     .orElseThrow(() -> new IllegalStateException("Authority not found"));
             newUser.setAuthorities(new HashSet<>(Set.of(authority)));
-            return userRepository.save(newUser);
+            User savedUser = userRepository.save(newUser);
+            savedUser.setUserCard(Card.builder().user(savedUser).PIN(registrationRequest.getCardPIN()).build());
+            return userRepository.save(savedUser);
         }
     }
 

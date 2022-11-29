@@ -29,12 +29,12 @@ public class BankingAppApplication {
 
 	@Bean
 	CommandLineRunner commandLineRunner(UserRepository userRepository, AuthorityRepository authorityRepository, CardRepository cardRepository) {
+
 		return args -> {
 
 			authorityRepository.save(Authority.ADMIN_AUTHORITY);
 			authorityRepository.save(Authority.EMPLOYEE_AUTHORITY);
 			authorityRepository.save(Authority.USER_AUTHORITY);
-
 
 
 			User admin = User.builder()
@@ -44,17 +44,16 @@ public class BankingAppApplication {
 					.lastName("Adminowaty")
 					.email("admin@gmail.com")
 					.isActive(true)
-					.userCard(Card.builder().PIN("1234").build())
 					.amountOfMoney(0.0)
 					.build();
-
-
 
 
 			final var authorityAdmin = authorityRepository.findById(Role.ADMIN.getAuthority()).get();
 			final var authorityUser = authorityRepository.findById(Role.USER.getAuthority()).get();
 			admin.setAuthorities(Set.of(authorityAdmin, authorityUser));
-			userRepository.save(admin);
+			User adminSaved = userRepository.save(admin);
+			adminSaved.setUserCard(Card.builder().user(adminSaved).PIN("1234").build());
+			userRepository.save(adminSaved);
 
 		};
 	}

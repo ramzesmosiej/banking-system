@@ -47,7 +47,6 @@ public class UserAccountService {
 
         if (user.getAmountOfMoney() < cash)
             throw new NotEnoughMoneyException("Not enough money to take so much cash!");
-
         user.setAmountOfMoney(user.getAmountOfMoney() - cash);
         var userAfterOperation = userRepository.save(user);
 
