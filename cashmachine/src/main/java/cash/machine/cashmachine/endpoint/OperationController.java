@@ -6,24 +6,27 @@ import com.client.openfeign.dto.CashOperationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.util.Locale;
 import java.util.Objects;
 
 @AllArgsConstructor
 @Controller
 @RequestMapping("/cash-machine-api")
+@Validated
 public class OperationController {
 
     private final BankingAppClient bankingAppClient;
 
     @PostMapping("/payment")
     public ResponseEntity<String> makeAPayment(
-            @RequestBody OperationEntity operationEntity,
+            @RequestBody @Valid OperationEntity operationEntity,
             @RequestHeader(required = false) Locale lang
     ) {
         var language = lang == null ? Locale.US : lang;
@@ -44,7 +47,7 @@ public class OperationController {
 
     @PostMapping("/withdrawal")
     public ResponseEntity<String> withdrawMoney(
-            @RequestBody OperationEntity operationEntity,
+            @RequestBody @Valid OperationEntity operationEntity,
             @RequestHeader(required = false) Locale lang
     ) {
         var language = lang == null ? Locale.US : lang;
