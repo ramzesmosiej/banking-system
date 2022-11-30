@@ -1,8 +1,8 @@
 package cash.machine.cashmachine.endpoint;
 
 import cash.machine.cashmachine.models.OperationEntity;
+import cash.machine.cashmachine.services.OperationService;
 import com.client.openfeign.clients.BankingAppClient;
-import com.client.openfeign.dto.CashOperationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,27 +22,16 @@ import java.util.Objects;
 @Validated
 public class OperationController {
 
-    private final BankingAppClient bankingAppClient;
+    private final OperationService operationService;
 
     @PostMapping("/payment")
     public ResponseEntity<String> makeAPayment(
             @RequestBody @Valid OperationEntity operationEntity,
             @RequestHeader(required = false) Locale lang
     ) {
-        var language = lang == null ? Locale.US : lang;
-
-        var verifying = bankingAppClient.isPINCorrect(
-                operationEntity.getCardID(), operationEntity.getCardPIN()
-        ).getBody();
-
-        if (verifying == null || !verifying)
-            return ResponseEntity.status(403).build();
-
-        var response = Objects.requireNonNull(bankingAppClient.addCashToAccount(
-                operationEntity.getCardID(), operationEntity.getAmountOfMoney(), language
-        ).getBody());
-
-        return ResponseEntity.ok(response);
+        var result = operationService.makeAPayment(operationEntity, lang);
+        return Objects.equals(result, "AUTH_ERROR") ?
+                ResponseEntity.status(403).build() : ResponseEntity.ok(result);
     }
 
     @PostMapping("/withdrawal")
@@ -50,19 +39,9 @@ public class OperationController {
             @RequestBody @Valid OperationEntity operationEntity,
             @RequestHeader(required = false) Locale lang
     ) {
-        var language = lang == null ? Locale.US : lang;
-
-        var verifying = bankingAppClient.isPINCorrect(
-                operationEntity.getCardID(), operationEntity.getCardPIN()
-        ).getBody();
-
-        if (verifying == null || !verifying)
-            return ResponseEntity.status(403).build();
-
-        var response = Objects.requireNonNull(bankingAppClient.withdrawCash(
-                operationEntity.getCardID(),operationEntity.getAmountOfMoney(), language
-        ).getBody());
-
-        return ResponseEntity.ok(response);
+        var result = operationService.withdrawMoney(operationEntity, lang);
+        return Objects.equals(result, "AUTH_ERROR") ?
+                ResponseEntity.status(403).build() : ResponseEntity.ok(result);
     }
+    
 }
