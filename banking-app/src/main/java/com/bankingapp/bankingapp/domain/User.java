@@ -42,7 +42,6 @@ public class User extends DomainObject {
 
     private Boolean isActive;
 
-
     private Double amountOfMoney;
 
     @ManyToMany

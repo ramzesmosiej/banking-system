@@ -2,6 +2,7 @@ package com.bankingapp.bankingapp.exceptions;
 
 import com.bankingapp.bankingapp.service.PropertiesLanguageConnector;
 import lombok.AllArgsConstructor;
+import org.hibernate.exception.LockAcquisitionException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -154,6 +155,18 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, propertiesLanguageConnector.getMessageOnLanguage(
                 "notEnoughMoneyException", resolveLanguage(request)), errors);
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
+    @ExceptionHandler({ LockAcquisitionException.class })
+    public ResponseEntity<Object> handleLockAcquisitionException(
+            LockAcquisitionException ex,
+            WebRequest request
+    ) {
+        List<String> errors = new ArrayList<>();
+
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, propertiesLanguageConnector.getMessageOnLanguage(
+                "operation interrupted", resolveLanguage(request)), errors);
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
