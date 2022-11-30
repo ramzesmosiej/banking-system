@@ -11,7 +11,6 @@ public class ExceptionMessage {
     private List<String> errors;
     private String message;
     private String path;
-    //private List<String> errors;
 
     @Override
     public String toString() {

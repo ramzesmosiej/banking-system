@@ -36,7 +36,7 @@ public class OperationController {
         ).getBody();
 
         if (verifying == null || !verifying)
-            return ResponseEntity.status(403).body("abcd");
+            return ResponseEntity.status(403).build();
 
         var response = Objects.requireNonNull(bankingAppClient.addCashToAccount(
                 operationEntity.getCardID(), operationEntity.getAmountOfMoney(), language
