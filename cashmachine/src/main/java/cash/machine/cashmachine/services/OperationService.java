@@ -3,13 +3,8 @@ package cash.machine.cashmachine.services;
 import cash.machine.cashmachine.models.OperationEntity;
 import com.client.openfeign.clients.BankingAppClient;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 
-import javax.validation.Valid;
 import java.util.Locale;
 import java.util.Objects;
 

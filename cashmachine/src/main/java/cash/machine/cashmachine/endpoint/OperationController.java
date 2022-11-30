@@ -2,7 +2,6 @@ package cash.machine.cashmachine.endpoint;
 
 import cash.machine.cashmachine.models.OperationEntity;
 import cash.machine.cashmachine.services.OperationService;
-import com.client.openfeign.clients.BankingAppClient;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -43,5 +42,5 @@ public class OperationController {
         return Objects.equals(result, "AUTH_ERROR") ?
                 ResponseEntity.status(403).build() : ResponseEntity.ok(result);
     }
-    
+
 }
