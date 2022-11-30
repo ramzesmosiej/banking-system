@@ -10,7 +10,6 @@ import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
 import feign.form.spring.SpringFormEncoder;
 
-/*
 public class FeignSupportConfig {
     @Bean
     public Encoder multipartFormEncoder() {
@@ -26,4 +25,4 @@ public class FeignSupportConfig {
     public ErrorDecoder errorDecoder() {
         return new RetreiveMessageErrorDecoder();
     }
-}*/
+}

@@ -12,12 +12,20 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ResponseErrorHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({ FeignException.class })
-    public ResponseEntity<Object> handleConstraintViolation(
-            FeignException ex,
+    @ExceptionHandler({ IllegalArgumentException.class })
+    public ResponseEntity<Object> handleIllegalArgumentException(
+            IllegalArgumentException ex,
             WebRequest request
     ) {
-        return ResponseEntity.ok(ex.getLocalizedMessage());
+        return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+    }
+
+    @ExceptionHandler({ IllegalStateException.class })
+    public ResponseEntity<Object> handleIllegalStateException(
+            IllegalStateException ex,
+            WebRequest request
+    ) {
+        return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
     }
 
     @ExceptionHandler({ Exception.class })
