@@ -13,8 +13,7 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,9 +40,54 @@ class OperationServiceTest {
         assertThat(response).isEqualTo("AUTH_ERROR");
     }
 
+    @Test
+    void makeAPayment_validData() {
+        when(bankingAppClient.isPINCorrect(anyLong(), anyString()))
+                .thenReturn(ResponseEntity.badRequest().body(true));
+        when(bankingAppClient.addCashToAccount(anyLong(), anyDouble(), any())).
+                thenReturn(ResponseEntity.ok("Operation successful! Cash was added successfuly! Now you have: 1000.0"));
+
+        var operationEntity = new OperationEntity();
+        operationEntity.setCardID(1234L);
+        operationEntity.setCardPIN("1234");
+        operationEntity.setAmountOfMoney(1000.0);
+
+        var response = operationService.makeAPayment(operationEntity, Locale.US);
+
+        assertThat(response).contains("Operation successful! Cash was added successfuly! Now you have:");
+    }
+
+    @Test
+    void withdrawMoney_noCardWithTheGivenId() {
+        when(bankingAppClient.isPINCorrect(anyLong(), anyString()))
+                .thenReturn(ResponseEntity.badRequest().body(false));
+
+        var operationEntity = new OperationEntity();
+        operationEntity.setCardID(1234L);
+        operationEntity.setCardPIN("1234");
+        operationEntity.setAmountOfMoney(1000.0);
+
+        var response = operationService.withdrawMoney(operationEntity, null);
+
+        assertThat(response).isEqualTo("AUTH_ERROR");
+    }
 
 
     @Test
-    void withdrawMoney() {
+    void withdrawMoney_validData() {
+        when(bankingAppClient.isPINCorrect(anyLong(), anyString()))
+                .thenReturn(ResponseEntity.badRequest().body(true));
+        when(bankingAppClient.addCashToAccount(anyLong(), anyDouble(), any())).
+                thenReturn(ResponseEntity.ok("Operation successful! Now you have: 100.0"));
+
+        var operationEntity = new OperationEntity();
+        operationEntity.setCardID(1234L);
+        operationEntity.setCardPIN("1234");
+        operationEntity.setAmountOfMoney(1000.0);
+
+        var response = operationService.makeAPayment(operationEntity, Locale.US);
+
+        assertThat(response).contains("Operation successful! Now you have:");
     }
+
 }
