@@ -6,11 +6,11 @@ import com.bankingapp.bankingapp.exceptions.NotEnoughMoneyException;
 import com.bankingapp.bankingapp.exceptions.UserNotFoundException;
 import com.bankingapp.bankingapp.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Locale;
@@ -22,6 +22,7 @@ public class UserAccountService {
     private final UserRepository userRepository;
     private final Logger logger = LoggerFactory.getLogger(UserAccountService.class);
     private final PropertiesLanguageConnector propertiesLanguageConnector;
+
 
     @Transactional
     public String addCashToUser(Long userId, Double cash, Locale... locale) {
@@ -71,22 +72,21 @@ public class UserAccountService {
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public String transferMoney(MoneyTransferRequest transferRequest) throws InterruptedException {
-        try {
-            User sender = userRepository.findById(transferRequest.getSenderId()).orElseThrow(() -> new UserNotFoundException(
-                    "User with the id: " + transferRequest.getSenderId() + " doesn't exists in db"));
+        User sender = userRepository.findById(transferRequest.getSenderId()).orElseThrow(() ->
+                new UserNotFoundException("User with the id: " + transferRequest.getSenderId() + " doesn't exists in db")
+        );
 
-            User receiver = userRepository.findById(transferRequest.getReceiverId()).orElseThrow(() -> new UserNotFoundException(
-                    "User with the id: " + transferRequest.getReceiverId() + " doesn't exists in db"));
+        User receiver = userRepository.findById(transferRequest.getReceiverId()).orElseThrow(() ->
+                new UserNotFoundException("User with the id: " + transferRequest.getReceiverId() + " doesn't exists in db")
+        );
 
-            if (sender.getAmountOfMoney() < transferRequest.getAmount()) throw new NotEnoughMoneyException("Not enough money");
-            Thread.sleep(60000);
-            sender.setAmountOfMoney(sender.getAmountOfMoney() - transferRequest.getAmount());
-            receiver.setAmountOfMoney(receiver.getAmountOfMoney() + transferRequest.getAmount());
-            return "Money was transferred successfully.";
-        } catch (HibernateException e) {
-            return e.getMessage();
-        }
+        if (sender.getAmountOfMoney() < transferRequest.getAmount()) throw new NotEnoughMoneyException("Not enough money");
+        Thread.sleep(6000);
 
+        sender.setAmountOfMoney(sender.getAmountOfMoney() - transferRequest.getAmount());
+        receiver.setAmountOfMoney(receiver.getAmountOfMoney() + transferRequest.getAmount());
+
+        return "Money was transferred successfully.";
     }
 
 }
