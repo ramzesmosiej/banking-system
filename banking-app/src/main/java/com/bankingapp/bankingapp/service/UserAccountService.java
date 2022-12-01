@@ -36,7 +36,7 @@ public class UserAccountService {
         var msg = locale == null || locale.length == 0 ?
                 propertiesLanguageConnector.getMessageOnLanguage("successfulPaymentOperation", Locale.US) :
                 propertiesLanguageConnector.getMessageOnLanguage("successfulPaymentOperation", locale[0]);
-        logger.info(msg);
+        logger.info("User with id: " + user.getId() + " adds " + cash + " to account");
 
         return  msg + " " + userAfterOperation.getAmountOfMoney();
 
@@ -63,7 +63,7 @@ public class UserAccountService {
                 propertiesLanguageConnector.getMessageOnLanguage("successfulPaycheckOperation", Locale.US) :
                 propertiesLanguageConnector.getMessageOnLanguage("successfulPaycheckOperation", locale[0]);
 
-        logger.info(msg);
+        logger.info("User with id: " + user.getId() + " withdraws " + cash + " from account");
 
         return msg + " " + userAfterOperation.getAmountOfMoney();
 
@@ -84,6 +84,9 @@ public class UserAccountService {
 
         sender.setAmountOfMoney(sender.getAmountOfMoney() - transferRequest.getAmount());
         receiver.setAmountOfMoney(receiver.getAmountOfMoney() + transferRequest.getAmount());
+
+        logger.info("User with id: " + sender.getId() + " sends " + transferRequest.getAmount() + " from account " +
+                "to user with id: " + receiver.getId());
 
         return "Money was transferred successfully.";
     }
