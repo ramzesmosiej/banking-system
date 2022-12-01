@@ -68,14 +68,6 @@ public class CashMachineAuthorityController {
 
     @PutMapping("/transfer/money")
     public ResponseEntity<String> transferMoney(@RequestBody MoneyTransferRequest transferRequest) throws InterruptedException {
-        User sender = userRepository.findById(transferRequest.getSenderId()).orElseThrow(() -> new UserNotFoundException(
-                "User with the id: " + transferRequest.getSenderId() + " doesn't exists in db"));
-        User receiver = userRepository.findById(transferRequest.getReceiverId()).orElseThrow(() -> new UserNotFoundException(
-                "User with the id: " + transferRequest.getReceiverId() + " doesn't exists in db"));
-        if (sender.getAmountOfMoney() < transferRequest.getAmount()) throw new NotEnoughMoneyException("Not enough money");
-        Thread.sleep(60000);
-        sender.setAmountOfMoney(sender.getAmountOfMoney() - transferRequest.getAmount());
-        receiver.setAmountOfMoney(receiver.getAmountOfMoney() + transferRequest.getAmount());
-        return ResponseEntity.ok("The transfer was done successfully");
+        return ResponseEntity.ok(userAccountService.transferMoney(transferRequest));
     }
 }

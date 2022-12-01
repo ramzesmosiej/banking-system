@@ -159,7 +159,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({ LockAcquisitionException.class })
-    public ResponseEntity<Object> handleNotEnoughMoneyException(
+    public ResponseEntity<Object> handleLockAcquisitionException(
             LockAcquisitionException ex,
             WebRequest request
     ) {
