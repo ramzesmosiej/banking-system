@@ -184,6 +184,18 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
+    @ExceptionHandler({ UserAlreadyExists.class })
+    public ResponseEntity<Object> handleUserAlreadyExists(
+            UserAlreadyExists ex,
+            WebRequest request
+    ) {
+        List<String> errors = new ArrayList<>();
+
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, propertiesLanguageConnector.getMessageOnLanguage(
+                "userAlreadyExists", resolveLanguage(request)), errors);
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
     @ExceptionHandler({ Exception.class })
     public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
         ApiError apiError = new ApiError(
