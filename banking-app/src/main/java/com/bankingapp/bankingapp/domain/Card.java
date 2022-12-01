@@ -1,5 +1,6 @@
 package com.bankingapp.bankingapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -23,6 +24,7 @@ public class Card extends DomainObject {
     @Size(min = 4, max = 4)
     private String PIN;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "userCard")
     private User user;
 
