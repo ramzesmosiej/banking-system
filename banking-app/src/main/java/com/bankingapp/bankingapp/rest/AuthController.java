@@ -3,57 +3,45 @@ package com.bankingapp.bankingapp.rest;
 import com.bankingapp.bankingapp.DTO.LoginRequest;
 import com.bankingapp.bankingapp.DTO.RegistrationRequest;
 import com.bankingapp.bankingapp.domain.User;
-import com.bankingapp.bankingapp.security.jwt.JwtUtil;
-import com.bankingapp.bankingapp.service.UserService;
+import com.bankingapp.bankingapp.service.AuthService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
+@AllArgsConstructor
 @Controller
 @RequestMapping("api/auth")
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
-
-    private final UserService userService;
-
-    private final JwtUtil jwtUtil;
-
-    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtUtil jwtUtil) {
-        this.authenticationManager = authenticationManager;
-        this.userService = userService;
-        this.jwtUtil = jwtUtil;
-    }
+    private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody RegistrationRequest inputUser) {
-        return ResponseEntity.ok(userService.registerUser(inputUser));
+    public ResponseEntity<String> registerUser(@RequestBody RegistrationRequest inputUser) throws URISyntaxException {
+        User savedUser = authService.registerUser(inputUser);
+        return ResponseEntity.created(new URI("/api/operations/" + savedUser.getId())).body("New user with id: " + savedUser.getId() + " and login: " + savedUser.getLogin() + " registered.");
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                loginRequest.getLogin(), loginRequest.getPassword()
-        );
-        authenticationManager.authenticate(token);
-        String jwtToken = jwtUtil.generateAccessToken(loginRequest.getLogin());
-        System.out.println(jwtUtil.parseClaims(jwtToken));
-        return ResponseEntity.ok(jwtToken);
+        return ResponseEntity.ok(authService.loginIntoSystem(loginRequest.getLogin(), loginRequest.getPassword()));
     }
 
     @GetMapping("/ping/admin")
     public ResponseEntity<String> pingAdmin() {
-        return ResponseEntity.ok("Hello from admin");
+        return ResponseEntity.ok(authService.sendPingToAdmin());
     }
 
     @GetMapping("/ping")
     public ResponseEntity<String> ping() {
-        return ResponseEntity.ok("Hello from secured request");
+        return ResponseEntity.ok(authService.sendPing());
     }
 
 

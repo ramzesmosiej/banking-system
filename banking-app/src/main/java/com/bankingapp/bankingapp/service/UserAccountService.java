@@ -1,6 +1,7 @@
 package com.bankingapp.bankingapp.service;
 
 import com.bankingapp.bankingapp.DTO.MoneyTransferRequest;
+
 import com.bankingapp.bankingapp.domain.User;
 import com.bankingapp.bankingapp.exceptions.NotEnoughMoneyException;
 import com.bankingapp.bankingapp.exceptions.UserNotFoundException;
@@ -13,6 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 import java.sql.SQLException;
 import java.util.Locale;
@@ -42,6 +46,11 @@ public class UserAccountService {
 
         return  msg + " " + userAfterOperation.getAmountOfMoney();
 
+    }
+
+
+    public User getUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
     @Transactional

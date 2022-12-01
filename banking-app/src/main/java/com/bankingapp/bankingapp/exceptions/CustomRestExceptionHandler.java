@@ -158,18 +158,6 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
-    @ExceptionHandler({ LockAcquisitionException.class })
-    public ResponseEntity<Object> handleLockAcquisitionException(
-            LockAcquisitionException ex,
-            WebRequest request
-    ) {
-        List<String> errors = new ArrayList<>();
-
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, propertiesLanguageConnector.getMessageOnLanguage(
-                "operation interrupted", resolveLanguage(request)), errors);
-        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
-    }
-
     @ExceptionHandler({ Exception.class })
     public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
         ApiError apiError = new ApiError(
