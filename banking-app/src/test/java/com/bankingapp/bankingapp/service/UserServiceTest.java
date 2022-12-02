@@ -1,6 +1,7 @@
 package com.bankingapp.bankingapp.service;
 
 import com.bankingapp.bankingapp.domain.Authority;
+import com.bankingapp.bankingapp.exceptions.UserAlreadyExists;
 import com.bankingapp.bankingapp.repository.AuthorityRepository;
 import com.bankingapp.bankingapp.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ class UserServiceTest {
     void registerUser_userAlreadyExists() {
         when(userRepository.findUserByLogin(anyString())).thenReturn(Optional.of(VALID_USER_WITHOUT_CARD));
         assertThatThrownBy(() -> userService.registerUser(VALID_USER_REQUEST()))
-                .isInstanceOf(BadCredentialsException.class)
+                .isInstanceOf(UserAlreadyExists.class)
                 .hasMessageContaining("Login already defined");
     }
 
