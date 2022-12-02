@@ -3,9 +3,7 @@ package com.bankingapp.bankingapp.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -25,8 +23,13 @@ public class Card extends DomainObject {
     private String PIN;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "userCard")
+    @ManyToOne
+    @JoinColumn(name = "card_id", referencedColumnName = "id")
     private User user;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "card")
+    private Account account;
 
     @Override
     public String toString() {

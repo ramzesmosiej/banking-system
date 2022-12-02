@@ -51,13 +51,11 @@ public class User extends DomainObject {
     )
     private Set<Authority> authorities = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "card_id", referencedColumnName = "id")
-    private Card userCard;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Card> cards;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private Account userAccount;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Account> accounts;
 
     @Override
     public String toString() {
@@ -68,7 +66,6 @@ public class User extends DomainObject {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", authorities=" + authorities +
-                ", userCard=" + userCard +
                 '}';
     }
 

@@ -50,8 +50,10 @@ public class BankingAppApplication {
 			final var authorityUser = authorityRepository.findById(Role.USER.getAuthority()).get();
 			admin.setAuthorities(Set.of(authorityAdmin, authorityUser));
 			User adminSaved = userRepository.save(admin);
-			adminSaved.setUserCard(Card.builder().user(adminSaved).PIN("1234").build());
-			adminSaved.setUserAccount(Account.builder().amountOfMoney(0.0).build());
+
+			adminSaved.getAccounts().add(Account.builder().amountOfMoney(0.0).build());
+			adminSaved.getCards().add(Card.builder().PIN("1234").build());
+
 			userRepository.save(adminSaved);
 
 		};

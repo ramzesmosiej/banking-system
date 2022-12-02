@@ -17,11 +17,11 @@ import java.util.Locale;
 
 @AllArgsConstructor
 @Service
-public class UserAccountService {
+public class AccountService {
 
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
-    private final Logger logger = LoggerFactory.getLogger(UserAccountService.class);
+    private final Logger logger = LoggerFactory.getLogger(AccountService.class);
     private final PropertiesLanguageConnector propertiesLanguageConnector;
 
 

@@ -3,14 +3,11 @@ package com.bankingapp.bankingapp.rest;
 import com.bankingapp.bankingapp.DTO.MoneyTransferRequest;
 import com.bankingapp.bankingapp.domain.Card;
 import com.bankingapp.bankingapp.domain.User;
-import com.bankingapp.bankingapp.exceptions.NotEnoughMoneyException;
-import com.bankingapp.bankingapp.exceptions.UserNotFoundException;
 import com.bankingapp.bankingapp.repository.CardRepository;
 import com.bankingapp.bankingapp.repository.UserRepository;
-import com.bankingapp.bankingapp.service.UserAccountService;
+import com.bankingapp.bankingapp.service.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Locale;
@@ -24,9 +21,9 @@ public class CashMachineAuthorityController {
 
     private final UserRepository userRepository;
 
-    private final UserAccountService userAccountService;
+    private final AccountService userAccountService;
 
-    public CashMachineAuthorityController(CardRepository cardRepository, UserRepository userRepository, UserAccountService userAccountService) {
+    public CashMachineAuthorityController(CardRepository cardRepository, UserRepository userRepository, AccountService userAccountService) {
         this.cardRepository = cardRepository;
         this.userRepository = userRepository;
         this.userAccountService = userAccountService;

@@ -39,7 +39,6 @@ public class UserService {
             throw new UserAlreadyExists("Login already defined in the system");
         else {
             User newUser = User.builder()
-                    .userCard(null)
                     .login(registrationRequest.getLogin())
                     .password(encoder.encode(registrationRequest.getPassword()))
                     .firstName(registrationRequest.getFirstName())
@@ -56,11 +55,11 @@ public class UserService {
             logger.info("Create new user with id: " + savedUser.getId());
 
             Card card = Card.builder().user(savedUser).PIN(registrationRequest.getCardPIN()).build();
-            savedUser.setUserCard(card);
+            savedUser.getCards().add(card);
             logger.info("Create card with id: " + card.getId() + " for user with id: " + savedUser.getId());
 
             Account userAccount = Account.builder().amountOfMoney(0.0).build();
-            savedUser.setUserAccount(userAccount);
+            savedUser.getAccounts().add(userAccount);
             logger.info("Create account with id: " + userAccount.getId() + " for user with id: " + savedUser.getId());
 
             return userRepository.save(savedUser);

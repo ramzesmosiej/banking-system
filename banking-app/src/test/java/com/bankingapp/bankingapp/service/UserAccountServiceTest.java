@@ -28,7 +28,7 @@ class UserAccountServiceTest {
     @Mock
     PropertiesLanguageConnector propertiesLanguageConnector;
     @InjectMocks
-    UserAccountService userAccountService;
+    AccountService userAccountService;
 
     @Test
     void addCashToUser_validUserID() throws InterruptedException {

@@ -2,9 +2,8 @@ package com.bankingapp.bankingapp.rest;
 
 import com.bankingapp.bankingapp.DTO.CashOperationRequest;
 import com.bankingapp.bankingapp.domain.User;
-import com.bankingapp.bankingapp.service.UserAccountService;
+import com.bankingapp.bankingapp.service.AccountService;
 import lombok.AllArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,7 @@ import java.util.Locale;
 @Validated
 public class AccountOperationController {
 
-    private final UserAccountService userAccountService;
+    private final AccountService userAccountService;
 
 
     @GetMapping("/{userId}")
