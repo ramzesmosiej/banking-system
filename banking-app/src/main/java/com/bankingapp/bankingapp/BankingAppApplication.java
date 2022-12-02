@@ -1,5 +1,6 @@
 package com.bankingapp.bankingapp;
 
+import com.bankingapp.bankingapp.domain.Account;
 import com.bankingapp.bankingapp.domain.Authority;
 import com.bankingapp.bankingapp.domain.Card;
 import com.bankingapp.bankingapp.domain.User;
@@ -36,7 +37,6 @@ public class BankingAppApplication {
 			authorityRepository.save(Authority.EMPLOYEE_AUTHORITY);
 			authorityRepository.save(Authority.USER_AUTHORITY);
 
-
 			User admin = User.builder()
 					.login("admin")
 					.password(passwordEncoder.encode("admin"))
@@ -44,15 +44,14 @@ public class BankingAppApplication {
 					.lastName("Adminowaty")
 					.email("admin@gmail.com")
 					.isActive(true)
-					.amountOfMoney(0.0)
 					.build();
-
 
 			final var authorityAdmin = authorityRepository.findById(Role.ADMIN.getAuthority()).get();
 			final var authorityUser = authorityRepository.findById(Role.USER.getAuthority()).get();
 			admin.setAuthorities(Set.of(authorityAdmin, authorityUser));
 			User adminSaved = userRepository.save(admin);
 			adminSaved.setUserCard(Card.builder().user(adminSaved).PIN("1234").build());
+			adminSaved.setUserAccount(Account.builder().amountOfMoney(0.0).build());
 			userRepository.save(adminSaved);
 
 		};

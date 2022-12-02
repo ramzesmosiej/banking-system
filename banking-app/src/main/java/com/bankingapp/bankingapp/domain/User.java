@@ -42,7 +42,6 @@ public class User extends DomainObject {
 
     private Boolean isActive;
 
-    private Double amountOfMoney;
 
     @ManyToMany
     @JoinTable(
@@ -55,6 +54,10 @@ public class User extends DomainObject {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "card_id", referencedColumnName = "id")
     private Card userCard;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private Account userAccount;
 
     @Override
     public String toString() {
@@ -72,4 +75,5 @@ public class User extends DomainObject {
     public List<SimpleGrantedAuthority> getGrantedAuthorities() {
         return getAuthorities().stream().map(authority -> new SimpleGrantedAuthority(authority.getName())).toList();
     }
+
 }

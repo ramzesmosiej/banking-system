@@ -2,6 +2,7 @@ package com.bankingapp.bankingapp.service;
 
 
 import com.bankingapp.bankingapp.DTO.RegistrationRequest;
+import com.bankingapp.bankingapp.domain.Account;
 import com.bankingapp.bankingapp.domain.Authority;
 import com.bankingapp.bankingapp.domain.Card;
 import com.bankingapp.bankingapp.domain.User;
@@ -45,17 +46,22 @@ public class UserService {
                     .lastName(registrationRequest.getLastName())
                     .email(registrationRequest.getEmail())
                     // setting active to true, functionality to activate account will be added later
-                    .isActive(true)
-                    .amountOfMoney((double) 0).build();
+                    .isActive(true).build();
+
             final var authority = authorityRepository.findById(Authority.USER_AUTHORITY.getName())
                     .orElseThrow(() -> new IllegalStateException("Authority not found"));
             newUser.setAuthorities(new HashSet<>(Set.of(authority)));
 
             User savedUser = userRepository.save(newUser);
             logger.info("Create new user with id: " + savedUser.getId());
+
             Card card = Card.builder().user(savedUser).PIN(registrationRequest.getCardPIN()).build();
             savedUser.setUserCard(card);
             logger.info("Create card with id: " + card.getId() + " for user with id: " + savedUser.getId());
+
+            Account userAccount = Account.builder().amountOfMoney(0.0).build();
+            savedUser.setUserAccount(userAccount);
+            logger.info("Create account with id: " + userAccount.getId() + " for user with id: " + savedUser.getId());
 
             return userRepository.save(savedUser);
         }

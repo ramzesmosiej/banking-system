@@ -4,6 +4,7 @@ import com.bankingapp.bankingapp.DTO.MoneyTransferRequest;
 import com.bankingapp.bankingapp.domain.User;
 import com.bankingapp.bankingapp.exceptions.NotEnoughMoneyException;
 import com.bankingapp.bankingapp.exceptions.UserNotFoundException;
+import com.bankingapp.bankingapp.repository.AccountRepository;
 import com.bankingapp.bankingapp.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import java.util.Locale;
 @Service
 public class UserAccountService {
 
+    private final AccountRepository accountRepository;
     private final UserRepository userRepository;
     private final Logger logger = LoggerFactory.getLogger(UserAccountService.class);
     private final PropertiesLanguageConnector propertiesLanguageConnector;
@@ -30,7 +32,8 @@ public class UserAccountService {
                 new UserNotFoundException("User with the id: " + userId + " dosen't exists in db")
         );
 
-        user.setAmountOfMoney(user.getAmountOfMoney() + cash);
+        user.getUserAccount().setAmountOfMoney(user.getUserAccount().getAmountOfMoney() + cash);
+        // user.setAmountOfMoney(user.getAmountOfMoney() + cash);
         var userAfterOperation = userRepository.save(user);
 
         var msg = locale == null || locale.length == 0 ?
@@ -38,7 +41,7 @@ public class UserAccountService {
                 propertiesLanguageConnector.getMessageOnLanguage("successfulPaymentOperation", locale[0]);
         logger.info("User with id: " + user.getId() + " adds " + cash + " to account");
 
-        return  msg + " " + userAfterOperation.getAmountOfMoney();
+        return  msg + " " + userAfterOperation.getUserAccount().getAmountOfMoney();
 
     }
 
@@ -54,9 +57,10 @@ public class UserAccountService {
                 new UserNotFoundException("User with the id: " + userId + " dosen't exists in db")
         );
 
-        if (user.getAmountOfMoney() < cash)
+        if (user.getUserAccount().getAmountOfMoney() < cash)
             throw new NotEnoughMoneyException("Not enough money to take so much cash!");
-        user.setAmountOfMoney(user.getAmountOfMoney() - cash);
+        // user.setAmountOfMoney(user.getAmountOfMoney() - cash);
+        user.getUserAccount().setAmountOfMoney(user.getUserAccount().getAmountOfMoney() - cash);
         var userAfterOperation = userRepository.save(user);
 
         var msg = locale == null || locale.length == 0 ?
@@ -65,7 +69,7 @@ public class UserAccountService {
 
         logger.info("User with id: " + user.getId() + " withdraws " + cash + " from account");
 
-        return msg + " " + userAfterOperation.getAmountOfMoney();
+        return msg + " " + userAfterOperation.getUserAccount().getAmountOfMoney();
 
     }
 
@@ -79,11 +83,11 @@ public class UserAccountService {
                 new UserNotFoundException("User with the id: " + transferRequest.getReceiverId() + " doesn't exists in db")
         );
 
-        if (sender.getAmountOfMoney() < transferRequest.getAmount()) throw new NotEnoughMoneyException("Not enough money");
+        if (sender.getUserAccount().getAmountOfMoney() < transferRequest.getAmount()) throw new NotEnoughMoneyException("Not enough money");
         Thread.sleep(6000);
 
-        sender.setAmountOfMoney(sender.getAmountOfMoney() - transferRequest.getAmount());
-        receiver.setAmountOfMoney(receiver.getAmountOfMoney() + transferRequest.getAmount());
+        sender.getUserAccount().setAmountOfMoney(sender.getUserAccount().getAmountOfMoney() - transferRequest.getAmount());
+        receiver.getUserAccount().setAmountOfMoney(receiver.getUserAccount().getAmountOfMoney() + transferRequest.getAmount());
 
         logger.info("User with id: " + sender.getId() + " sends " + transferRequest.getAmount() + " from account " +
                 "to user with id: " + receiver.getId());
