@@ -37,7 +37,7 @@ public class BankingAppApplication {
 			authorityRepository.save(Authority.EMPLOYEE_AUTHORITY);
 			authorityRepository.save(Authority.USER_AUTHORITY);
 
-			// User creation
+			// Admin creation
 			User admin = User.builder()
 					.login("admin")
 					.password(passwordEncoder.encode("12w1w21w1g723dg3*H@dJ(@D"))
@@ -54,6 +54,19 @@ public class BankingAppApplication {
 
 			admin.setAuthorities(Set.of(authorityAdmin, authorityUser));
 			userRepository.save(admin);
+
+			// Bank employee
+			User employee = User.builder()
+					.login("employee")
+					.password(passwordEncoder.encode("password"))
+					.firstName("Jan")
+					.lastName("Nowak")
+					.email("jan.nowak@gmail.com")
+					.isActive(true)
+					.build();
+
+			employee.setAuthorities(Set.of(authorityAdmin, authorityUser));
+			userRepository.save(employee);
 
 		};
 	}

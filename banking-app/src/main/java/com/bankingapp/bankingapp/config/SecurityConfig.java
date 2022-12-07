@@ -20,17 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private static final String[] PERMITTED = {
-            "/api/auth/register",
-            "/api/auth/register-with-account",
             "/api/auth/login",
-            "/api/operations/**",
-            "/console",
-            "/api/operations/payment",
-            "/api/operations/paycheck",
-            "/machine/auth/card",
-            "/machine/add/cash",
-            "/machine/withdraw/cash",
-            "/machine/transfer/money"
     };
 
     private final BankAuthenticationProvider bankAuthenticationProvider;

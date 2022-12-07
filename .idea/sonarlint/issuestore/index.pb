@@ -17,8 +17,6 @@ Sbanking-app/src/test/java/com/bankingapp/bankingapp/BankingAppApplicationTests.
 Ybanking-app/src/main/java/com/bankingapp/bankingapp/exceptions/UserNotFoundException.java,b\0\b06c7baca81ae02420c66cdaf031f1b5d010c0b0
 Ä
 Pbanking-app/src/test/java/com/bankingapp/bankingapp/service/UserServiceTest.java,9\6\96152215ca9f44fed5f7126568793fce8176a420
-~
-Nbanking-app/src/main/java/com/bankingapp/bankingapp/BankingAppApplication.java,b\a\bac740dce4deeff55ac71335fe51d67458dc192b
 y
 Ibanking-app/src/main/java/com/bankingapp/bankingapp/domain/Authority.java,5\c\5c583da221bb98a5236c458033cb6784bcdaed08
 t
@@ -33,16 +31,10 @@ y
 Ibanking-app/src/main/java/com/bankingapp/bankingapp/DTO/LoginRequest.java,c\4\c42167e5c5ae684da71ffbc6a67e79b146f87b72
 |
 Lbanking-app/src/main/java/com/bankingapp/bankingapp/service/UserService.java,6\7\672899d896a40f568229d816ff033f51d4c7c743
-ä
-Zbanking-app/src/main/java/com/bankingapp/bankingapp/config/BankAuthenticationProvider.java,1\3\13723fa1251e7f8b89ddc7145329aaae63db0659
-~
-Nbanking-app/src/main/java/com/bankingapp/bankingapp/config/SecurityConfig.java,e\0\e06e8c8ebed10312020f33e53a1add52a5b1c44f
 w
 Gbanking-app/src/main/java/com/bankingapp/bankingapp/domain/Account.java,2\4\24ada487e3a10780cf7224d20b4a5d2f590a22bb
 Å
 Qbanking-app/src/main/java/com/bankingapp/bankingapp/DTO/CashOperationRequest.java,e\6\e625a9b8a2aaac54b188094e68c493abde1790bd
-|
-Lbanking-app/src/main/java/com/bankingapp/bankingapp/rest/AuthController.java,5\3\5360471839d2ff0b3523653b61abe8cdf238de92
 Ä
 Pbanking-app/src/main/java/com/bankingapp/bankingapp/DTO/RegistrationRequest.java,5\4\5424e7615edf6bcb02c33873a4faa1f5e11a6e38
 Ç
