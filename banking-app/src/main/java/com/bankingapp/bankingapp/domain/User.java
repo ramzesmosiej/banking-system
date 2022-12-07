@@ -12,12 +12,17 @@ import java.util.Set;
 
 @AllArgsConstructor
 @Builder
-@Entity(name = "AppUser")
+@Entity
 @Getter
 @NoArgsConstructor
 @Setter
-@Table(name = "app_user")
-public class User extends DomainObject {
+@Table(name = "users")
+public class User {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotEmpty
     @Column(unique = true)
@@ -45,14 +50,11 @@ public class User extends DomainObject {
 
     @ManyToMany
     @JoinTable(
-            name = "app_user_roles",
+            name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "name")
     )
     private Set<Authority> authorities = new HashSet<>();
-
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Card> cards;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Account> accounts;

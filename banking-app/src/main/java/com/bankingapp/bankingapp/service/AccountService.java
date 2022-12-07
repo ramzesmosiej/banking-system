@@ -28,7 +28,7 @@ public class AccountService {
     @Transactional
     public String addCashToUser(Long userId, Double cash, Locale... locale) {
 
-        var user = userRepository.findById(userId).orElseThrow(() ->
+        /*var user = userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException("User with the id: " + userId + " dosen't exists in db")
         );
 
@@ -42,7 +42,9 @@ public class AccountService {
         logger.info("User with id: " + user.getId() + " adds " + cash + " to account");
 
         return  msg + " " + userAfterOperation.getUserAccount().getAmountOfMoney();
+*/
 
+        return "";
     }
 
 
@@ -53,7 +55,7 @@ public class AccountService {
     @Transactional
     public String takeCashFromAccount(Long userId, Double cash, Locale... locale) {
 
-        var user = userRepository.findById(userId).orElseThrow(() ->
+        /*var user = userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException("User with the id: " + userId + " dosen't exists in db")
         );
 
@@ -70,12 +72,13 @@ public class AccountService {
         logger.info("User with id: " + user.getId() + " withdraws " + cash + " from account");
 
         return msg + " " + userAfterOperation.getUserAccount().getAmountOfMoney();
-
+*/
+        return "";
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public String transferMoney(MoneyTransferRequest transferRequest) throws InterruptedException {
-        User sender = userRepository.findById(transferRequest.getSenderId()).orElseThrow(() ->
+        /*User sender = userRepository.findById(transferRequest.getSenderId()).orElseThrow(() ->
                 new UserNotFoundException("User with the id: " + transferRequest.getSenderId() + " doesn't exists in db")
         );
 
@@ -90,7 +93,7 @@ public class AccountService {
         receiver.getUserAccount().setAmountOfMoney(receiver.getUserAccount().getAmountOfMoney() + transferRequest.getAmount());
 
         logger.info("User with id: " + sender.getId() + " sends " + transferRequest.getAmount() + " from account " +
-                "to user with id: " + receiver.getId());
+                "to user with id: " + receiver.getId());*/
 
         return "Money was transferred successfully.";
     }

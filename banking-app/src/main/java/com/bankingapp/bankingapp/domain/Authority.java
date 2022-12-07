@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "user_authority")
+@Table(name = "authorities")
 public class Authority {
 
     public static Authority ADMIN_AUTHORITY = new Authority(Role.ADMIN.getAuthority());

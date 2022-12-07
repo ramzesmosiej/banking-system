@@ -34,7 +34,7 @@ public class UserService {
 
 
     public User registerUser(RegistrationRequest registrationRequest) {
-        var optionalUser = userRepository.findUserByLogin(registrationRequest.getLogin());
+       /* var optionalUser = userRepository.findUserByLogin(registrationRequest.getLogin());
         if (optionalUser.isPresent())
             throw new UserAlreadyExists("Login already defined in the system");
         else {
@@ -62,8 +62,8 @@ public class UserService {
             savedUser.getAccounts().add(userAccount);
             logger.info("Create account with id: " + userAccount.getId() + " for user with id: " + savedUser.getId());
 
-            return userRepository.save(savedUser);
+            return userRepository.save(savedUser);*/
+        return null;
         }
-    }
 
 }

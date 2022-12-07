@@ -11,32 +11,36 @@ import javax.validation.constraints.Size;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "UserCard")
+@Entity
 @Getter
 @Setter
-@Table(name = "user_card")
-public class Card extends DomainObject {
+@Table(name = "cards")
+public class Card {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotNull
     @Pattern(regexp = "\\d\\d\\d\\d")
     @Size(min = 4, max = 4)
     private String PIN;
 
-    @JsonIgnore
+    /*@JsonIgnore
     @ManyToOne
     @JoinColumn(name = "card_id", referencedColumnName = "id")
-    private User user;
+    private User user;*/
 
-    @JsonIgnore
     @OneToOne(mappedBy = "card")
     private Account account;
 
     @Override
     public String toString() {
         return "Card{" +
-                "PIN=" + PIN +
-                ", user=" + user +
+                "id=" + id +
+                ", PIN='" + PIN + '\'' +
                 '}';
     }
-    
+
 }

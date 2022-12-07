@@ -7,18 +7,23 @@ import javax.persistence.*;
 
 @AllArgsConstructor
 @Builder
-@Entity(name = "UserAccount")
+@Entity
 @Getter
 @NoArgsConstructor
 @Setter
-@Table(name = "user_account")
-public class Account extends DomainObject {
+@Table(name = "accounts")
+public class Account {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private double amountOfMoney;
 
     @JsonIgnore
     @JoinColumn(name = "account_id", referencedColumnName = "id")
-    @ManyToOne()
+    @ManyToOne
     private User user;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)

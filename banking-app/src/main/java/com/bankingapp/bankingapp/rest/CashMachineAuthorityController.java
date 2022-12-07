@@ -41,7 +41,7 @@ public class CashMachineAuthorityController {
         return ResponseEntity.ok(cardPIN.equals(optionalCard.get().getPIN()));
     }
 
-    @PostMapping("/add/cash")
+    /*@PostMapping("/add/cash")
     public ResponseEntity<?> addCashToAccount(
             @RequestParam(name = "cardID") Long cardID,
             @RequestParam(name = "amount") Double amount,
@@ -61,7 +61,7 @@ public class CashMachineAuthorityController {
         User accountOwner = userRepository.findUserByCard(cardID);
         // transactional method
         return ResponseEntity.ok(userAccountService.takeCashFromAccount(accountOwner.getId(), amount, locale));
-    }
+    }*/
 
     @PutMapping("/transfer/money")
     public ResponseEntity<String> transferMoney(@RequestBody MoneyTransferRequest transferRequest) throws InterruptedException {
