@@ -49,16 +49,16 @@ public class CashMachineAuthorityController {
         return ResponseEntity.ok(userAccountService.addCashToAccount(ownerAccount.getAccount().getId(), amount, locale));
     }
 
-    /*@PostMapping("/withdraw/cash")
+    @PostMapping("/withdraw/cash")
     public ResponseEntity<?> withdrawCash(
             @RequestParam(name = "cardID") Long cardID,
             @RequestParam(name = "amount") Double amount,
             @RequestHeader(name = "lang", required = false) Locale locale
     ){
-        User accountOwner = userRepository.findUserByCard(cardID);
+        var ownerAccount = cardRepository.findById(cardID).orElseThrow();
         // transactional method
-        return ResponseEntity.ok(userAccountService.takeCashFromAccount(accountOwner.getId(), amount, locale));
-    }*/
+        return ResponseEntity.ok(userAccountService.takeCashFromAccount(ownerAccount.getAccount().getId(), amount, locale));
+    }
 
     @PutMapping("/transfer/money")
     public ResponseEntity<String> transferMoney(@RequestBody MoneyTransferRequest transferRequest)

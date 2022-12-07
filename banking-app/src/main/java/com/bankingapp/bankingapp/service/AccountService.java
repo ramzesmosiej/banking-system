@@ -29,21 +29,6 @@ public class AccountService {
     private final PropertiesLanguageConnector propertiesLanguageConnector;
     private final UserRepository userRepository;
 
-    public Account createAccountToUser(Long userId, Long cardId) {
-        var user = userRepository.findById(userId).orElseThrow(
-                () -> new UserNotFoundException("User with the given ID not found!")
-        );
-        var card = cardRepository.findById(cardId).orElseThrow(
-                () -> new CardNotFoundException("Card with the given ID not found!")
-        );
-
-        var account = new Account(null, 0.0, user, card);
-        account.getUser().getAccounts().add(account);
-        account.getCard().setAccount(account);
-        accountRepository.save(account);
-        return account;
-    }
-
 
     @Transactional
     public String addCashToAccount(Long accountId, Double cash, Locale... locale) {
@@ -64,6 +49,20 @@ public class AccountService {
 
     }
 
+    public Account createAccountToUser(Long userId, Long cardId) {
+        var user = userRepository.findById(userId).orElseThrow(
+                () -> new UserNotFoundException("User with the given ID not found!")
+        );
+        var card = cardRepository.findById(cardId).orElseThrow(
+                () -> new CardNotFoundException("Card with the given ID not found!")
+        );
+
+        var account = new Account(null, 0.0, user, card);
+        account.getUser().getAccounts().add(account);
+        account.getCard().setAccount(account);
+        accountRepository.save(account);
+        return account;
+    }
 
     public User getUser(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found"));
@@ -76,6 +75,7 @@ public class AccountService {
                 () -> new IllegalArgumentException("The Account with the given ID doesn't exists!")
         );
 
+        if (account.getAmountOfMoney() < cash) throw new NotEnoughMoneyException("Not enough money");
         account.setAmountOfMoney(account.getAmountOfMoney() - cash);
         var accountAfterOperation = accountRepository.save(account);
 
