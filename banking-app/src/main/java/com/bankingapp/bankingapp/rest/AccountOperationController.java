@@ -33,8 +33,8 @@ public class AccountOperationController {
             @RequestHeader(name = "lang", required = false) Locale locale,
             @RequestBody @Valid CashOperationRequest cashOperationRequest
     ) {
-        return ResponseEntity.ok(userAccountService.addCashToUser(
-                cashOperationRequest.getUserId(),
+        return ResponseEntity.ok(userAccountService.addCashToAccount(
+                cashOperationRequest.getAccountId(),
                 cashOperationRequest.getCash(),
                 locale)
         );
@@ -46,7 +46,7 @@ public class AccountOperationController {
             @RequestBody @Valid CashOperationRequest cashOperationRequest
     ) {
         return ResponseEntity.ok(userAccountService.takeCashFromAccount(
-                cashOperationRequest.getUserId(),
+                cashOperationRequest.getAccountId(),
                 cashOperationRequest.getCash(),
                 locale)
         );

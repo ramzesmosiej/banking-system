@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.Locale;
 
 @AllArgsConstructor
@@ -45,25 +46,22 @@ public class AccountService {
 
 
     @Transactional
-    public String addCashToUser(Long userId, Double cash, Locale... locale) {
+    public String addCashToAccount(Long accountId, Double cash, Locale... locale) {
 
-        /*var user = userRepository.findById(userId).orElseThrow(() ->
-                new UserNotFoundException("User with the id: " + userId + " dosen't exists in db")
+        var account = accountRepository.findById(accountId).orElseThrow(
+                () -> new IllegalArgumentException("The Account with the given ID doesn't exists!")
         );
 
-        user.getUserAccount().setAmountOfMoney(user.getUserAccount().getAmountOfMoney() + cash);
-        // user.setAmountOfMoney(user.getAmountOfMoney() + cash);
-        var userAfterOperation = userRepository.save(user);
+        account.setAmountOfMoney(account.getAmountOfMoney() + cash);
+        var accountAfterOperation = accountRepository.save(account);
 
         var msg = locale == null || locale.length == 0 ?
                 propertiesLanguageConnector.getMessageOnLanguage("successfulPaymentOperation", Locale.US) :
                 propertiesLanguageConnector.getMessageOnLanguage("successfulPaymentOperation", locale[0]);
-        logger.info("User with id: " + user.getId() + " adds " + cash + " to account");
+        logger.info("Account with id: " + accountAfterOperation.getId() + " added " + cash + " to account");
 
-        return  msg + " " + userAfterOperation.getUserAccount().getAmountOfMoney();
-*/
+        return  msg + " " + accountAfterOperation.getAmountOfMoney();
 
-        return "";
     }
 
 
@@ -72,27 +70,22 @@ public class AccountService {
     }
 
     @Transactional
-    public String takeCashFromAccount(Long userId, Double cash, Locale... locale) {
+    public String takeCashFromAccount(Long accountId, Double cash, Locale... locale) {
 
-        /*var user = userRepository.findById(userId).orElseThrow(() ->
-                new UserNotFoundException("User with the id: " + userId + " dosen't exists in db")
+        var account = accountRepository.findById(accountId).orElseThrow(
+                () -> new IllegalArgumentException("The Account with the given ID doesn't exists!")
         );
 
-        if (user.getUserAccount().getAmountOfMoney() < cash)
-            throw new NotEnoughMoneyException("Not enough money to take so much cash!");
-        // user.setAmountOfMoney(user.getAmountOfMoney() - cash);
-        user.getUserAccount().setAmountOfMoney(user.getUserAccount().getAmountOfMoney() - cash);
-        var userAfterOperation = userRepository.save(user);
+        account.setAmountOfMoney(account.getAmountOfMoney() - cash);
+        var accountAfterOperation = accountRepository.save(account);
 
         var msg = locale == null || locale.length == 0 ?
                 propertiesLanguageConnector.getMessageOnLanguage("successfulPaycheckOperation", Locale.US) :
                 propertiesLanguageConnector.getMessageOnLanguage("successfulPaycheckOperation", locale[0]);
 
-        logger.info("User with id: " + user.getId() + " withdraws " + cash + " from account");
+        logger.info("Account with id: " + accountAfterOperation.getId() + " withdrew " + cash + " from account");
 
-        return msg + " " + userAfterOperation.getUserAccount().getAmountOfMoney();
-*/
-        return "";
+        return msg + " " + accountAfterOperation.getAmountOfMoney();
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)

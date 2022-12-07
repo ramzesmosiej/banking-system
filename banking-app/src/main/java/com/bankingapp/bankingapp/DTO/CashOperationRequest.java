@@ -13,7 +13,7 @@ public class CashOperationRequest {
 
     @NotNull
     @PositiveOrZero
-    private Long userId;
+    private Long accountId;
 
     @NotNull
     @PositiveOrZero

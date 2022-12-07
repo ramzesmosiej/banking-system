@@ -2,9 +2,7 @@ package com.bankingapp.bankingapp;
 
 import com.bankingapp.bankingapp.domain.Authority;
 import com.bankingapp.bankingapp.domain.User;
-import com.bankingapp.bankingapp.repository.AccountRepository;
 import com.bankingapp.bankingapp.repository.AuthorityRepository;
-import com.bankingapp.bankingapp.repository.CardRepository;
 import com.bankingapp.bankingapp.repository.UserRepository;
 import com.bankingapp.bankingapp.security.Role;
 import lombok.AllArgsConstructor;
@@ -21,9 +19,7 @@ import java.util.Set;
 @SpringBootApplication
 public class BankingAppApplication {
 
-	AccountRepository accountRepository;
 	AuthorityRepository authorityRepository;
-	CardRepository cardRepository;
 	UserRepository userRepository;
 	private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
