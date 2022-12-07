@@ -89,23 +89,28 @@ public class AccountService {
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public String transferMoney(MoneyTransferRequest transferRequest) throws InterruptedException {
-        /*User sender = userRepository.findById(transferRequest.getSenderId()).orElseThrow(() ->
-                new UserNotFoundException("User with the id: " + transferRequest.getSenderId() + " doesn't exists in db")
+    public String transferMoney(
+            Long senderId,
+            Long receiverId,
+            Double amount
+    ) throws InterruptedException {
+
+        var sender = accountRepository.findById(senderId).orElseThrow(() ->
+                new IllegalArgumentException("Account with the id: " + senderId + " doesn't exists in db")
         );
 
-        User receiver = userRepository.findById(transferRequest.getReceiverId()).orElseThrow(() ->
-                new UserNotFoundException("User with the id: " + transferRequest.getReceiverId() + " doesn't exists in db")
+        var receiver = accountRepository.findById(receiverId).orElseThrow(() ->
+                new IllegalArgumentException("Account with the id: " + receiverId + " doesn't exists in db")
         );
 
-        if (sender.getUserAccount().getAmountOfMoney() < transferRequest.getAmount()) throw new NotEnoughMoneyException("Not enough money");
+        if (sender.getAmountOfMoney() < amount) throw new NotEnoughMoneyException("Not enough money");
         Thread.sleep(6000);
 
-        sender.getUserAccount().setAmountOfMoney(sender.getUserAccount().getAmountOfMoney() - transferRequest.getAmount());
-        receiver.getUserAccount().setAmountOfMoney(receiver.getUserAccount().getAmountOfMoney() + transferRequest.getAmount());
+        sender.setAmountOfMoney(sender.getAmountOfMoney() - amount);
+        receiver.setAmountOfMoney(receiver.getAmountOfMoney() + amount);
 
-        logger.info("User with id: " + sender.getId() + " sends " + transferRequest.getAmount() + " from account " +
-                "to user with id: " + receiver.getId());*/
+        logger.info("Account with id: " + sender.getId() + " sends " + amount + " from account " +
+                "to account with id: " + receiver.getId());
 
         return "Money was transferred successfully.";
     }

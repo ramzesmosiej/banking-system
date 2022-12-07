@@ -27,7 +27,6 @@ public class AccountOperationController {
         return ResponseEntity.ok(userAccountService.getUser(userId));
     }
 
-
     @PostMapping(value = "/payment", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> payment(
             @RequestHeader(name = "lang", required = false) Locale locale,
@@ -51,4 +50,5 @@ public class AccountOperationController {
                 locale)
         );
     }
+
 }

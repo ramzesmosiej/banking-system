@@ -64,7 +64,12 @@ public class CashMachineAuthorityController {
     }*/
 
     @PutMapping("/transfer/money")
-    public ResponseEntity<String> transferMoney(@RequestBody MoneyTransferRequest transferRequest) throws InterruptedException {
-        return ResponseEntity.ok(userAccountService.transferMoney(transferRequest));
+    public ResponseEntity<String> transferMoney(@RequestBody MoneyTransferRequest transferRequest)
+            throws InterruptedException {
+        return ResponseEntity.ok(userAccountService.transferMoney(
+                transferRequest.getSenderId(),
+                transferRequest.getReceiverId(),
+                transferRequest.getAmount()
+        ));
     }
 }
