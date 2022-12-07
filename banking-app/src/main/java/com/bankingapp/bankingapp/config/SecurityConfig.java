@@ -21,6 +21,7 @@ public class SecurityConfig {
 
     private static final String[] PERMITTED = {
             "/api/auth/login",
+            "/machine/auth/login"
     };
 
     private final BankAuthenticationProvider bankAuthenticationProvider;

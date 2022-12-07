@@ -1,29 +1,46 @@
 package com.bankingapp.bankingapp.rest;
 
 import com.bankingapp.bankingapp.DTO.MoneyTransferRequest;
-import com.bankingapp.bankingapp.domain.Card;
-import com.bankingapp.bankingapp.domain.User;
 import com.bankingapp.bankingapp.repository.AccountRepository;
 import com.bankingapp.bankingapp.repository.CardRepository;
 import com.bankingapp.bankingapp.repository.UserRepository;
 import com.bankingapp.bankingapp.service.AccountService;
+import com.bankingapp.bankingapp.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Locale;
-import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/machine")
 public class CashMachineAuthorityController {
 
-    private final AccountRepository accountRepository;
-    private final AccountService userAccountService;
+    private final AuthService authService;
+    private final AccountService accountService;
     private final CardRepository cardRepository;
 
+    private final AccountRepository accountRepository;
+
+    private final UserRepository userRepository;
+
+
+    @GetMapping("/auth/login")
+    public ResponseEntity<String> checkCard(
+            @RequestParam(name = "cardID") Long cardID,
+            @RequestParam(name = "cardPIN") String cardPIN
+    ) {
+        var optionalCard = cardRepository.findById(cardID);
+
+        if (optionalCard.isEmpty() || !cardPIN.equals(optionalCard.get().getPIN()))
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        else {
+            var user = optionalCard.get().getAccount().getUser();
+            return ResponseEntity.ok(authService.loginIntoSystem(user.getLogin(), user.getPassword()));
+        }
+    }
 
     @GetMapping("/auth/card")
     public ResponseEntity<Boolean> isPINCorrect(
@@ -46,7 +63,7 @@ public class CashMachineAuthorityController {
     ) {
         var ownerAccount = cardRepository.findById(cardID).orElseThrow();
         // transactional method
-        return ResponseEntity.ok(userAccountService.addCashToAccount(ownerAccount.getAccount().getId(), amount, locale));
+        return ResponseEntity.ok(accountService.addCashToAccount(ownerAccount.getAccount().getId(), amount, locale));
     }
 
     @PostMapping("/withdraw/cash")
@@ -57,13 +74,13 @@ public class CashMachineAuthorityController {
     ){
         var ownerAccount = cardRepository.findById(cardID).orElseThrow();
         // transactional method
-        return ResponseEntity.ok(userAccountService.takeCashFromAccount(ownerAccount.getAccount().getId(), amount, locale));
+        return ResponseEntity.ok(accountService.takeCashFromAccount(ownerAccount.getAccount().getId(), amount, locale));
     }
 
     @PutMapping("/transfer/money")
     public ResponseEntity<String> transferMoney(@RequestBody MoneyTransferRequest transferRequest)
             throws InterruptedException {
-        return ResponseEntity.ok(userAccountService.transferMoney(
+        return ResponseEntity.ok(accountService.transferMoney(
                 transferRequest.getSenderId(),
                 transferRequest.getReceiverId(),
                 transferRequest.getAmount()
