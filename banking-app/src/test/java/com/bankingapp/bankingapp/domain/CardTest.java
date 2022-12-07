@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class CardTest {
 
-    @Test
+    /*@Test
     public void cardCreationTest() {
         var card1 = VALID_CARD;
         var card2 = new Card();
@@ -26,6 +26,6 @@ class CardTest {
 
         assertThat(user.getUserCard()).isNotNull();
         assertThat(user.getUserCard().getPIN()).isEqualTo(VALID_PIN);
-    }
+    }*/
 
 }

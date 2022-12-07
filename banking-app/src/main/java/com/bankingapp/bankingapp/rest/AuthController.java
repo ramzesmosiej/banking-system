@@ -25,7 +25,8 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody RegistrationRequest inputUser) throws URISyntaxException {
         User savedUser = authService.registerUser(inputUser);
-        return ResponseEntity.created(new URI("/api/operations/" + savedUser.getId())).body("New user with id: " + savedUser.getId() + " and login: " + savedUser.getLogin() + " registered.");
+        return ResponseEntity.created(new URI("/api/operations/" + savedUser.getId())).body("New user with id: "
+                + savedUser.getId() + " and login: " + savedUser.getLogin() + " registered.");
     }
 
 

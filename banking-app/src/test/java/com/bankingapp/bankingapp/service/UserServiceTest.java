@@ -54,7 +54,7 @@ class UserServiceTest {
     void registerUser_validData() {
         when(userRepository.findUserByLogin(anyString())).thenReturn(Optional.empty());
         when(authorityRepository.findById(anyString())).thenReturn(Optional.of(Authority.USER_AUTHORITY));
-        when(userRepository.save(any())).thenReturn(VALID_USER_WITH_VALID_CARD);
+        when(userRepository.save(any())).thenReturn(VALID_USER_WITHOUT_CARD);
 
         var savedUser = userService.registerUser(VALID_USER_REQUEST());
         assertThat(savedUser.getLastName()).isEqualTo("Nowak");

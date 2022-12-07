@@ -2,9 +2,7 @@ package com.bankingapp.bankingapp.service;
 
 
 import com.bankingapp.bankingapp.DTO.RegistrationRequest;
-import com.bankingapp.bankingapp.domain.Account;
 import com.bankingapp.bankingapp.domain.Authority;
-import com.bankingapp.bankingapp.domain.Card;
 import com.bankingapp.bankingapp.domain.User;
 import com.bankingapp.bankingapp.exceptions.UserAlreadyExists;
 import com.bankingapp.bankingapp.repository.AuthorityRepository;
@@ -13,12 +11,10 @@ import com.bankingapp.bankingapp.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -34,9 +30,14 @@ public class UserService {
 
 
     public User registerUser(RegistrationRequest registrationRequest) {
-       /* var optionalUser = userRepository.findUserByLogin(registrationRequest.getLogin());
+
+        var optionalUser = userRepository.findUserByLogin(registrationRequest.getLogin());
+
+        // User exists
         if (optionalUser.isPresent())
             throw new UserAlreadyExists("Login already defined in the system");
+
+        // New User creation
         else {
             User newUser = User.builder()
                     .login(registrationRequest.getLogin())
@@ -45,25 +46,21 @@ public class UserService {
                     .lastName(registrationRequest.getLastName())
                     .email(registrationRequest.getEmail())
                     // setting active to true, functionality to activate account will be added later
-                    .isActive(true).build();
+                    .isActive(true)
+                    .accounts(new HashSet<>())
+                    .build();
 
             final var authority = authorityRepository.findById(Authority.USER_AUTHORITY.getName())
                     .orElseThrow(() -> new IllegalStateException("Authority not found"));
             newUser.setAuthorities(new HashSet<>(Set.of(authority)));
 
+            // Save user
             User savedUser = userRepository.save(newUser);
             logger.info("Create new user with id: " + savedUser.getId());
 
-            Card card = Card.builder().user(savedUser).PIN(registrationRequest.getCardPIN()).build();
-            savedUser.getCards().add(card);
-            logger.info("Create card with id: " + card.getId() + " for user with id: " + savedUser.getId());
-
-            Account userAccount = Account.builder().amountOfMoney(0.0).build();
-            savedUser.getAccounts().add(userAccount);
-            logger.info("Create account with id: " + userAccount.getId() + " for user with id: " + savedUser.getId());
-
-            return userRepository.save(savedUser);*/
-        return null;
+            return userRepository.save(savedUser);
         }
+
+    }
 
 }

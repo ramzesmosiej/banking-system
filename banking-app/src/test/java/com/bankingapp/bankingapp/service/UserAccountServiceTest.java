@@ -30,7 +30,7 @@ class UserAccountServiceTest {
     @InjectMocks
     AccountService userAccountService;
 
-    @Test
+    /*@Test
     void addCashToUser_validUserID() throws InterruptedException {
 
         mocking();
@@ -145,6 +145,6 @@ class UserAccountServiceTest {
         when(propertiesLanguageConnector.getMessageOnLanguage(any(), any())).thenReturn(
                 "Operation successful! Cash was added successfuly! Now you have:"
         );
-    }
+    }*/
 
 }

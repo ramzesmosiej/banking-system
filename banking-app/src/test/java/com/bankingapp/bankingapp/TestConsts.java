@@ -9,14 +9,12 @@ public class TestConsts {
     // Creation consts
     public static final String VALID_PIN = "1234";
     public static final Card VALID_CARD = Card.builder().PIN(VALID_PIN).build();
-    public static final User VALID_USER_WITH_VALID_CARD = User.builder()
+    public static final User VALID_USER = User.builder()
             .firstName("Jan")
             .lastName("Nowak")
             .email("jan.nowak@gmail.com")
             .login("janN")
             .password("abcd")
-            .userCard(VALID_CARD)
-            .amountOfMoney(500.0)
             .build();
 
     public static final User VALID_USER_WITHOUT_CARD = User.builder()
@@ -25,8 +23,6 @@ public class TestConsts {
             .email("jan.nowak@gmail.com")
             .login("janN")
             .password("abcd")
-            .userCard(VALID_CARD)
-            .amountOfMoney(500.0)
             .build();
 
     // Service consts

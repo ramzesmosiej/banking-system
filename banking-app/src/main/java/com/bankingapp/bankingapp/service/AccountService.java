@@ -1,10 +1,13 @@
 package com.bankingapp.bankingapp.service;
 
 import com.bankingapp.bankingapp.DTO.MoneyTransferRequest;
+import com.bankingapp.bankingapp.domain.Account;
 import com.bankingapp.bankingapp.domain.User;
+import com.bankingapp.bankingapp.exceptions.CardNotFoundException;
 import com.bankingapp.bankingapp.exceptions.NotEnoughMoneyException;
 import com.bankingapp.bankingapp.exceptions.UserNotFoundException;
 import com.bankingapp.bankingapp.repository.AccountRepository;
+import com.bankingapp.bankingapp.repository.CardRepository;
 import com.bankingapp.bankingapp.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -20,9 +23,25 @@ import java.util.Locale;
 public class AccountService {
 
     private final AccountRepository accountRepository;
-    private final UserRepository userRepository;
+    private final CardRepository cardRepository;
     private final Logger logger = LoggerFactory.getLogger(AccountService.class);
     private final PropertiesLanguageConnector propertiesLanguageConnector;
+    private final UserRepository userRepository;
+
+    public Account createAccountToUser(Long userId, Long cardId) {
+        var user = userRepository.findById(userId).orElseThrow(
+                () -> new UserNotFoundException("User with the given ID not found!")
+        );
+        var card = cardRepository.findById(cardId).orElseThrow(
+                () -> new CardNotFoundException("Card with the given ID not found!")
+        );
+
+        var account = new Account(null, 0.0, user, card);
+        account.getUser().getAccounts().add(account);
+        account.getCard().setAccount(account);
+        accountRepository.save(account);
+        return account;
+    }
 
 
     @Transactional
