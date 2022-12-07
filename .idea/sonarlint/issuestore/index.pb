@@ -1,16 +1,4 @@
 
-{
-Kopen-feign/src/main/java/com/client/openfeign/clients/BankingAppClient.java,2\7\27a6ebbd8acb5c2082186134bb2320d1af60458d
-~
-Nopen-feign/src/main/java/com/client/openfeign/clients/PropertiesConnector.java,e\e\ee52a0298f29aee03fac9da61359343227738604
-Å
-Qcashmachine/src/main/java/cash/machine/cashmachine/services/OperationService.java,a\f\af3b8e3efe27d2a0474acd27d049620b4ebf03e4
-á
-Wbanking-app/src/main/java/com/bankingapp/bankingapp/repository/AuthorityRepository.java,5\e\5e624f51cd3263ef88e0751a78f96550170564a2
-Ö
-Ubanking-app/src/main/java/com/bankingapp/bankingapp/repository/AccountRepository.java,9\e\9e0b3436619c93f7915aba7b8210b48c17fd9de9
-Ç
-Rbanking-app/src/main/java/com/bankingapp/bankingapp/repository/UserRepository.java,7\b\7ba368401ea2581e1ef6c0893e96709b27f41104
 s
 Cbanking-app/src/test/java/com/bankingapp/bankingapp/TestConsts.java,3\7\37c3cd258039a305838ad339d6a3e21beab1e858
 Ä

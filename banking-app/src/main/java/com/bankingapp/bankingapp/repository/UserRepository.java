@@ -11,9 +11,5 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-
     Optional<User> findUserByLogin(String login);
-
-    /*@Query("SELECT u FROM users u WHERE u.userCard.id = ?1")
-    User findUserByCard(Long cardID);*/
 }
