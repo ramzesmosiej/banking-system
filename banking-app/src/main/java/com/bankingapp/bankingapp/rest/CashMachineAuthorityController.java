@@ -38,14 +38,15 @@ public class CashMachineAuthorityController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         else {
             var user = optionalCard.get().getAccount().getUser();
-            return ResponseEntity.ok(authService.loginIntoSystem(user.getLogin(), user.getPassword()));
+            return ResponseEntity.ok(authService.loginIntoSystem(cardID.toString(), cardPIN));
         }
     }
 
     @GetMapping("/auth/card")
     public ResponseEntity<Boolean> isPINCorrect(
             @RequestParam(name = "cardID") Long cardID,
-            @RequestParam(name = "cardPIN") String cardPIN
+            @RequestParam(name = "cardPIN") String cardPIN,
+            @RequestHeader(name = "cash-machine") String auth
     ) {
         var optionalCard = cardRepository.findById(cardID);
 
@@ -59,6 +60,7 @@ public class CashMachineAuthorityController {
     public ResponseEntity<?> addCashToAccount(
             @RequestParam(name = "cardID") Long cardID,
             @RequestParam(name = "amount") Double amount,
+            @RequestHeader(name = "cash-machine") String auth,
             @RequestHeader(name = "lang", required = false) Locale locale
     ) {
         var ownerAccount = cardRepository.findById(cardID).orElseThrow();
@@ -70,6 +72,7 @@ public class CashMachineAuthorityController {
     public ResponseEntity<?> withdrawCash(
             @RequestParam(name = "cardID") Long cardID,
             @RequestParam(name = "amount") Double amount,
+            @RequestHeader(name = "cash-machine") String auth,
             @RequestHeader(name = "lang", required = false) Locale locale
     ){
         var ownerAccount = cardRepository.findById(cardID).orElseThrow();

@@ -19,13 +19,15 @@ public interface BankingAppClient {
     @GetMapping("/machine/auth/card")
     ResponseEntity<Boolean> isPINCorrect(
             @RequestParam(name = "cardID") Long cardID,
-            @RequestParam(name = "cardPIN") String cardPIN
+            @RequestParam(name = "cardPIN") String cardPIN,
+            @RequestHeader(name = "cash-machine") String auth
     );
 
     @PostMapping("/machine/add/cash")
     ResponseEntity<String> addCashToAccount(
             @RequestParam(name = "cardID") Long cardID,
             @RequestParam(name = "amount") Double amount,
+            @RequestHeader(name = "cash-machine") String auth,
             @RequestHeader(name = "lang") Locale lang
     );
 
@@ -33,6 +35,7 @@ public interface BankingAppClient {
     ResponseEntity<String> withdrawCash(
             @RequestParam(name = "cardID") Long cardID,
             @RequestParam(name = "amount") Double amount,
+            @RequestHeader(name = "cash-machine") String auth,
             @RequestHeader(name = "lang") Locale lang
     );
 

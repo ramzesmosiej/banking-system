@@ -18,21 +18,21 @@ public class OperationService {
     public String makeAPayment(OperationEntity operationEntity, Locale lang) {
         var response = checkCard(operationEntity.getCardID(), operationEntity.getCardPIN(), lang);
         return response.getValue0().equals("OK") ? Objects.requireNonNull(bankingAppClient.addCashToAccount(
-                operationEntity.getCardID(), operationEntity.getAmountOfMoney(), response.getValue1()
+                operationEntity.getCardID(), operationEntity.getAmountOfMoney(), "12345", response.getValue1()
         ).getBody()) : "AUTH_ERROR";
     }
 
     public String withdrawMoney(OperationEntity operationEntity, Locale lang) {
         var response = checkCard(operationEntity.getCardID(), operationEntity.getCardPIN(), lang);
         return response.getValue0().equals("OK") ? Objects.requireNonNull(bankingAppClient.withdrawCash(
-                operationEntity.getCardID(), operationEntity.getAmountOfMoney(), response.getValue1()
+                operationEntity.getCardID(), operationEntity.getAmountOfMoney(), "12345", response.getValue1()
         ).getBody()) : "AUTH_ERROR";
     }
 
     private Pair<String, Locale> checkCard(Long cardId, String cardPIN, Locale lang) {
         var language = lang == null ? Locale.US : lang;
 
-        var verifying = bankingAppClient.isPINCorrect(cardId, cardPIN).getBody();
+        var verifying = bankingAppClient.isPINCorrect(cardId, cardPIN, "12345").getBody();
 
         return verifying == null || !verifying ?
                 new Pair<>("AUTH_ERROR", language) : new Pair<>("OK", language);
