@@ -43,14 +43,10 @@ Wbanking-app/src/main/java/com/bankingapp/bankingapp/repository/AuthorityReposit
 Rbanking-app/src/main/java/com/bankingapp/bankingapp/repository/CardRepository.java,e\1\e1d19031e96cf5f63ebe31cfd84d82978818c4c6
 Å
 Qbanking-app/src/main/java/com/bankingapp/bankingapp/DTO/MoneyTransferRequest.java,c\a\caf7c0709a8d46b3b41f08746633623c8dc7a90e
-å
-\banking-app/src/main/java/com/bankingapp/bankingapp/service/PropertiesLanguageConnector.java,9\e\9ea0bb4fde88f32f64e896245fb49912394debc9
 Ä
 Pbanking-app/src/main/java/com/bankingapp/bankingapp/service/PasswordService.java,9\d\9d986736d121fa0365736b86b43f9eb7baa4427e
 |
 Lbanking-app/src/main/java/com/bankingapp/bankingapp/service/CardService.java,6\b\6bc2e76f0a0760a9d834fa3b530a03e56b2c5be3
-~
-Nbanking-app/src/main/java/com/bankingapp/bankingapp/BankingAppApplication.java,b\a\bac740dce4deeff55ac71335fe51d67458dc192b
 {
 Kopen-feign/src/main/java/com/client/openfeign/dto/CashOperationRequest.java,b\1\b1bb49ef1cadbd518e525dd35ba6eb6c16ff97d5
 z

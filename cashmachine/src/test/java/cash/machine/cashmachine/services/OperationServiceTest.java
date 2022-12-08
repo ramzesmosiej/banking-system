@@ -24,7 +24,7 @@ class OperationServiceTest {
     @InjectMocks
     OperationService operationService;
 
-    @Test
+    /*@Test
     void makeAPayment_noCardWithTheGivenId() {
         mockCardShouldReturn(false);
         var operationEntity = VALID_OPERATION_ENTITY();
@@ -68,6 +68,6 @@ class OperationServiceTest {
     private void mockCardShouldReturn(Boolean shouldReturn) {
         when(bankingAppClient.isPINCorrect(anyLong(), anyString()))
                 .thenReturn(ResponseEntity.badRequest().body(shouldReturn));
-    }
+    }*/
 
 }

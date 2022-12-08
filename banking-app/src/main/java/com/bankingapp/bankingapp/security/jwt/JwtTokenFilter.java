@@ -1,6 +1,8 @@
 package com.bankingapp.bankingapp.security.jwt;
 
 import com.bankingapp.bankingapp.domain.Authority;
+import com.bankingapp.bankingapp.service.PropertiesCashMachineIdsConnector;
+import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,23 +15,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
+@AllArgsConstructor
 @Service
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
 
-    public JwtTokenFilter(JwtUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
-    }
+    private final PropertiesCashMachineIdsConnector propertiesCashMachineIdsConnector;
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String authorizationHeader = request.getHeader("Authorization");
 
-        if (request.getHeader("cash-machine") != null && request.getHeader("cash-machine").equals("12345")) {
+        if (request.getHeader("cash-machine") != null &&
+                cashMachineIds(propertiesCashMachineIdsConnector).contains(request.getHeader("cash-machine"))) {
             var authenticationToken = new UsernamePasswordAuthenticationToken("cash-machine", null,
                     Set.of(new SimpleGrantedAuthority(Authority.USER_AUTHORITY.toString())));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
@@ -56,4 +60,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         filterChain.doFilter(request, response);
     }
+
+    private List<String> cashMachineIds(PropertiesCashMachineIdsConnector propertiesCashMachineIdsConnector) {
+        return List.of(
+                propertiesCashMachineIdsConnector.getDominikanski(),
+                propertiesCashMachineIdsConnector.getDworzec_glowny(),
+                propertiesCashMachineIdsConnector.getGrunwaldzki()
+        );
+    }
+
 }
