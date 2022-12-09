@@ -35,12 +35,4 @@ public class AuthService {
         return userService.registerUser(inputUser);
     }
 
-    public String sendPingToAdmin() {
-        return "Hello from admin";
-    }
-
-    public String sendPing() {
-        return "Hello from secured request";
-    }
-
 }

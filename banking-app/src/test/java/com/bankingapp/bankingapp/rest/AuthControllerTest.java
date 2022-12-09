@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.io.UnsupportedEncodingException;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @AutoConfigureMockMvc
@@ -25,13 +26,32 @@ class AuthControllerTest {
     }
 
     @Test
-    void registerUserWithAccount() {
+    void registerUserWithAccount() throws Exception {
+        var token = getEmployeeAccessToken();
+
+        var registerRequest = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/auth/register-with-account")
+                .header("Authorization", token)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("""
+                         {
+                            "login": "remmo1",
+                            "password": "1234abcd",
+                            "firstName": "Remigiusz",
+                            "lastName": "Pisarski",
+                            "email": "rpisarski123@gmail.com"
+                         }
+                        """)
+        ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+
+        var responseBody = registerRequest.andReturn().getResponse().getContentAsString();
+        assertThat(responseBody).isNotNull().contains("registered").contains("created");
     }
 
     @Test
     void login() throws Exception {
         var token = getEmployeeAccessToken();
-        assertThat(token).hasSize(211);
+        assertThat(token).hasSize(218);
     }
 
     @Test
@@ -54,7 +74,7 @@ class AuthControllerTest {
                          }                
                         """)
         ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
-        return serverResponse.andReturn().getResponse().getContentAsString();
+        return "Bearer " + serverResponse.andReturn().getResponse().getContentAsString();
     }
 
 }

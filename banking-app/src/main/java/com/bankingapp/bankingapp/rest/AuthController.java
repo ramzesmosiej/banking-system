@@ -52,15 +52,4 @@ public class AuthController {
         return ResponseEntity.ok(authService.loginIntoSystem(loginRequest.getLogin(), loginRequest.getPassword()));
     }
 
-    @GetMapping("/ping/admin")
-    public ResponseEntity<String> pingAdmin() {
-        return ResponseEntity.ok(authService.sendPingToAdmin());
-    }
-
-    @GetMapping("/ping")
-    public ResponseEntity<String> ping() {
-        return ResponseEntity.ok(authService.sendPing());
-    }
-
-
 }
