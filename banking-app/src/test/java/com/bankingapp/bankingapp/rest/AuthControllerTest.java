@@ -9,9 +9,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.io.UnsupportedEncodingException;
-
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @AutoConfigureMockMvc
@@ -81,7 +78,7 @@ class AuthControllerTest {
                          {
                             "login": "employee",
                             "password": "password"
-                         }                
+                         }
                         """)
         ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
         return "Bearer " + serverResponse.andReturn().getResponse().getContentAsString();
