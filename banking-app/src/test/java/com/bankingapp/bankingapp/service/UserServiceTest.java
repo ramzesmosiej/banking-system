@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
-    @Mock
+    /*@Mock
     private AuthorityRepository authorityRepository;
 
     @Mock
@@ -59,5 +59,5 @@ class UserServiceTest {
         var savedUser = userService.registerUser(VALID_USER_REQUEST());
         assertThat(savedUser.getLastName()).isEqualTo("Nowak");
     }
-    
+    */
 }

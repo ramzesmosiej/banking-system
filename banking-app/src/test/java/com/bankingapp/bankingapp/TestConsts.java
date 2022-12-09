@@ -1,6 +1,7 @@
 package com.bankingapp.bankingapp;
 
 import com.bankingapp.bankingapp.DTO.RegistrationRequest;
+import com.bankingapp.bankingapp.domain.Account;
 import com.bankingapp.bankingapp.domain.Card;
 import com.bankingapp.bankingapp.domain.User;
 
@@ -8,16 +9,11 @@ public class TestConsts {
 
     // Creation consts
     public static final String VALID_PIN = "1234";
+    public static final Account VALID_ACCOUNT = Account.builder()
+            .amountOfMoney(0.0)
+            .build();
     public static final Card VALID_CARD = Card.builder().PIN(VALID_PIN).build();
     public static final User VALID_USER = User.builder()
-            .firstName("Jan")
-            .lastName("Nowak")
-            .email("jan.nowak@gmail.com")
-            .login("janN")
-            .password("abcd")
-            .build();
-
-    public static final User VALID_USER_WITHOUT_CARD = User.builder()
             .firstName("Jan")
             .lastName("Nowak")
             .email("jan.nowak@gmail.com")

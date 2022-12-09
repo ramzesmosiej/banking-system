@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class CardTest {
 
-    /*@Test
+    @Test
     public void cardCreationTest() {
         var card1 = VALID_CARD;
         var card2 = new Card();
@@ -15,17 +15,20 @@ class CardTest {
         System.out.println(card1.toString());
 
         assertThat(card1.getId()).isNull();
-        assertThat(card1.getUser()).isNull();
+        assertThat(card2.getAccount()).isNull();
         assertThat(card1.getPIN()).isEqualTo(VALID_PIN);
         assertThat(card2.getPIN()).isEqualTo(VALID_PIN);
     }
 
     @Test
-    public void relationshipUserWithCardTest() {
-        var user = VALID_USER_WITH_VALID_CARD;
+    public void relationshipAccountWithCardTest() {
+        var card1 = VALID_CARD;
+        var account1 = VALID_ACCOUNT;
+        account1.setCard(card1);
+        card1.setAccount(account1);
 
-        assertThat(user.getUserCard()).isNotNull();
-        assertThat(user.getUserCard().getPIN()).isEqualTo(VALID_PIN);
-    }*/
+        assertThat(card1.getAccount()).isNotNull();
+        assertThat(account1.getCard().getPIN()).isEqualTo(VALID_PIN);
+    }
 
 }

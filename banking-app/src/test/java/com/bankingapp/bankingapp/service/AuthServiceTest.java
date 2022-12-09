@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 
+/*
 import static com.bankingapp.bankingapp.TestConsts.VALID_USER_REQUEST;
 import static com.bankingapp.bankingapp.TestConsts.VALID_USER_WITHOUT_CARD;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,3 +56,4 @@ class AuthServiceTest {
     }
 
 }
+*/
