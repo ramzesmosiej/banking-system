@@ -5,6 +5,8 @@ import com.bankingapp.bankingapp.domain.Account;
 import com.bankingapp.bankingapp.domain.Card;
 import com.bankingapp.bankingapp.domain.User;
 
+import java.util.HashSet;
+
 public class TestConsts {
 
     // Creation consts
@@ -19,6 +21,7 @@ public class TestConsts {
             .email("jan.nowak@gmail.com")
             .login("janN")
             .password("abcd")
+            .accounts(new HashSet<>())
             .build();
 
     // Service consts

@@ -3,14 +3,10 @@
 Tbanking-app/src/test/java/com/bankingapp/bankingapp/service/PasswordServiceTest.java,3\9\39e5811c4ce089d9363656330bca122dace6bb9f
 ‡
 Wbanking-app/src/test/java/com/bankingapp/bankingapp/service/UserAccountServiceTest.java,8\d\8d2657cd26bec72dca37741bd55bd01d4b00248d
-x
-Hbanking-app/src/test/java/com/bankingapp/bankingapp/domain/UserTest.java,c\5\c5130fd19ec69d62a338f68be74c7569ef832ae4
 ƒ
 Sbanking-app/src/test/java/com/bankingapp/bankingapp/BankingAppApplicationTests.java,0\b\0ba1c031f9750e4e2b63f6eeba92564ed87a38ef
 ‰
 Ybanking-app/src/main/java/com/bankingapp/bankingapp/exceptions/UserNotFoundException.java,b\0\b06c7baca81ae02420c66cdaf031f1b5d010c0b0
-y
-Ibanking-app/src/main/java/com/bankingapp/bankingapp/domain/Authority.java,5\c\5c583da221bb98a5236c458033cb6784bcdaed08
 |
 Lbanking-app/src/main/java/com/bankingapp/bankingapp/exceptions/ApiError.java,1\f\1f6a720551ed978c1f4724a214c1b5b4a8892670
 ‰
@@ -49,8 +45,6 @@ Obanking-app/src/main/java/com/bankingapp/bankingapp/service/AccountService.java
 Lbanking-app/src/main/java/com/bankingapp/bankingapp/service/UserService.java,6\7\672899d896a40f568229d816ff033f51d4c7c743
 }
 Mbanking-app/src/main/java/com/bankingapp/bankingapp/security/jwt/JwtUtil.java,7\a\7a59eaa5b872ffec278f42ff4795533a5db1da71
-t
-Dbanking-app/src/main/java/com/bankingapp/bankingapp/domain/User.java,3\c\3c3b404016ea03c6bf8b5eae8b26992c679a9afc
 ~
 Nbanking-app/src/main/java/com/bankingapp/bankingapp/config/SecurityConfig.java,e\0\e06e8c8ebed10312020f33e53a1add52a5b1c44f
 |
