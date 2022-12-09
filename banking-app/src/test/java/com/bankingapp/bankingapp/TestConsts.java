@@ -12,7 +12,7 @@ public class TestConsts {
     // Creation consts
     public static final String VALID_PIN = "1234";
     public static final Account VALID_ACCOUNT = Account.builder()
-            .amountOfMoney(0.0)
+            .amountOfMoney(1000.0)
             .build();
     public static final Card VALID_CARD = Card.builder().PIN(VALID_PIN).build();
     public static final User VALID_USER = User.builder()
@@ -25,6 +25,7 @@ public class TestConsts {
             .build();
 
     // Service consts
+    public static final Long VALID_ACCOUNT_ID = 7L;
     public static final Long VALID_USER_ID = 2L;
     public static final Double VALID_CASH = 200.0;
     public static final Double CASH_FOR_RICH = 20000.0;

@@ -2,6 +2,8 @@ package com.bankingapp.bankingapp.service;
 
 import com.bankingapp.bankingapp.exceptions.NotEnoughMoneyException;
 import com.bankingapp.bankingapp.exceptions.UserNotFoundException;
+import com.bankingapp.bankingapp.repository.AccountRepository;
+import com.bankingapp.bankingapp.repository.CardRepository;
 import com.bankingapp.bankingapp.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,24 +23,24 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class UserAccountServiceTest {
+class AccountServiceTest {
 
     @Mock
-    UserRepository userRepository;
+    AccountRepository accountRepository;
     @Mock
     PropertiesLanguageConnector propertiesLanguageConnector;
     @InjectMocks
     AccountService userAccountService;
 
-    /*@Test
-    void addCashToUser_validUserID() throws InterruptedException {
+    @Test
+    void addCashToAccount_validAccountID() throws InterruptedException {
 
         mocking();
 
-        var initalAmountOfMoney = userRepository.findById(VALID_USER_ID)
+        var initalAmountOfMoney = accountRepository.findById(VALID_ACCOUNT_ID)
                 .orElseThrow(() -> new UserNotFoundException("")).getAmountOfMoney();
 
-        var serverResponse = userAccountService.addCashToUser(VALID_USER_ID, VALID_CASH);
+        var serverResponse = userAccountService.addCashToAccount(VALID_ACCOUNT_ID, VALID_CASH);
         assertThat(serverResponse).contains("Operation successful");
 
         var actualAmountOfMoney = serverResponse.split(":");
@@ -49,14 +51,14 @@ class UserAccountServiceTest {
     }
 
     @Test
-    void addCashToUser_validUserID_and_validLocale() throws InterruptedException {
+    void addCashToAccount_validAccountID_and_validLocale() throws InterruptedException {
 
         mocking();
 
-        var initalAmountOfMoney = userRepository.findById(VALID_USER_ID)
+        var initalAmountOfMoney = accountRepository.findById(VALID_ACCOUNT_ID)
                 .orElseThrow(() -> new UserNotFoundException("")).getAmountOfMoney();
 
-        var serverResponse = userAccountService.addCashToUser(VALID_USER_ID, VALID_CASH, Locale.US);
+        var serverResponse = userAccountService.addCashToAccount(VALID_ACCOUNT_ID, VALID_CASH, Locale.US);
         assertThat(serverResponse).contains("Operation successful");
 
         var actualAmountOfMoney = serverResponse.split(":");
@@ -67,26 +69,26 @@ class UserAccountServiceTest {
     }
 
     @Test
-    void addCahToUser_invalidUserID() {
+    void addCahToUser_invalidAccountID() {
 
-        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+        when(accountRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThat(catchThrowable(() ->
-                userAccountService.addCashToUser(VALID_USER_ID, VALID_CASH)
+                userAccountService.addCashToAccount(VALID_ACCOUNT_ID, VALID_CASH)
         ))
-                .isInstanceOf(UserNotFoundException.class)
-                .hasMessageContaining("dosen't exists in db");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("doesn't exists");
 
     }
 
     @Test
-    void takeCashFromAccount_validUserID() throws InterruptedException {
+    void takeCashFromAccount_validAccountID() throws InterruptedException {
 
         mocking();
 
-        var initalAmountOfMoney = userRepository.findById(VALID_USER_ID)
+        var initalAmountOfMoney = accountRepository.findById(VALID_ACCOUNT_ID)
                 .orElseThrow(() -> new UserNotFoundException("")).getAmountOfMoney();
-        var serverResponse = userAccountService.takeCashFromAccount(VALID_USER_ID, VALID_CASH);
+        var serverResponse = userAccountService.takeCashFromAccount(VALID_ACCOUNT_ID, VALID_CASH);
         assertThat(serverResponse).contains("Operation successful");
 
         var actualAmountOfMoney = serverResponse.split(":");
@@ -101,9 +103,9 @@ class UserAccountServiceTest {
 
         mocking();
 
-        var initalAmountOfMoney = userRepository.findById(VALID_USER_ID)
+        var initalAmountOfMoney = accountRepository.findById(VALID_ACCOUNT_ID)
                 .orElseThrow(() -> new UserNotFoundException("")).getAmountOfMoney();
-        var serverResponse = userAccountService.takeCashFromAccount(VALID_USER_ID, VALID_CASH, Locale.US);
+        var serverResponse = userAccountService.takeCashFromAccount(VALID_ACCOUNT_ID, VALID_CASH, Locale.US);
         assertThat(serverResponse).contains("Operation successful");
 
         var actualAmountOfMoney = serverResponse.split(":");
@@ -114,22 +116,22 @@ class UserAccountServiceTest {
     }
 
     @Test
-    void takeCashFromAccount_invalidUserID() {
+    void takeCashFromAccount_invalidAccountID() {
 
-        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+        when(accountRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThat(catchThrowable(() ->
-                userAccountService.takeCashFromAccount(VALID_USER_ID, VALID_CASH)
+                userAccountService.takeCashFromAccount(VALID_ACCOUNT_ID, VALID_CASH)
         ))
-                .isInstanceOf(UserNotFoundException.class)
-                .hasMessageContaining("dosen't exists in db");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("doesn't exists");
 
     }
 
     @Test
     void takeCashFromAccount_notEnoughMoney() {
 
-        when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(VALID_USER_WITH_VALID_CARD));
+        when(accountRepository.findById(anyLong())).thenReturn(Optional.ofNullable(VALID_ACCOUNT));
 
         assertThat(catchThrowable(() ->
                 userAccountService.takeCashFromAccount(VALID_USER_ID, CASH_FOR_RICH)
@@ -140,11 +142,11 @@ class UserAccountServiceTest {
     }
 
     private void mocking() {
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(VALID_USER_WITH_VALID_CARD));
-        when(userRepository.save(ArgumentMatchers.any())).thenReturn(VALID_USER_WITH_VALID_CARD);
+        when(accountRepository.findById(anyLong())).thenReturn(Optional.of(VALID_ACCOUNT));
+        when(accountRepository.save(ArgumentMatchers.any())).thenReturn(VALID_ACCOUNT);
         when(propertiesLanguageConnector.getMessageOnLanguage(any(), any())).thenReturn(
                 "Operation successful! Cash was added successfuly! Now you have:"
         );
-    }*/
+    }
 
 }
