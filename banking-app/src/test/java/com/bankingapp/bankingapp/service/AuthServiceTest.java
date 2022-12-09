@@ -43,14 +43,4 @@ class AuthServiceTest {
         assertThat(registeredUser.getLastName()).isEqualTo("Nowak");
     }
 
-    @Test
-    void sendPingToAdmin() {
-        assertThat(authService.sendPingToAdmin()).isEqualTo("Hello from admin");
-    }
-
-    @Test
-    void sendPing() {
-        assertThat(authService.sendPing()).isEqualTo("Hello from secured request");
-    }
-
 }

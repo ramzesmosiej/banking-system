@@ -22,7 +22,26 @@ class AuthControllerTest {
     MockMvc mockMvc;
 
     @Test
-    void registerUser() {
+    void registerUser() throws Exception {
+        var token = getEmployeeAccessToken();
+
+        var registerRequest = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/auth/register-with-account")
+                .header("Authorization", token)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("""
+                         {
+                            "login": "remmo2",
+                            "password": "1234abcd",
+                            "firstName": "Remigiusz",
+                            "lastName": "Pisarski",
+                            "email": "rpisarski123@gmail.com"
+                         }
+                        """)
+        ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+
+        var responseBody = registerRequest.andReturn().getResponse().getContentAsString();
+        assertThat(responseBody).isNotNull().contains("registered");
     }
 
     @Test
@@ -53,15 +72,6 @@ class AuthControllerTest {
         var token = getEmployeeAccessToken();
         assertThat(token).hasSize(218);
     }
-
-    @Test
-    void pingAdmin() {
-    }
-
-    @Test
-    void ping() {
-    }
-
 
     private String getEmployeeAccessToken() throws Exception {
         var serverResponse = mockMvc.perform(MockMvcRequestBuilders
