@@ -39,8 +39,6 @@ Mbanking-app/src/main/java/com/bankingapp/bankingapp/security/jwt/JwtUtil.java,
 Zbanking-app/src/main/java/com/bankingapp/bankingapp/config/BankAuthenticationProvider.java,1\3\13723fa1251e7f8b89ddc7145329aaae63db0659
 ˆ
 Xbanking-app/src/main/java/com/bankingapp/bankingapp/rest/AccountOperationController.java,f\2\f2cb3e7b3b734ff070b51c2d546009b75da2a411
-~
-Nbanking-app/src/main/java/com/bankingapp/bankingapp/BankingAppApplication.java,b\a\bac740dce4deeff55ac71335fe51d67458dc192b
 {
 Kopen-feign/src/main/java/com/client/openfeign/clients/BankingAppClient.java,2\7\27a6ebbd8acb5c2082186134bb2320d1af60458d
 Œ

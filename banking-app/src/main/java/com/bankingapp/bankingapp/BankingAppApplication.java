@@ -33,40 +33,44 @@ public class BankingAppApplication {
 
 		return args -> {
 
-			authorityRepository.save(Authority.ADMIN_AUTHORITY);
-			authorityRepository.save(Authority.EMPLOYEE_AUTHORITY);
-			authorityRepository.save(Authority.USER_AUTHORITY);
+			if (authorityRepository.findAll().isEmpty()) {
+				authorityRepository.save(Authority.ADMIN_AUTHORITY);
+				authorityRepository.save(Authority.EMPLOYEE_AUTHORITY);
+				authorityRepository.save(Authority.USER_AUTHORITY);
+			}
 
-			// Admin creation
-			User admin = User.builder()
-					.login("admin")
-					.password(passwordEncoder.encode("12w1w21w1g723dg3*H@dJ(@D"))
-					.firstName("Admin")
-					.lastName("Adminowaty")
-					.email("admin@gmail.com")
-					.isActive(true)
-					.build();
+			if (userRepository.findAll().isEmpty()) {
+				// Admin creation
+				User admin = User.builder()
+						.login("admin")
+						.password(passwordEncoder.encode("12w1w21w1g723dg3*H@dJ(@D"))
+						.firstName("Admin")
+						.lastName("Adminowaty")
+						.email("admin@gmail.com")
+						.isActive(true)
+						.build();
 
-			final var authorityAdmin = authorityRepository.findById(Role.ADMIN.getAuthority()).
-					orElseThrow(() -> new IllegalStateException("Authority not found!"));
-			final var authorityUser = authorityRepository.findById(Role.USER.getAuthority()).
-					orElseThrow(() -> new IllegalStateException("Authority not found!"));
+				final var authorityAdmin = authorityRepository.findById(Role.ADMIN.getAuthority()).
+						orElseThrow(() -> new IllegalStateException("Authority not found!"));
+				final var authorityUser = authorityRepository.findById(Role.USER.getAuthority()).
+						orElseThrow(() -> new IllegalStateException("Authority not found!"));
 
-			admin.setAuthorities(Set.of(authorityAdmin, authorityUser));
-			userRepository.save(admin);
+				admin.setAuthorities(Set.of(authorityAdmin, authorityUser));
+				userRepository.save(admin);
 
-			// Bank employee
-			User employee = User.builder()
-					.login("employee")
-					.password(passwordEncoder.encode("password"))
-					.firstName("Jan")
-					.lastName("Nowak")
-					.email("jan.nowak@gmail.com")
-					.isActive(true)
-					.build();
+				// Bank employee
+				User employee = User.builder()
+						.login("employee")
+						.password(passwordEncoder.encode("password"))
+						.firstName("Jan")
+						.lastName("Nowak")
+						.email("jan.nowak@gmail.com")
+						.isActive(true)
+						.build();
 
-			employee.setAuthorities(Set.of(authorityAdmin, authorityUser));
-			userRepository.save(employee);
+				employee.setAuthorities(Set.of(authorityAdmin, authorityUser));
+				userRepository.save(employee);
+			}
 
 		};
 	}
