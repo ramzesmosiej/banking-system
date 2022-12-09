@@ -27,21 +27,6 @@ public class CashMachineAuthorityController {
     private final UserRepository userRepository;
 
 
-    @GetMapping("/auth/login")
-    public ResponseEntity<String> checkCard(
-            @RequestParam(name = "cardID") Long cardID,
-            @RequestParam(name = "cardPIN") String cardPIN
-    ) {
-        var optionalCard = cardRepository.findById(cardID);
-
-        if (optionalCard.isEmpty() || !cardPIN.equals(optionalCard.get().getPIN()))
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        else {
-            var user = optionalCard.get().getAccount().getUser();
-            return ResponseEntity.ok(authService.loginIntoSystem(cardID.toString(), cardPIN));
-        }
-    }
-
     @GetMapping("/auth/card")
     public ResponseEntity<Boolean> isPINCorrect(
             @RequestParam(name = "cardID") Long cardID,
