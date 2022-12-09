@@ -57,7 +57,3 @@ Nopen-feign/src/main/java/com/client/openfeign/clients/PropertiesConnector.java
 Lbanking-app/src/main/java/com/bankingapp/bankingapp/rest/AuthController.java,5\3\5360471839d2ff0b3523653b61abe8cdf238de92
 „
 Tbanking-app/src/main/java/com/bankingapp/bankingapp/security/jwt/JwtTokenFilter.java,6\3\63a3d3bf64f4328a8e7333b831e0ea25a889efca
-…
-Ucashmachine/src/test/java/cash/machine/cashmachine/services/OperationServiceTest.java,f\8\f82b19401b7b2e31c895a75f13676b8710f38d19
-„
-Tcashmachine/src/main/java/cash/machine/cashmachine/endpoint/OperationController.java,0\8\08e07de8e16a1491c03550b1888eb9b666497c34
