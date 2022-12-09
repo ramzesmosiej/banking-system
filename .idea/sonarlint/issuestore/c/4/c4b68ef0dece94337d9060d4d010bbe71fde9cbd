@@ -1,0 +1,19 @@
+
+t
+java:S1192."RDefine a constant instead of duplicating this literal "Account with id: " 3 times.(ö†õÄøÿÿÿÿ8ğæÂèÎ0
+Y
+java:S2629."7Use the built-in formatting to construct this argument.(ö†õÄøÿÿÿÿ8ñæÂèÎ0
+T
+java:S2629V"7Use the built-in formatting to construct this argument.(ÙˆÂÍ8İËÈâÎ0
+T
+java:S2629p"7Use the built-in formatting to construct this argument.(¡Ü€¨8şÚŠãÎ0
+c
+java:S3457."AFormat specifiers should be used instead of string concatenation.(ö†õÄøÿÿÿÿ8‡çÂèÎ0
+^
+java:S3457V"AFormat specifiers should be used instead of string concatenation.(ÙˆÂÍ8ŒçÂèÎ0
+^
+java:S3457p"AFormat specifiers should be used instead of string concatenation.(¡Ü€¨8–ÛŠãÎ0
+l
+java:S1128"ORemove this unused import 'com.bankingapp.bankingapp.DTO.MoneyTransferRequest'.(œ ù·8ÑËÏèÎ0
+l
+java:S1128"ORemove this unused import 'javax.security.auth.login.AccountNotFoundException'.(Ş„‹¾8ÑËÏèÎ0
