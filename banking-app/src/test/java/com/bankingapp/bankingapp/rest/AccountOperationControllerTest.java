@@ -1,5 +1,6 @@
 package com.bankingapp.bankingapp.rest;
 
+import com.bankingapp.bankingapp.repository.AccountRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -9,6 +10,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import javax.security.auth.login.AccountNotFoundException;
 
 import static com.bankingapp.bankingapp.TestConsts.isFirstClientWithCardCreated;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,6 +24,8 @@ class AccountOperationControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Test
     void getUser() throws Exception {
@@ -40,6 +45,10 @@ class AccountOperationControllerTest {
         var token = createUserWithAccountAndReturnAccessToken();
 
         // make a payment in polish version
+        var initialAccountMoney = accountRepository.findById(1L)
+                .orElseThrow(() -> new AccountNotFoundException("Account with the given Id doesn't exists"))
+                .getAmountOfMoney();
+
         var paymentRequest = mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/operations/payment")
                 .header("Authorization", token)
@@ -52,16 +61,31 @@ class AccountOperationControllerTest {
                         """)
                 .header("lang", "pl")
         ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
-
         assertThat(paymentRequest.andReturn().getResponse().getContentAsString()).isNotNull()
                 .contains("pomyślnie dodane do konta");
+
+        var amountOfMoneyAfter = accountRepository.findById(1L)
+                .orElseThrow(() -> new AccountNotFoundException("Account with the given Id doesn't exists"))
+                .getAmountOfMoney();
+        assertThat(amountOfMoneyAfter).isEqualTo(initialAccountMoney + 100);
     }
 
     @Test
     void paycheck() throws Exception {
         var token = createUserWithAccountAndReturnAccessToken();
 
+        // to be sure
+        var chosenAccount = accountRepository.findById(1L)
+                .orElseThrow(() -> new AccountNotFoundException("Account with the given Id doesn't exists"));
+        chosenAccount.setAmountOfMoney(chosenAccount.getAmountOfMoney() + 1000);
+        accountRepository.save(chosenAccount);
+
+
         // make a withdraw in deutsch version
+        var initialAccountMoney = accountRepository.findById(1L)
+                .orElseThrow(() -> new AccountNotFoundException("Account with the given Id doesn't exists"))
+                .getAmountOfMoney();
+
         var paymentRequest = mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/operations/paycheck")
                 .header("Authorization", token)
@@ -74,9 +98,13 @@ class AccountOperationControllerTest {
                         """)
                 .header("lang", "de")
         ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
-
         assertThat(paymentRequest.andReturn().getResponse().getContentAsString()).isNotNull()
                 .contains("Transaktion erfolgreich");
+
+        var amountOfMoneyAfter = accountRepository.findById(1L)
+                .orElseThrow(() -> new AccountNotFoundException("Account with the given Id doesn't exists"))
+                .getAmountOfMoney();
+        assertThat(amountOfMoneyAfter).isEqualTo(initialAccountMoney - 100);
     }
 
     private String createUserWithAccountAndReturnAccessToken() throws Exception {
