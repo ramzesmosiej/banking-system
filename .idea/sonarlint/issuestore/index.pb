@@ -97,5 +97,3 @@ Lbanking-app/src/main/java/com/bankingapp/bankingapp/service/AuthService.java,b
 Pbanking-app/src/test/java/com/bankingapp/bankingapp/service/AuthServiceTest.java,0\c\0c6e2b8c1e0d011864bf1e82258d69c40b780de2
 ~
 Nbanking-app/src/main/java/com/bankingapp/bankingapp/BankingAppApplication.java,b\a\bac740dce4deeff55ac71335fe51d67458dc192b
-B
-docker-compose.yml,3\5\35b8c13cf2eb2a194eada000eb310d65aed53b2a
