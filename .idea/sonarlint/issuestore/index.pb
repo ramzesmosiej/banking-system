@@ -45,8 +45,6 @@ Kopen-feign/src/main/java/com/client/openfeign/clients/BankingAppClient.java,2\
 Nopen-feign/src/main/java/com/client/openfeign/clients/PropertiesConnector.java,e\e\ee52a0298f29aee03fac9da61359343227738604
 Ñ
 Tbanking-app/src/main/java/com/bankingapp/bankingapp/security/jwt/JwtTokenFilter.java,6\3\63a3d3bf64f4328a8e7333b831e0ea25a889efca
-Ñ
-Tcashmachine/src/main/java/cash/machine/cashmachine/services/PropertiesConnector.java,d\c\dc815cd1bd56f933310746ff833229959ca9e4f1
 í
 bbanking-app/src/main/java/com/bankingapp/bankingapp/service/PropertiesCashMachineIdsConnector.java,6\a\6af54201d1a94521068d44b359ff105322187525
 x
@@ -75,14 +73,10 @@ Pbanking-app/src/test/java/com/bankingapp/bankingapp/service/UserServiceTest.jav
 Tbanking-app/src/test/java/com/bankingapp/bankingapp/service/PasswordServiceTest.java,3\9\39e5811c4ce089d9363656330bca122dace6bb9f
 É
 Sbanking-app/src/test/java/com/bankingapp/bankingapp/service/AccountServiceTest.java,6\7\67d13fc6da6516ba1103a7f6723f34d12cb559e8
-Ñ
-Tcashmachine/src/main/java/cash/machine/cashmachine/endpoint/OperationController.java,0\8\08e07de8e16a1491c03550b1888eb9b666497c34
 r
 Bcashmachine/src/test/java/cash/machine/cashmachine/TestConsts.java,0\9\09c9ce22805e975439cd9dcf7c08db874a0645a7
 É
 Scashmachine/src/test/java/cash/machine/cashmachine/CashmachineApplicationTests.java,8\c\8cdbffbf2c426bde02f132443bf144a16dfb8536
-Å
-Qcashmachine/src/main/java/cash/machine/cashmachine/services/OperationService.java,a\f\af3b8e3efe27d2a0474acd27d049620b4ebf03e4
 Ö
 Ucashmachine/src/test/java/cash/machine/cashmachine/services/OperationServiceTest.java,f\8\f82b19401b7b2e31c895a75f13676b8710f38d19
 ~

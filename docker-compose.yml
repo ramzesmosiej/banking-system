@@ -54,11 +54,11 @@ services:
       KMAGIC_ALLOW_SCHEMA_DELETE: "true"
 
 volumes:
-  bank:
   zookeeper_data:
     driver: local
   kafka_data:
     driver: local
+  bank:
 
 networks:
   banking-app:

@@ -1,50 +1,47 @@
 package cash.machine.cashmachine.services;
 
+import cash.machine.cashmachine.config.KafkaTopicConfig;
 import cash.machine.cashmachine.models.OperationEntity;
-import com.client.openfeign.clients.BankingAppClient;
 import lombok.AllArgsConstructor;
-import org.javatuples.Pair;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import java.util.Locale;
-import java.util.Objects;
 
 @AllArgsConstructor
 @Service
 public class OperationService {
 
-    private final BankingAppClient bankingAppClient;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTopicConfig kafkaTopicConfig;
     private final PropertiesConnector propertiesConnector;
 
-
     public String makeAPayment(OperationEntity operationEntity, Locale lang) {
-        var response = checkCard(operationEntity.getCardID(), operationEntity.getCardPIN(), lang);
-        return response.getValue0().equals("OK") ? Objects.requireNonNull(bankingAppClient.addCashToAccount(
-                operationEntity.getCardID(),
-                operationEntity.getAmountOfMoney(),
-                propertiesConnector.getId(),
-                response.getValue1()
-        ).getBody()) : "AUTH_ERROR";
+        var operationStatus = kafkaTemplate.send(kafkaTopicConfig.getPayment(), returnCredentials(operationEntity, lang));
+
+        operationStatus.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
+            @Override
+            public void onFailure(Throwable ex) {
+                System.out.println("FAILURE");
+            }
+
+            @Override
+            public void onSuccess(SendResult<String, String> result) {
+                System.out.println(result);
+            }
+        });
+
+        return "";
     }
 
     public String withdrawMoney(OperationEntity operationEntity, Locale lang) {
-        var response = checkCard(operationEntity.getCardID(), operationEntity.getCardPIN(), lang);
-        return response.getValue0().equals("OK") ? Objects.requireNonNull(bankingAppClient.withdrawCash(
-                operationEntity.getCardID(),
-                operationEntity.getAmountOfMoney(),
-                propertiesConnector.getId(),
-                response.getValue1()
-        ).getBody()) : "AUTH_ERROR";
+        return "";
     }
 
-    private Pair<String, Locale> checkCard(Long cardId, String cardPIN, Locale lang) {
-        var language = lang == null ? Locale.US : lang;
-
-        var verifying = bankingAppClient.isPINCorrect(cardId, cardPIN, propertiesConnector.getId()).getBody();
-
-        return verifying == null || !verifying ?
-                new Pair<>("AUTH_ERROR", language) : new Pair<>("OK", language);
+    private String returnCredentials(OperationEntity operationEntity, Locale lang) {
+        return operationEntity.getCardID() + operationEntity.getCardPIN() + operationEntity.getAmountOfMoney() + lang;
     }
 
 }

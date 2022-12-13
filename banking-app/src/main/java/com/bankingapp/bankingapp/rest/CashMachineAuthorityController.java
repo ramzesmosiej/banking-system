@@ -9,6 +9,8 @@ import com.bankingapp.bankingapp.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Locale;
@@ -25,6 +27,16 @@ public class CashMachineAuthorityController {
     private final AccountRepository accountRepository;
 
     private final UserRepository userRepository;
+
+
+    @KafkaListener(
+            topics = "${account.operation.payment}",
+            groupId = "payment"
+    )
+    public ResponseEntity<String> addMoneyToAccount(@Payload String credentials) {
+        System.out.println(credentials);
+        return ResponseEntity.ok("OK");
+    }
 
 
     @GetMapping("/auth/card")
