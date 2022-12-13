@@ -39,4 +39,8 @@ public class TestConsts {
         return requestUser;
     }
 
+    // Integration test
+
+    public static Boolean isFirstClientWithCardCreated = false;
+
 }

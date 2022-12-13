@@ -37,8 +37,6 @@ Uopen-feign/src/main/java/com/client/openfeign/errors/RetreiveMessageErrorDecode
 Mbanking-app/src/main/java/com/bankingapp/bankingapp/security/jwt/JwtUtil.java,7\a\7a59eaa5b872ffec278f42ff4795533a5db1da71
 Š
 Zbanking-app/src/main/java/com/bankingapp/bankingapp/config/BankAuthenticationProvider.java,1\3\13723fa1251e7f8b89ddc7145329aaae63db0659
-ˆ
-Xbanking-app/src/main/java/com/bankingapp/bankingapp/rest/AccountOperationController.java,f\2\f2cb3e7b3b734ff070b51c2d546009b75da2a411
 {
 Kopen-feign/src/main/java/com/client/openfeign/clients/BankingAppClient.java,2\7\27a6ebbd8acb5c2082186134bb2320d1af60458d
 Œ
@@ -75,8 +73,6 @@ Lbanking-app/src/main/java/com/bankingapp/bankingapp/service/UserService.java,6
 Pbanking-app/src/test/java/com/bankingapp/bankingapp/service/UserServiceTest.java,9\6\96152215ca9f44fed5f7126568793fce8176a420
 „
 Tbanking-app/src/test/java/com/bankingapp/bankingapp/service/PasswordServiceTest.java,3\9\39e5811c4ce089d9363656330bca122dace6bb9f
-s
-Cbanking-app/src/test/java/com/bankingapp/bankingapp/TestConsts.java,3\7\37c3cd258039a305838ad339d6a3e21beab1e858
 ƒ
 Sbanking-app/src/test/java/com/bankingapp/bankingapp/service/AccountServiceTest.java,6\7\67d13fc6da6516ba1103a7f6723f34d12cb559e8
 „
@@ -105,8 +101,6 @@ Lbanking-app/src/main/java/com/bankingapp/bankingapp/service/AuthService.java,b
 Pbanking-app/src/test/java/com/bankingapp/bankingapp/service/AuthServiceTest.java,0\c\0c6e2b8c1e0d011864bf1e82258d69c40b780de2
 C
 banking-app/pom.xml,e\c\ec0b19d76d2aa62c52c47bd80843f54867908c4e
-€
-Pbanking-app/src/test/java/com/bankingapp/bankingapp/rest/AuthControllerTest.java,5\6\56bd5e8c7e3110befa274cb716177fb5dfe245a7
 ~
 Nbanking-app/src/main/java/com/bankingapp/bankingapp/BankingAppApplication.java,b\a\bac740dce4deeff55ac71335fe51d67458dc192b
 B

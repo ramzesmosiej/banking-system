@@ -1,6 +1,5 @@
 package com.bankingapp.bankingapp.rest;
 
-import com.bankingapp.bankingapp.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,41 +16,73 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @SpringBootTest
-class AuthControllerTest {
+class AccountOperationControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
-    @Autowired
-    UserRepository userRepository;
 
     @Test
-    void registerUser() throws Exception {
+    void getUser() throws Exception {
         var token = getEmployeeAccessToken();
 
-        var registerRequest = mockMvc.perform(MockMvcRequestBuilders
-                .post("/api/auth/register-with-account")
+        var getUserRequest = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/operations/1")
                 .header("Authorization", token)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("""
-                         {
-                            "login": "employee2",
-                            "password": "54321abcde",
-                            "firstName": "Jan",
-                            "lastName": "Kowalski",
-                            "email": "jkowalski213@gmail.com"
-                         }
-                        """)
         ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
 
-        var responseBody = registerRequest.andReturn().getResponse().getContentAsString();
-        assertThat(responseBody).isNotNull().contains("registered");
+        var responseBody = getUserRequest.andReturn().getResponse().getContentAsString();
+        assertThat(responseBody).isNotNull().contains("\"id\":1");
     }
 
     @Test
-    void registerUserWithAccount() throws Exception {
+    void payment() throws Exception {
+        var token = createUserWithAccountAndReturnAccessToken();
+
+        // make a payment in polish version
+        var paymentRequest = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/operations/payment")
+                .header("Authorization", token)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("""
+                        {
+                            "accountId": "1",
+                            "cash": "100"
+                        }
+                        """)
+                .header("lang", "pl")
+        ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+
+        assertThat(paymentRequest.andReturn().getResponse().getContentAsString()).isNotNull()
+                .contains("pomyślnie dodane do konta");
+    }
+
+    @Test
+    void paycheck() throws Exception {
+        var token = createUserWithAccountAndReturnAccessToken();
+
+        // make a withdraw in deutsch version
+        var paymentRequest = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/operations/paycheck")
+                .header("Authorization", token)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("""
+                        {
+                            "accountId": "1",
+                            "cash": "100"
+                        }
+                        """)
+                .header("lang", "de")
+        ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+
+        assertThat(paymentRequest.andReturn().getResponse().getContentAsString()).isNotNull()
+                .contains("Transaktion erfolgreich");
+    }
+
+    private String createUserWithAccountAndReturnAccessToken() throws Exception {
         var token = getEmployeeAccessToken();
 
+        // register user
         if (!isFirstClientWithCardCreated) {
             var registerRequest = mockMvc.perform(MockMvcRequestBuilders
                     .post("/api/auth/register-with-account")
@@ -74,12 +105,7 @@ class AuthControllerTest {
         }
 
         assertThat(token).isNotNull();
-    }
-
-    @Test
-    void login() throws Exception {
-        var token = getEmployeeAccessToken();
-        assertThat(token).hasSize(218);
+        return token;
     }
 
     private String getEmployeeAccessToken() throws Exception {
