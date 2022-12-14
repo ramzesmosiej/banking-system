@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.Positive;
 
 @Data
-public class OperationEntity {
-    @Positive
-    private Double amountOfMoney;
+public class PinEntity {
+    private Long cardID;
+    private String cardPIN;
 }

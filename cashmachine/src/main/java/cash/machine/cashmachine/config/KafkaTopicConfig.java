@@ -11,20 +11,19 @@ import org.springframework.kafka.config.TopicBuilder;
 @Getter
 public class KafkaTopicConfig {
 
-    @Value("${account.operation.payment}")
-    private String payment;
-
-    @Value("${account.operation.withdraw}")
-    private String withdraw;
+    @Value("${account.cashmachine.pin.send}")
+    private String sendPin;
+    @Value("${account.cashmachine.pin.receive}")
+    private String receivePinAnswear;
 
     @Bean
-    public NewTopic doPayment() {
-        return TopicBuilder.name(payment).build();
+    public NewTopic sendPinToVerification() {
+        return TopicBuilder.name(sendPin).build();
     }
 
     @Bean
-    public NewTopic doWithdraw() {
-        return TopicBuilder.name(withdraw).build();
+    public NewTopic receivePinVerification() {
+        return TopicBuilder.name(receivePinAnswear).build();
     }
 
 }

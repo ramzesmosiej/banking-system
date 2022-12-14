@@ -24,22 +24,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
 
-    private final PropertiesCashMachineIdsConnector propertiesCashMachineIdsConnector;
-
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String authorizationHeader = request.getHeader("Authorization");
-
-        if (request.getHeader("cash-machine") != null &&
-                cashMachineIds(propertiesCashMachineIdsConnector).contains(request.getHeader("cash-machine"))) {
-            var authenticationToken = new UsernamePasswordAuthenticationToken("cash-machine", null,
-                    Set.of(new SimpleGrantedAuthority(Authority.USER_AUTHORITY.toString())));
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            filterChain.doFilter(request, response);
-            return;
-        }
 
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer")) {
             filterChain.doFilter(request, response);

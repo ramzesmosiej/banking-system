@@ -31,8 +31,6 @@ Mbanking-app/src/main/java/com/bankingapp/bankingapp/security/jwt/JwtUtil.java,
 Zbanking-app/src/main/java/com/bankingapp/bankingapp/config/BankAuthenticationProvider.java,1\3\13723fa1251e7f8b89ddc7145329aaae63db0659
 Œ
 \banking-app/src/main/java/com/bankingapp/bankingapp/service/PropertiesLanguageConnector.java,9\e\9ea0bb4fde88f32f64e896245fb49912394debc9
-„
-Tbanking-app/src/main/java/com/bankingapp/bankingapp/security/jwt/JwtTokenFilter.java,6\3\63a3d3bf64f4328a8e7333b831e0ea25a889efca
 ’
 bbanking-app/src/main/java/com/bankingapp/bankingapp/service/PropertiesCashMachineIdsConnector.java,6\a\6af54201d1a94521068d44b359ff105322187525
 x
@@ -83,9 +81,5 @@ Pbanking-app/src/test/java/com/bankingapp/bankingapp/rest/AuthControllerTest.jav
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 w
 Gcashmachine/src/main/java/cash/machine/cashmachine/errors/ApiError.java,6\b\6b639d3b052131280c6085ff195d2a3c999695e5
-„
-Tcashmachine/src/main/java/cash/machine/cashmachine/endpoint/OperationController.java,0\8\08e07de8e16a1491c03550b1888eb9b666497c34
-~
-Ncashmachine/src/main/java/cash/machine/cashmachine/models/OperationEntity.java,2\9\29dde524071b8afa0a46fec60b224179f390c40f
 ƒ
 Scashmachine/src/main/java/cash/machine/cashmachine/errors/ResponseErrorHandler.java,c\c\ccc846304c5ab3dc3c6263e94fbd8517c9618fd9

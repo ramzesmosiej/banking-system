@@ -1,8 +1,10 @@
 package cash.machine.cashmachine.endpoint;
 
 import cash.machine.cashmachine.models.OperationEntity;
+import cash.machine.cashmachine.models.PinEntity;
 import cash.machine.cashmachine.services.OperationService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -23,24 +25,14 @@ public class OperationController {
 
     private final OperationService operationService;
 
-    @PostMapping("/payment")
-    public ResponseEntity<String> makeAPayment(
-            @RequestBody @Valid OperationEntity operationEntity,
-            @RequestHeader(required = false) Locale lang
+    @PostMapping("/login")
+    public ResponseEntity<String> logIntoSystem(
+            @RequestBody PinEntity pinEntity,
+            @RequestHeader Locale lang
     ) {
-        var result = operationService.makeAPayment(operationEntity, lang);
-        return Objects.equals(result, "AUTH_ERROR") ?
-                ResponseEntity.status(403).build() : ResponseEntity.ok(result);
-    }
-
-    @PostMapping("/withdrawal")
-    public ResponseEntity<String> withdrawMoney(
-            @RequestBody @Valid OperationEntity operationEntity,
-            @RequestHeader(required = false) Locale lang
-    ) {
-        var result = operationService.withdrawMoney(operationEntity, lang);
-        return Objects.equals(result, "AUTH_ERROR") ?
-                ResponseEntity.status(403).build() : ResponseEntity.ok(result);
+        return Objects.equals(operationService.logInto(pinEntity.getCardID(), pinEntity.getCardPIN(), lang), "OK") ?
+                ResponseEntity.ok("Logged into") :
+                ResponseEntity.badRequest().build();
     }
 
 }
