@@ -85,8 +85,6 @@ C
 banking-app/pom.xml,e\c\ec0b19d76d2aa62c52c47bd80843f54867908c4e
 „
 Tcashmachine/src/main/java/cash/machine/cashmachine/services/PropertiesConnector.java,d\c\dc815cd1bd56f933310746ff833229959ca9e4f1
-ˆ
-Xbanking-app/src/main/java/com/bankingapp/bankingapp/rest/AccountOperationController.java,f\2\f2cb3e7b3b734ff070b51c2d546009b75da2a411
 |
 Lbanking-app/src/main/java/com/bankingapp/bankingapp/rest/AuthController.java,5\3\5360471839d2ff0b3523653b61abe8cdf238de92
 ƒ

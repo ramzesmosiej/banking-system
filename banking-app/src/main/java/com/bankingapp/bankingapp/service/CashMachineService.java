@@ -1,38 +1,25 @@
-package com.bankingapp.bankingapp.rest;
+package com.bankingapp.bankingapp.service;
 
-import com.bankingapp.bankingapp.DTO.MoneyTransferRequest;
 import com.bankingapp.bankingapp.config.KafkaTopicConfig;
-import com.bankingapp.bankingapp.domain.Card;
 import com.bankingapp.bankingapp.repository.AccountRepository;
 import com.bankingapp.bankingapp.repository.CardRepository;
 import com.bankingapp.bankingapp.repository.UserRepository;
-import com.bankingapp.bankingapp.service.AccountService;
-import com.bankingapp.bankingapp.service.AuthService;
-import com.bankingapp.bankingapp.service.PropertiesCashMachineIdsConnector;
-import com.bankingapp.bankingapp.service.PropertiesLanguageConnector;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Locale;
 
 @AllArgsConstructor
-@RestController
-@RequestMapping("/machine")
-public class CashMachineAuthorityController {
+@Service
+public class CashMachineService {
 
-    private final AuthService authService;
     private final AccountService accountService;
     private final CardRepository cardRepository;
 
     private final AccountRepository accountRepository;
-
-    private final UserRepository userRepository;
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final KafkaTopicConfig kafkaTopicConfig;
 
@@ -100,15 +87,4 @@ public class CashMachineAuthorityController {
         }
     }
 
-
-
-    @PutMapping("/transfer/money")
-    public ResponseEntity<String> transferMoney(@RequestBody MoneyTransferRequest transferRequest)
-            throws InterruptedException {
-        return ResponseEntity.ok(accountService.transferMoney(
-                transferRequest.getSenderId(),
-                transferRequest.getReceiverId(),
-                transferRequest.getAmount()
-        ));
-    }
 }

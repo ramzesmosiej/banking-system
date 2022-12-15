@@ -25,6 +25,10 @@ public class OperationService {
     private static Boolean isLoggedIn = false;
     private static String systemMsg = "";
 
+    /***
+     * Logging method to cash machine
+     * @param pinStatus
+     */
     @Async
     @KafkaListener(
             topics = "${account.cashmachine.pin.receive}",
@@ -45,14 +49,10 @@ public class OperationService {
             return "AUTH_ERROR";
     }
 
-    private void communicationWithBank() {
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
+    /***
+     * Payment method
+     * @param systemMsg
+     */
     @Async
     @KafkaListener(
             topics = "${account.cashmachine.payment.receive}",
@@ -61,7 +61,6 @@ public class OperationService {
     public synchronized void paymentListening(@Payload String systemMsg) {
         if(!systemMsg.isEmpty()) OperationService.systemMsg = systemMsg;
     }
-
 
     public synchronized String makeAPayment(Long cardId, Double amountOfMoney, Locale lang) {
         if (Boolean.TRUE.equals(isLoggedIn)) {
@@ -82,31 +81,13 @@ public class OperationService {
     }
 
 
-    /*public String makeAPayment(OperationEntity operationEntity, Locale lang) {
-        var operationStatus = kafkaTemplate.send(kafkaTopicConfig.getPayment(), returnCredentials(operationEntity, lang));
-
-        operationStatus.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
-            @Override
-            public void onFailure(Throwable ex) {
-                System.out.println("FAILURE");
-            }
-
-            @Override
-            public void onSuccess(SendResult<String, String> result) {
-                System.out.println(result);
-            }
-        });
-
-        return "";
+    // Helper method
+    private void communicationWithBank() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
-
-    public String withdrawMoney(OperationEntity operationEntity, Locale lang) {
-        return "";
-    }
-
-    private String returnCredentials(OperationEntity operationEntity, Locale lang) {
-        return operationEntity.getCardID() + operationEntity.getCardPIN() + operationEntity.getAmountOfMoney() + lang;
-    }*/
-
 
 }
