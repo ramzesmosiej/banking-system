@@ -1,16 +1,12 @@
 package cash.machine.cashmachine.services;
 
 import cash.machine.cashmachine.config.KafkaTopicConfig;
-import cash.machine.cashmachine.models.OperationEntity;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import java.util.Locale;
 
@@ -72,7 +68,7 @@ public class OperationService {
             communicationWithBank();
             OperationService.isLoggedIn = false;
 
-            if(systemMsg.isEmpty())
+            if(OperationService.systemMsg.isEmpty())
                 return "";
             else
                 return systemMsg;
@@ -102,7 +98,7 @@ public class OperationService {
             communicationWithBank();
             OperationService.isLoggedIn = false;
 
-            if(systemMsg.isEmpty())
+            if(OperationService.systemMsg.isEmpty())
                 return "";
             else
                 return systemMsg;
@@ -133,7 +129,7 @@ public class OperationService {
             communicationWithBank();
             OperationService.isLoggedIn = false;
 
-            if(systemMsg.isEmpty())
+            if(OperationService.systemMsg.isEmpty())
                 return "";
             else
                 return systemMsg;
