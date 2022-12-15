@@ -85,8 +85,6 @@ C
 banking-app/pom.xml,e\c\ec0b19d76d2aa62c52c47bd80843f54867908c4e
 „
 Tcashmachine/src/main/java/cash/machine/cashmachine/services/PropertiesConnector.java,d\c\dc815cd1bd56f933310746ff833229959ca9e4f1
-|
-Lbanking-app/src/main/java/com/bankingapp/bankingapp/rest/AuthController.java,5\3\5360471839d2ff0b3523653b61abe8cdf238de92
 ƒ
 Sbanking-app/src/main/java/com/bankingapp/bankingapp/config/KafkaConsumerConfig.java,0\b\0bd559915d5f9f5346b88b8db188225270def7ba
 C

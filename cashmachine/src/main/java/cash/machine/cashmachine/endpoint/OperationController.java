@@ -50,4 +50,19 @@ public class OperationController {
                 ResponseEntity.ok(msgFromServer);
     }
 
+    @PostMapping("/withdraw")
+    public ResponseEntity<String> makeAWithdraw(
+            @RequestBody OperationEntity operationEntity,
+            @RequestHeader Locale lang
+    ) {
+        var msgFromServer = operationService.makeAWithdraw(
+                operationEntity.getCardID(),
+                operationEntity.getAmountOfMoney(),
+                lang
+        );
+        return msgFromServer.isEmpty() ?
+                ResponseEntity.status(403).build() :
+                ResponseEntity.ok(msgFromServer);
+    }
+
 }

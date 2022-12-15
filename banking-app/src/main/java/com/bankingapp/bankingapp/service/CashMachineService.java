@@ -26,7 +26,10 @@ public class CashMachineService {
     private final PropertiesCashMachineIdsConnector propertiesCashMachineIdsConnector;
     private final PropertiesLanguageConnector propertiesLanguageConnector;
 
-
+    /***
+     * Logging method
+     * @param credentials
+     */
     @KafkaListener(
             topics = "${account.cashmachine.pin.send}",
             groupId = "logging"
@@ -53,6 +56,10 @@ public class CashMachineService {
         }
     }
 
+    /***
+     * Payment method
+     * @param credentials
+     */
     @KafkaListener(
             topics = "${account.cashmachine.payment.send}",
             groupId = "payment"
@@ -84,6 +91,44 @@ public class CashMachineService {
                     Double.parseDouble(loggingData[2]),
                     Locale.forLanguageTag(loggingData[3]));
             kafkaTemplate.send(kafkaTopicConfig.getPaymentReceive(), msg);
+        }
+    }
+
+    /***
+     * Withdraw method
+     * @param credentials
+     */
+    @KafkaListener(
+            topics = "${account.cashmachine.withdraw.send}",
+            groupId = "withdraw"
+    )
+    public void makeAWithdraw(@Payload String credentials) {
+        var loggingData = credentials.split(";");
+
+        // check cashmachine
+        var cashMachineId = loggingData[0];
+        if (
+                !cashMachineId.equals(propertiesCashMachineIdsConnector.getDominikanski()) &&
+                        !cashMachineId.equals(propertiesCashMachineIdsConnector.getDworzec_glowny()) &&
+                        !cashMachineId.equals(propertiesCashMachineIdsConnector.getGrunwaldzki())
+        ) return;
+
+        // check card
+        var cardId = Long.parseLong(loggingData[1]);
+        var optionalCard = cardRepository.findById(cardId);
+
+        if (optionalCard.isPresent()) {
+            var card = optionalCard.get();
+            var account = accountRepository.findById(card.getAccount().getId());
+
+            if (account.isEmpty())
+                return;
+
+            var msg = accountService.takeCashFromAccount(
+                    account.get().getId(),
+                    Double.parseDouble(loggingData[2]),
+                    Locale.forLanguageTag(loggingData[3]));
+            kafkaTemplate.send(kafkaTopicConfig.getWithdrawReceive(), msg);
         }
     }
 

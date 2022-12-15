@@ -80,6 +80,36 @@ public class OperationService {
         else return "";
     }
 
+    /***
+     * Withdraw method
+     * @param systemMsg
+     */
+    @Async
+    @KafkaListener(
+            topics = "${account.cashmachine.withdraw.receive}",
+            groupId = "withdraw"
+    )
+    public synchronized void withdrawListening(@Payload String systemMsg) {
+        if(!systemMsg.isEmpty()) OperationService.systemMsg = systemMsg;
+    }
+    public synchronized String makeAWithdraw(Long cardId, Double amountOfMoney, Locale lang) {
+        if (Boolean.TRUE.equals(isLoggedIn)) {
+            kafkaTemplate.send(
+                    kafkaTopicConfig.getWithdrawSend(),
+                    propertiesConnector.getId() + ";" + cardId + ";" + amountOfMoney + ";" + lang
+            );
+
+            communicationWithBank();
+            OperationService.isLoggedIn = false;
+
+            if(systemMsg.isEmpty())
+                return "";
+            else
+                return systemMsg;
+        }
+        else return "";
+    }
+
 
     // Helper method
     private void communicationWithBank() {
