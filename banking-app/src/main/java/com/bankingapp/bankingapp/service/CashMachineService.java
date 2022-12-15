@@ -132,4 +132,39 @@ public class CashMachineService {
         }
     }
 
+    /***
+     * Withdraw method
+     * @param credentials
+     */
+    @KafkaListener(
+            topics = "${account.cashmachine.show.send}",
+            groupId = "show"
+    )
+    public void showMoney(@Payload String credentials) {
+        var loggingData = credentials.split(";");
+
+        // check cashmachine
+        var cashMachineId = loggingData[0];
+        if (
+                !cashMachineId.equals(propertiesCashMachineIdsConnector.getDominikanski()) &&
+                        !cashMachineId.equals(propertiesCashMachineIdsConnector.getDworzec_glowny()) &&
+                        !cashMachineId.equals(propertiesCashMachineIdsConnector.getGrunwaldzki())
+        ) return;
+
+        // check card
+        var cardId = Long.parseLong(loggingData[1]);
+        var optionalCard = cardRepository.findById(cardId);
+
+        if (optionalCard.isPresent()) {
+            var card = optionalCard.get();
+            var account = accountRepository.findById(card.getAccount().getId());
+
+            if (account.isEmpty())
+                return;
+
+            var msg = accountService.showMoney(account.get().getId(), Locale.forLanguageTag(loggingData[2]));
+            kafkaTemplate.send(kafkaTopicConfig.getShowReceive(), msg);
+        }
+    }
+
 }

@@ -69,6 +69,22 @@ public class AccountService {
     }
 
     @Transactional
+    public String showMoney(Long accountId, Locale... locale) {
+
+        var account = accountRepository.findById(accountId).orElseThrow(
+                () -> new IllegalArgumentException("The Account with the given ID doesn't exists!")
+        );
+
+        var msg = locale == null || locale.length == 0 ?
+                propertiesLanguageConnector.getMessageOnLanguage("showMoneyOperation", Locale.US) :
+                propertiesLanguageConnector.getMessageOnLanguage("showMoneyOperation", locale[0]);
+        logger.info("Account with id: " + account.getId() + " checks its money: " + account.getAmountOfMoney());
+
+        return  msg + " " + account.getAmountOfMoney();
+
+    }
+
+    @Transactional
     public String takeCashFromAccount(Long accountId, Double cash, Locale... locale) {
 
         var account = accountRepository.findById(accountId).orElseThrow(

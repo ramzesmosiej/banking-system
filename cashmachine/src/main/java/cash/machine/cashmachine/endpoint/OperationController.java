@@ -1,5 +1,6 @@
 package cash.machine.cashmachine.endpoint;
 
+import cash.machine.cashmachine.models.CheckMoney;
 import cash.machine.cashmachine.models.OperationEntity;
 import cash.machine.cashmachine.models.PinEntity;
 import cash.machine.cashmachine.services.OperationService;
@@ -58,6 +59,20 @@ public class OperationController {
         var msgFromServer = operationService.makeAWithdraw(
                 operationEntity.getCardID(),
                 operationEntity.getAmountOfMoney(),
+                lang
+        );
+        return msgFromServer.isEmpty() ?
+                ResponseEntity.status(403).build() :
+                ResponseEntity.ok(msgFromServer);
+    }
+
+    @PostMapping("/show")
+    public ResponseEntity<String> showAccountMoney(
+            @RequestBody CheckMoney checkMoney,
+            @RequestHeader Locale lang
+    ) {
+        var msgFromServer = operationService.showMoney(
+                checkMoney.getCardID(),
                 lang
         );
         return msgFromServer.isEmpty() ?

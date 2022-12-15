@@ -28,6 +28,12 @@ public class KafkaTopicConfig {
     @Value("${account.cashmachine.withdraw.receive}")
     private String withdrawReceive;
 
+    @Value("${account.cashmachine.show.send}")
+    private String showSend;
+
+    @Value("${account.cashmachine.show.receive}")
+    private String showReceive;
+
     @Bean
     public NewTopic sendPinToVerification() {
         return TopicBuilder.name(sendPin).build();
@@ -55,6 +61,16 @@ public class KafkaTopicConfig {
 
     @Bean
     public NewTopic receiveWithdraw() {
+        return TopicBuilder.name(withdrawReceive).build();
+    }
+
+    @Bean
+    public NewTopic sendShow() {
+        return TopicBuilder.name(withdrawSend).build();
+    }
+
+    @Bean
+    public NewTopic receiveShow() {
         return TopicBuilder.name(withdrawReceive).build();
     }
 
