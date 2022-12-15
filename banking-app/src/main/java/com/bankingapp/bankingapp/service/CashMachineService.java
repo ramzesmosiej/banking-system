@@ -39,11 +39,7 @@ public class CashMachineService {
 
         // check cashmachine
         var cashMachineId = loggingData[0];
-        if (
-                !cashMachineId.equals(propertiesCashMachineIdsConnector.getDominikanski()) &&
-                !cashMachineId.equals(propertiesCashMachineIdsConnector.getDworzec_glowny()) &&
-                !cashMachineId.equals(propertiesCashMachineIdsConnector.getGrunwaldzki())
-        ) return;
+        if (Boolean.FALSE.equals(isCashMachineNumberValid(cashMachineId))) return;
 
         // check card
         var cardId = Long.parseLong(loggingData[1]);
@@ -51,7 +47,7 @@ public class CashMachineService {
 
         if (optionalCard.isPresent()) {
             var card = optionalCard.get();
-            if (card.getPIN().equals(loggingData[2]))
+            if (card.getIsActive() && card.getPIN().equals(loggingData[2]))
                 kafkaTemplate.send(kafkaTopicConfig.getReceivePinAnswear(), "OK");
         }
     }
@@ -69,11 +65,7 @@ public class CashMachineService {
 
         // check cashmachine
         var cashMachineId = loggingData[0];
-        if (
-                !cashMachineId.equals(propertiesCashMachineIdsConnector.getDominikanski()) &&
-                        !cashMachineId.equals(propertiesCashMachineIdsConnector.getDworzec_glowny()) &&
-                        !cashMachineId.equals(propertiesCashMachineIdsConnector.getGrunwaldzki())
-        ) return;
+        if (Boolean.FALSE.equals(isCashMachineNumberValid(cashMachineId))) return;
 
         // check card
         var cardId = Long.parseLong(loggingData[1]);
@@ -81,10 +73,10 @@ public class CashMachineService {
 
         if (optionalCard.isPresent()) {
             var card = optionalCard.get();
-            var account = accountRepository.findById(card.getAccount().getId());
+            if (!card.getIsActive()) return;
 
-            if (account.isEmpty())
-                return;
+            var account = accountRepository.findById(card.getAccount().getId());
+            if (account.isEmpty()) return;
 
             var msg = accountService.addCashToAccount(
                     account.get().getId(),
@@ -107,11 +99,7 @@ public class CashMachineService {
 
         // check cashmachine
         var cashMachineId = loggingData[0];
-        if (
-                !cashMachineId.equals(propertiesCashMachineIdsConnector.getDominikanski()) &&
-                        !cashMachineId.equals(propertiesCashMachineIdsConnector.getDworzec_glowny()) &&
-                        !cashMachineId.equals(propertiesCashMachineIdsConnector.getGrunwaldzki())
-        ) return;
+        if (Boolean.FALSE.equals(isCashMachineNumberValid(cashMachineId))) return;
 
         // check card
         var cardId = Long.parseLong(loggingData[1]);
@@ -119,10 +107,10 @@ public class CashMachineService {
 
         if (optionalCard.isPresent()) {
             var card = optionalCard.get();
-            var account = accountRepository.findById(card.getAccount().getId());
+            if (!card.getIsActive()) return;
 
-            if (account.isEmpty())
-                return;
+            var account = accountRepository.findById(card.getAccount().getId());
+            if (account.isEmpty()) return;
 
             var msg = accountService.takeCashFromAccount(
                     account.get().getId(),
@@ -157,14 +145,21 @@ public class CashMachineService {
 
         if (optionalCard.isPresent()) {
             var card = optionalCard.get();
-            var account = accountRepository.findById(card.getAccount().getId());
+            if (!card.getIsActive()) return;
 
-            if (account.isEmpty())
-                return;
+            var account = accountRepository.findById(card.getAccount().getId());
+            if (account.isEmpty()) return;
 
             var msg = accountService.showMoney(account.get().getId(), Locale.forLanguageTag(loggingData[2]));
             kafkaTemplate.send(kafkaTopicConfig.getShowReceive(), msg);
         }
+    }
+
+    // helper methods
+    private Boolean isCashMachineNumberValid(String cashMachineNumber) {
+        return  cashMachineNumber.equals(propertiesCashMachineIdsConnector.getDominikanski()) ||
+                cashMachineNumber.equals(propertiesCashMachineIdsConnector.getDworzec_glowny()) ||
+                cashMachineNumber.equals(propertiesCashMachineIdsConnector.getGrunwaldzki());
     }
 
 }

@@ -1,5 +1,6 @@
 package com.bankingapp.bankingapp.rest;
 
+import com.bankingapp.bankingapp.DTO.ChangePinRequest;
 import com.bankingapp.bankingapp.DTO.LoginRequest;
 import com.bankingapp.bankingapp.DTO.RegistrationRequest;
 import com.bankingapp.bankingapp.domain.User;
@@ -26,6 +27,16 @@ public class AuthController {
     private final AuthService authService;
     private final CardService cardService;
 
+    @PostMapping("/changepin")
+    public ResponseEntity<String> changePin(@RequestBody ChangePinRequest changePinRequest) {
+        return ResponseEntity.ok(cardService.changePIN(changePinRequest.getCardID(), changePinRequest.getNewPin()));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.ok(authService.loginIntoSystem(loginRequest.getLogin(), loginRequest.getPassword()));
+    }
+
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody RegistrationRequest inputUser) throws URISyntaxException {
         User savedUser = authService.registerUser(inputUser);
@@ -44,12 +55,6 @@ public class AuthController {
         return ResponseEntity.created(new URI("/api/operations/" + user.getId())).body("New user with id: "
                 + user.getId() + " and login: " + user.getLogin() + " registered. New card is created with id: " +
                 card.getId() + " and account with id: " + account.getId());
-    }
-
-
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        return ResponseEntity.ok(authService.loginIntoSystem(loginRequest.getLogin(), loginRequest.getPassword()));
     }
 
 }

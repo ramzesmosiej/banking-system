@@ -27,6 +27,8 @@ public class Card {
     @Size(min = 4, max = 4)
     private String PIN;
 
+    private Boolean isActive;
+
     /*@JsonIgnore
     @ManyToOne
     @JoinColumn(name = "card_id", referencedColumnName = "id")

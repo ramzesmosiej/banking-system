@@ -13,13 +13,16 @@ public class CardService {
     private CardRepository cardRepository;
 
     public Card createCard(String pin) {
-        return cardRepository.save(Card.builder().PIN(pin).build());
+        return cardRepository.save(Card.builder().PIN(pin).isActive(false).build());
     }
 
     public String changePIN(Long cardId, String newPin) {
         var card = cardRepository.findById(cardId).orElseThrow(
                 () -> new CardNotFoundException("Card with the given id doesn't exists!")
         );
+
+        if (!card.getIsActive())
+            card.setIsActive(true);
 
         card.setPIN(newPin);
         cardRepository.save(card);
