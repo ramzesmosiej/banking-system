@@ -1,24 +1,12 @@
 package cash.machine.cashmachine.services;
 
-import com.client.openfeign.clients.BankingAppClient;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
-
-import java.util.Locale;
-
-import static cash.machine.cashmachine.TestConsts.VALID_OPERATION_ENTITY;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class OperationServiceTest {
 
-    @Mock
+    /*@Mock
     BankingAppClient bankingAppClient;
 
     @Mock
@@ -75,5 +63,5 @@ class OperationServiceTest {
         when(bankingAppClient.isPINCorrect(anyLong(), anyString(), anyString()))
                 .thenReturn(ResponseEntity.badRequest().body(shouldReturn));
     }
-
+*/
 }

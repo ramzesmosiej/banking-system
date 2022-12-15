@@ -9,6 +9,7 @@ import com.bankingapp.bankingapp.repository.UserRepository;
 import com.bankingapp.bankingapp.service.AccountService;
 import com.bankingapp.bankingapp.service.AuthService;
 import com.bankingapp.bankingapp.service.PropertiesCashMachineIdsConnector;
+import com.bankingapp.bankingapp.service.PropertiesLanguageConnector;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,7 @@ public class CashMachineAuthorityController {
     private final KafkaTopicConfig kafkaTopicConfig;
 
     private final PropertiesCashMachineIdsConnector propertiesCashMachineIdsConnector;
+    private final PropertiesLanguageConnector propertiesLanguageConnector;
 
 
     @KafkaListener(
@@ -51,8 +53,7 @@ public class CashMachineAuthorityController {
                 !cashMachineId.equals(propertiesCashMachineIdsConnector.getDominikanski()) &&
                 !cashMachineId.equals(propertiesCashMachineIdsConnector.getDworzec_glowny()) &&
                 !cashMachineId.equals(propertiesCashMachineIdsConnector.getGrunwaldzki())
-        )
-            return;
+        ) return;
 
         // check card
         var cardId = Long.parseLong(loggingData[1]);
@@ -65,44 +66,41 @@ public class CashMachineAuthorityController {
         }
     }
 
+    @KafkaListener(
+            topics = "${account.cashmachine.payment.send}",
+            groupId = "payment"
+    )
+    public void makeAPayment(@Payload String credentials) {
+        var loggingData = credentials.split(";");
 
-    @GetMapping("/auth/card")
-    public ResponseEntity<Boolean> isPINCorrect(
-            @RequestParam(name = "cardID") Long cardID,
-            @RequestParam(name = "cardPIN") String cardPIN,
-            @RequestHeader(name = "cash-machine") String auth
-    ) {
-        var optionalCard = cardRepository.findById(cardID);
+        // check cashmachine
+        var cashMachineId = loggingData[0];
+        if (
+                !cashMachineId.equals(propertiesCashMachineIdsConnector.getDominikanski()) &&
+                        !cashMachineId.equals(propertiesCashMachineIdsConnector.getDworzec_glowny()) &&
+                        !cashMachineId.equals(propertiesCashMachineIdsConnector.getGrunwaldzki())
+        ) return;
 
-        if (optionalCard.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        // check card
+        var cardId = Long.parseLong(loggingData[1]);
+        var optionalCard = cardRepository.findById(cardId);
 
-        return ResponseEntity.ok(cardPIN.equals(optionalCard.get().getPIN()));
+        if (optionalCard.isPresent()) {
+            var card = optionalCard.get();
+            var account = accountRepository.findById(card.getAccount().getId());
+
+            if (account.isEmpty())
+                return;
+
+            var msg = accountService.addCashToAccount(
+                    account.get().getId(),
+                    Double.parseDouble(loggingData[2]),
+                    Locale.forLanguageTag(loggingData[3]));
+            kafkaTemplate.send(kafkaTopicConfig.getPaymentReceive(), msg);
+        }
     }
 
-    @PostMapping("/add/cash")
-    public ResponseEntity<?> addCashToAccount(
-            @RequestParam(name = "cardID") Long cardID,
-            @RequestParam(name = "amount") Double amount,
-            @RequestHeader(name = "cash-machine") String auth,
-            @RequestHeader(name = "lang", required = false) Locale locale
-    ) {
-        var ownerAccount = cardRepository.findById(cardID).orElseThrow();
-        // transactional method
-        return ResponseEntity.ok(accountService.addCashToAccount(ownerAccount.getAccount().getId(), amount, locale));
-    }
 
-    @PostMapping("/withdraw/cash")
-    public ResponseEntity<?> withdrawCash(
-            @RequestParam(name = "cardID") Long cardID,
-            @RequestParam(name = "amount") Double amount,
-            @RequestHeader(name = "cash-machine") String auth,
-            @RequestHeader(name = "lang", required = false) Locale locale
-    ){
-        var ownerAccount = cardRepository.findById(cardID).orElseThrow();
-        // transactional method
-        return ResponseEntity.ok(accountService.takeCashFromAccount(ownerAccount.getAccount().getId(), amount, locale));
-    }
 
     @PutMapping("/transfer/money")
     public ResponseEntity<String> transferMoney(@RequestBody MoneyTransferRequest transferRequest)

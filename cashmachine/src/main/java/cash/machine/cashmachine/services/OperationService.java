@@ -23,6 +23,7 @@ public class OperationService {
     private final PropertiesConnector propertiesConnector;
 
     private static Boolean isLoggedIn = false;
+    private static String systemMsg = "";
 
     @Async
     @KafkaListener(
@@ -50,6 +51,34 @@ public class OperationService {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Async
+    @KafkaListener(
+            topics = "${account.cashmachine.payment.receive}",
+            groupId = "payment"
+    )
+    public synchronized void paymentListening(@Payload String systemMsg) {
+        if(!systemMsg.isEmpty()) OperationService.systemMsg = systemMsg;
+    }
+
+
+    public synchronized String makeAPayment(Long cardId, Double amountOfMoney, Locale lang) {
+        if (Boolean.TRUE.equals(isLoggedIn)) {
+            kafkaTemplate.send(
+                    kafkaTopicConfig.getPaymentSend(),
+                    propertiesConnector.getId() + ";" + cardId + ";" + amountOfMoney + ";" + lang
+            );
+
+            communicationWithBank();
+            OperationService.isLoggedIn = false;
+
+            if(systemMsg.isEmpty())
+                return "";
+            else
+                return systemMsg;
+        }
+        else return "";
     }
 
 

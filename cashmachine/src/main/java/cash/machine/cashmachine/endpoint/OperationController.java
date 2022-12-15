@@ -32,7 +32,22 @@ public class OperationController {
     ) {
         return Objects.equals(operationService.logInto(pinEntity.getCardID(), pinEntity.getCardPIN(), lang), "OK") ?
                 ResponseEntity.ok("Logged into") :
-                ResponseEntity.badRequest().build();
+                ResponseEntity.status(403).build();
+    }
+
+    @PostMapping("/payment")
+    public ResponseEntity<String> makeAPayment(
+            @RequestBody OperationEntity operationEntity,
+            @RequestHeader Locale lang
+    ) {
+        var msgFromServer = operationService.makeAPayment(
+                operationEntity.getCardID(),
+                operationEntity.getAmountOfMoney(),
+                lang
+        );
+        return msgFromServer.isEmpty() ?
+                ResponseEntity.status(403).build() :
+                ResponseEntity.ok(msgFromServer);
     }
 
 }
