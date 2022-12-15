@@ -34,11 +34,11 @@ public class OperationService {
             topics = "${account.cashmachine.pin.receive}",
             groupId = "logging"
     )
-    public synchronized void logging(@Payload String pinStatus) {
+    public void logging(@Payload String pinStatus) {
         if(pinStatus.equals("OK")) OperationService.isLoggedIn = true;
     }
 
-    public synchronized String logInto(Long cardID, String cardPIN, Locale lang) {
+    public String logInto(Long cardID, String cardPIN, Locale lang) {
         kafkaTemplate.send(kafkaTopicConfig.getSendPin(), propertiesConnector.getId() + ";" + cardID + ";" + cardPIN);
 
         communicationWithBank();
@@ -53,15 +53,16 @@ public class OperationService {
      * Payment method
      * @param systemMsg
      */
+    @Async
     @KafkaListener(
             topics = "${account.cashmachine.payment.receive}",
             groupId = "payment"
     )
-    public synchronized void paymentListening(@Payload String systemMsg) {
+    public void paymentListening(@Payload String systemMsg) {
         if(!systemMsg.isEmpty()) OperationService.systemMsg = systemMsg;
     }
 
-    public synchronized String makeAPayment(Long cardId, Double amountOfMoney, Locale lang) {
+    public String makeAPayment(Long cardId, Double amountOfMoney, Locale lang) {
         if (Boolean.TRUE.equals(isLoggedIn)) {
             kafkaTemplate.send(
                     kafkaTopicConfig.getPaymentSend(),
@@ -83,14 +84,15 @@ public class OperationService {
      * Withdraw method
      * @param systemMsg
      */
+    @Async
     @KafkaListener(
             topics = "${account.cashmachine.withdraw.receive}",
             groupId = "withdraw"
     )
-    public synchronized void withdrawListening(@Payload String systemMsg) {
+    public void withdrawListening(@Payload String systemMsg) {
         if(!systemMsg.isEmpty()) OperationService.systemMsg = systemMsg;
     }
-    public synchronized String makeAWithdraw(Long cardId, Double amountOfMoney, Locale lang) {
+    public String makeAWithdraw(Long cardId, Double amountOfMoney, Locale lang) {
         if (Boolean.TRUE.equals(isLoggedIn)) {
             kafkaTemplate.send(
                     kafkaTopicConfig.getWithdrawSend(),
@@ -112,15 +114,16 @@ public class OperationService {
      * Show money method
      * @param money
      */
+    @Async
     @KafkaListener(
             topics = "${account.cashmachine.show.receive}",
             groupId = "show"
     )
-    public synchronized void showing(@Payload String money) {
+    public void showing(@Payload String money) {
         if(!money.isEmpty()) OperationService.systemMsg = money;
     }
 
-    public synchronized String showMoney(Long cardID, Locale lang) {
+    public String showMoney(Long cardID, Locale lang) {
         if (Boolean.TRUE.equals(isLoggedIn)) {
             kafkaTemplate.send(
                     kafkaTopicConfig.getShowSend(),
