@@ -83,22 +83,29 @@ public class OperationService {
         if(!systemMsg.isEmpty()) this.systemMsg = systemMsg;
     }
 
-    public String makeAPayment(Long cardId, Double amountOfMoney, Locale lang) {
+    public String makeAPayment(Long cardID, Double amountOfMoney, Locale lang) {
         if (Boolean.TRUE.equals(isLoggedIn)) {
             kafkaTemplate.send(
                     kafkaTopicConfig.getPaymentSend(),
-                    propertiesConnector.getId() + ";" + cardId + ";" + amountOfMoney + ";" + lang
+                    propertiesConnector.getId() + ";" + cardID + ";" + amountOfMoney + ";" + lang
             );
 
             communicationWithBank();
             isLoggedIn = false;
 
-            if(this.systemMsg.isEmpty())
+            if(this.systemMsg.isEmpty()) {
+                logger.info(String.format("Card with id %s error during payment.", cardID));
                 return "";
-            else
+            }
+            else {
+                logger.info(String.format("Card with id %s makes a payment %s.", cardID, amountOfMoney.toString()));
                 return systemMsg;
+            }
         }
-        else return "";
+        else {
+            logger.info(String.format("Card with id %s error during payment.", cardID));
+            return "";
+        }
     }
 
     /***
@@ -113,22 +120,28 @@ public class OperationService {
     public void withdrawListening(@Payload String systemMsg) {
         if(!systemMsg.isEmpty()) this.systemMsg = systemMsg;
     }
-    public String makeAWithdraw(Long cardId, Double amountOfMoney, Locale lang) {
+    public String makeAWithdraw(Long cardID, Double amountOfMoney, Locale lang) {
         if (Boolean.TRUE.equals(isLoggedIn)) {
             kafkaTemplate.send(
                     kafkaTopicConfig.getWithdrawSend(),
-                    propertiesConnector.getId() + ";" + cardId + ";" + amountOfMoney + ";" + lang
+                    propertiesConnector.getId() + ";" + cardID + ";" + amountOfMoney + ";" + lang
             );
 
             communicationWithBank();
             isLoggedIn = false;
 
-            if(this.systemMsg.isEmpty())
+            if(this.systemMsg.isEmpty()) {
+                logger.info(String.format("Card with id %s error during withdraw.", cardID));
                 return "";
+            }
             else
+                logger.info(String.format("Card with id %s makes a withdraw %s.", cardID, amountOfMoney.toString()));
                 return systemMsg;
         }
-        else return "";
+        else {
+            logger.info(String.format("Card with id %s error during withdraw.", cardID));
+            return "";
+        }
     }
 
     /***
@@ -154,19 +167,36 @@ public class OperationService {
             communicationWithBank();
             isLoggedIn = false;
 
-            if(this.systemMsg.isEmpty())
+            if(this.systemMsg.isEmpty()) {
+                logger.info(String.format("Card with id %s error during showing account status.", cardID));
                 return "";
-            else
+            }
+            else {
+                logger.info(String.format("Card with id %s checks its account status.", cardID));
                 return systemMsg;
+            }
         }
-        else return "";
+        else {
+            logger.info(String.format("Card with id %s error during showing account status.", cardID));
+            return "";
+        }
     }
 
-
+    /***
+     * Autmomaticly logout user after 10 seconds
+     */
     @Async
     @Scheduled(fixedRate = 5000)
     public void logOut() {
-        if (Boolean.TRUE.equals(isLoggedIn)) isLoggedIn = false;
+        if (Boolean.TRUE.equals(isLoggedIn)) {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            logger.info(String.format("Card with id %s logged out.", this.actualCard));
+            isLoggedIn = false;
+        }
     }
 
 
