@@ -1,29 +1,48 @@
 package cash.machine.cashmachine.services;
 
 import cash.machine.cashmachine.config.KafkaTopicConfig;
-import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
 
-@AllArgsConstructor
 @Service
 public class OperationService {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final KafkaTopicConfig kafkaTopicConfig;
+    private final Logger logger = LoggerFactory.getLogger(OperationService.class);
     private final PropertiesConnector propertiesConnector;
 
-    private static Boolean isLoggedIn = false;
-    private static String systemMsg = "";
+    /***
+     * variables that take care about the user credentials
+     */
+    private Long actualCard;
+    private Boolean isLoggedIn;
+    private String systemMsg;
+
+    public OperationService(
+            KafkaTemplate<String, String> kafkaTemplate,
+            KafkaTopicConfig kafkaTopicConfig,
+            PropertiesConnector propertiesConnector
+    ) {
+        this.kafkaTemplate = kafkaTemplate;
+        this.kafkaTopicConfig = kafkaTopicConfig;
+        this.propertiesConnector = propertiesConnector;
+        actualCard = 0L;
+        this.isLoggedIn = false;
+        this.systemMsg = "";
+    }
 
     /***
      * Logging method to cash machine
-     * @param pinStatus
+     * @param pinStatus - If the pin is correct this value equals OK
      */
     @Async
     @KafkaListener(
@@ -31,7 +50,7 @@ public class OperationService {
             groupId = "logging"
     )
     public void logging(@Payload String pinStatus) {
-        if(pinStatus.equals("OK")) OperationService.isLoggedIn = true;
+        if(pinStatus.equals("OK")) isLoggedIn = true;
     }
 
     public String logInto(Long cardID, String cardPIN, Locale lang) {
@@ -39,10 +58,16 @@ public class OperationService {
 
         communicationWithBank();
 
-        if(Boolean.TRUE.equals(OperationService.isLoggedIn))
+        if(Boolean.TRUE.equals(isLoggedIn)) {
+            logger.info(String.format("Card with id %s logged into.", cardID));
+            this.actualCard = cardID;
             return "OK";
-        else
+        }
+
+        else {
+            logger.info(String.format("Card with id %s didn't log into.", cardID));
             return "AUTH_ERROR";
+        }
     }
 
     /***
@@ -55,7 +80,7 @@ public class OperationService {
             groupId = "payment"
     )
     public void paymentListening(@Payload String systemMsg) {
-        if(!systemMsg.isEmpty()) OperationService.systemMsg = systemMsg;
+        if(!systemMsg.isEmpty()) this.systemMsg = systemMsg;
     }
 
     public String makeAPayment(Long cardId, Double amountOfMoney, Locale lang) {
@@ -66,9 +91,9 @@ public class OperationService {
             );
 
             communicationWithBank();
-            OperationService.isLoggedIn = false;
+            isLoggedIn = false;
 
-            if(OperationService.systemMsg.isEmpty())
+            if(this.systemMsg.isEmpty())
                 return "";
             else
                 return systemMsg;
@@ -86,7 +111,7 @@ public class OperationService {
             groupId = "withdraw"
     )
     public void withdrawListening(@Payload String systemMsg) {
-        if(!systemMsg.isEmpty()) OperationService.systemMsg = systemMsg;
+        if(!systemMsg.isEmpty()) this.systemMsg = systemMsg;
     }
     public String makeAWithdraw(Long cardId, Double amountOfMoney, Locale lang) {
         if (Boolean.TRUE.equals(isLoggedIn)) {
@@ -96,9 +121,9 @@ public class OperationService {
             );
 
             communicationWithBank();
-            OperationService.isLoggedIn = false;
+            isLoggedIn = false;
 
-            if(OperationService.systemMsg.isEmpty())
+            if(this.systemMsg.isEmpty())
                 return "";
             else
                 return systemMsg;
@@ -116,7 +141,7 @@ public class OperationService {
             groupId = "show"
     )
     public void showing(@Payload String money) {
-        if(!money.isEmpty()) OperationService.systemMsg = money;
+        if(!money.isEmpty()) this.systemMsg = money;
     }
 
     public String showMoney(Long cardID, Locale lang) {
@@ -127,9 +152,9 @@ public class OperationService {
             );
 
             communicationWithBank();
-            OperationService.isLoggedIn = false;
+            isLoggedIn = false;
 
-            if(OperationService.systemMsg.isEmpty())
+            if(this.systemMsg.isEmpty())
                 return "";
             else
                 return systemMsg;
@@ -138,10 +163,17 @@ public class OperationService {
     }
 
 
+    @Async
+    @Scheduled(fixedRate = 5000)
+    public void logOut() {
+        if (Boolean.TRUE.equals(isLoggedIn)) isLoggedIn = false;
+    }
+
+
     // Helper method
     private void communicationWithBank() {
         try {
-            Thread.sleep(100);
+            Thread.sleep(150);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
