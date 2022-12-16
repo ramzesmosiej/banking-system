@@ -87,8 +87,6 @@ Lbanking-app/src/main/java/com/bankingapp/bankingapp/service/AuthService.java,b
 Nbanking-app/src/main/java/com/bankingapp/bankingapp/BankingAppApplication.java,b\a\bac740dce4deeff55ac71335fe51d67458dc192b
 t
 Dbanking-app/src/main/java/com/bankingapp/bankingapp/domain/Card.java,2\8\28183856ef4e47212426fe98068f9a05a44d7d1a
-í
-bbanking-app/src/main/java/com/bankingapp/bankingapp/service/PropertiesCashMachineIdsConnector.java,6\a\6af54201d1a94521068d44b359ff105322187525
 |
 Lbanking-app/src/main/java/com/bankingapp/bankingapp/service/UserService.java,6\7\672899d896a40f568229d816ff033f51d4c7c743
 Ä
@@ -105,7 +103,5 @@ y
 Ibanking-app/src/main/java/com/bankingapp/bankingapp/DTO/LoginRequest.java,c\4\c42167e5c5ae684da71ffbc6a67e79b146f87b72
 Å
 Qbanking-app/src/main/java/com/bankingapp/bankingapp/DTO/CashOperationRequest.java,e\6\e625a9b8a2aaac54b188094e68c493abde1790bd
-å
-\banking-app/src/main/java/com/bankingapp/bankingapp/service/PropertiesLanguageConnector.java,9\e\9ea0bb4fde88f32f64e896245fb49912394debc9
 B
 docker-compose.yml,3\5\35b8c13cf2eb2a194eada000eb310d65aed53b2a

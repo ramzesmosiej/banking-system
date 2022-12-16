@@ -1,10 +1,12 @@
 package com.bankingapp.bankingapp.service;
 
 import com.bankingapp.bankingapp.config.KafkaTopicConfig;
+import com.bankingapp.bankingapp.domain.CashMachineList;
 import com.bankingapp.bankingapp.repository.AccountRepository;
 import com.bankingapp.bankingapp.repository.CardRepository;
-import com.bankingapp.bankingapp.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -16,15 +18,13 @@ import java.util.Locale;
 @Service
 public class CashMachineService {
 
+    private final AccountRepository accountRepository;
     private final AccountService accountService;
     private final CardRepository cardRepository;
-
-    private final AccountRepository accountRepository;
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final KafkaTopicConfig kafkaTopicConfig;
-
+    private final Logger logger = LoggerFactory.getLogger(CashMachineService.class);
     private final PropertiesCashMachineIdsConnector propertiesCashMachineIdsConnector;
-    private final PropertiesLanguageConnector propertiesLanguageConnector;
 
     /***
      * Logging method
@@ -39,7 +39,8 @@ public class CashMachineService {
 
         // check cashmachine
         var cashMachineId = loggingData[0];
-        if (Boolean.FALSE.equals(isCashMachineNumberValid(cashMachineId))) return;
+        var cashMachineLocalization = isCashMachineNumberValid(cashMachineId);
+        if (cashMachineLocalization == null) return;
 
         // check card
         var cardId = Long.parseLong(loggingData[1]);
@@ -47,8 +48,10 @@ public class CashMachineService {
 
         if (optionalCard.isPresent()) {
             var card = optionalCard.get();
-            if (card.getIsActive() && card.getPIN().equals(loggingData[2]))
+            if (Boolean.TRUE.equals(card.getIsActive()) && card.getPIN().equals(loggingData[2])) {
                 kafkaTemplate.send(kafkaTopicConfig.getReceivePinAnswear(), "OK");
+                logger.info("Cash machine {}: Card with id {} logged into.", cashMachineLocalization, cardId);
+            }
         }
     }
 
@@ -65,7 +68,8 @@ public class CashMachineService {
 
         // check cashmachine
         var cashMachineId = loggingData[0];
-        if (Boolean.FALSE.equals(isCashMachineNumberValid(cashMachineId))) return;
+        var cashMachineLocalization = isCashMachineNumberValid(cashMachineId);
+        if (cashMachineLocalization == null) return;
 
         // check card
         var cardId = Long.parseLong(loggingData[1]);
@@ -73,7 +77,7 @@ public class CashMachineService {
 
         if (optionalCard.isPresent()) {
             var card = optionalCard.get();
-            if (!card.getIsActive()) return;
+            if (Boolean.FALSE.equals(card.getIsActive())) return;
 
             var account = accountRepository.findById(card.getAccount().getId());
             if (account.isEmpty()) return;
@@ -83,6 +87,7 @@ public class CashMachineService {
                     Double.parseDouble(loggingData[2]),
                     Locale.forLanguageTag(loggingData[3]));
             kafkaTemplate.send(kafkaTopicConfig.getPaymentReceive(), msg);
+            logger.info("Cash machine: {} Card with id: {} makes a payment {}", cashMachineLocalization, cardId, loggingData[2]);
         }
     }
 
@@ -99,7 +104,8 @@ public class CashMachineService {
 
         // check cashmachine
         var cashMachineId = loggingData[0];
-        if (Boolean.FALSE.equals(isCashMachineNumberValid(cashMachineId))) return;
+        var cashMachineLocalization = isCashMachineNumberValid(cashMachineId);
+        if (cashMachineLocalization == null) return;
 
         // check card
         var cardId = Long.parseLong(loggingData[1]);
@@ -107,7 +113,7 @@ public class CashMachineService {
 
         if (optionalCard.isPresent()) {
             var card = optionalCard.get();
-            if (!card.getIsActive()) return;
+            if (Boolean.FALSE.equals(card.getIsActive())) return;
 
             var account = accountRepository.findById(card.getAccount().getId());
             if (account.isEmpty()) return;
@@ -117,6 +123,7 @@ public class CashMachineService {
                     Double.parseDouble(loggingData[2]),
                     Locale.forLanguageTag(loggingData[3]));
             kafkaTemplate.send(kafkaTopicConfig.getWithdrawReceive(), msg);
+            logger.info("Cash machine: {} Card with id: {} makes a withdraw {}", cashMachineLocalization, cardId, loggingData[2]);
         }
     }
 
@@ -133,11 +140,8 @@ public class CashMachineService {
 
         // check cashmachine
         var cashMachineId = loggingData[0];
-        if (
-                !cashMachineId.equals(propertiesCashMachineIdsConnector.getDominikanski()) &&
-                        !cashMachineId.equals(propertiesCashMachineIdsConnector.getDworzec_glowny()) &&
-                        !cashMachineId.equals(propertiesCashMachineIdsConnector.getGrunwaldzki())
-        ) return;
+        var cashMachineLocalization = isCashMachineNumberValid(cashMachineId);
+        if (cashMachineLocalization == null) return;
 
         // check card
         var cardId = Long.parseLong(loggingData[1]);
@@ -145,21 +149,27 @@ public class CashMachineService {
 
         if (optionalCard.isPresent()) {
             var card = optionalCard.get();
-            if (!card.getIsActive()) return;
+            if (Boolean.FALSE.equals(card.getIsActive())) return;
 
             var account = accountRepository.findById(card.getAccount().getId());
             if (account.isEmpty()) return;
 
             var msg = accountService.showMoney(account.get().getId(), Locale.forLanguageTag(loggingData[2]));
             kafkaTemplate.send(kafkaTopicConfig.getShowReceive(), msg);
+            logger.info("Cash machine {}: Card with id {} checks its account.", cashMachineLocalization, cardId);
         }
     }
 
     // helper methods
-    private Boolean isCashMachineNumberValid(String cashMachineNumber) {
-        return  cashMachineNumber.equals(propertiesCashMachineIdsConnector.getDominikanski()) ||
-                cashMachineNumber.equals(propertiesCashMachineIdsConnector.getDworzec_glowny()) ||
-                cashMachineNumber.equals(propertiesCashMachineIdsConnector.getGrunwaldzki());
+    private String isCashMachineNumberValid(String cashMachineNumber) {
+        if (cashMachineNumber.equals(propertiesCashMachineIdsConnector.getDominikanski()))
+            return CashMachineList.PLAC_DOMINIKANSKI;
+        else if (cashMachineNumber.equals(propertiesCashMachineIdsConnector.getDworzec_glowny()))
+            return CashMachineList.DWORZEC_GLOWNY;
+        else if (cashMachineNumber.equals(propertiesCashMachineIdsConnector.getGrunwaldzki()))
+            return CashMachineList.PLAC_GRUNWALDZKI;
+        else
+            return null;
     }
 
 }
