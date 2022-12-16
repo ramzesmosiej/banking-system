@@ -31,7 +31,7 @@ public class OperationController {
             @RequestBody PinEntity pinEntity,
             @RequestHeader Locale lang
     ) {
-        return Objects.equals(operationService.logInto(pinEntity.getCardID(), pinEntity.getCardPIN(), lang), "OK") ?
+        return Objects.equals(operationService.logInto(pinEntity.getCardID(), pinEntity.getCardPIN()), "OK") ?
                 ResponseEntity.ok("Logged into") :
                 ResponseEntity.status(403).build();
     }

@@ -53,26 +53,26 @@ public class OperationService {
         if(pinStatus.equals("OK")) isLoggedIn = true;
     }
 
-    public String logInto(Long cardID, String cardPIN, Locale lang) {
+    public String logInto(Long cardID, String cardPIN) {
         kafkaTemplate.send(kafkaTopicConfig.getSendPin(), propertiesConnector.getId() + ";" + cardID + ";" + cardPIN);
 
         communicationWithBank();
 
         if(Boolean.TRUE.equals(isLoggedIn)) {
-            logger.info(String.format("Card with id %s logged into.", cardID));
+            logger.info("Card with id {} logged into.", cardID);
             this.actualCard = cardID;
             return "OK";
         }
 
         else {
-            logger.info(String.format("Card with id %s didn't log into.", cardID));
+            logger.info("Card with id {} didn't log into.", cardID);
             return "AUTH_ERROR";
         }
     }
 
     /***
      * Payment method
-     * @param systemMsg
+     * @param systemMsg - response from the main bank app server
      */
     @Async
     @KafkaListener(
@@ -94,23 +94,23 @@ public class OperationService {
             isLoggedIn = false;
 
             if(this.systemMsg.isEmpty()) {
-                logger.info(String.format("Card with id %s error during payment.", cardID));
+                logger.info("Card with id {} error during payment.", cardID);
                 return "";
             }
             else {
-                logger.info(String.format("Card with id %s makes a payment %s.", cardID, amountOfMoney.toString()));
+                logger.info("Card with id {} makes a payment {}.", cardID, amountOfMoney);
                 return systemMsg;
             }
         }
         else {
-            logger.info(String.format("Card with id %s error during payment.", cardID));
+            logger.info("Card with id {} error during payment.", cardID);
             return "";
         }
     }
 
     /***
      * Withdraw method
-     * @param systemMsg
+     * @param systemMsg - response from the main bank app server
      */
     @Async
     @KafkaListener(
@@ -131,22 +131,23 @@ public class OperationService {
             isLoggedIn = false;
 
             if(this.systemMsg.isEmpty()) {
-                logger.info(String.format("Card with id %s error during withdraw.", cardID));
+                logger.info("Card with id {} error during withdraw.", cardID);
                 return "";
             }
-            else
-                logger.info(String.format("Card with id %s makes a withdraw %s.", cardID, amountOfMoney.toString()));
+            else {
+                logger.info("Card with id {} makes a withdraw {}.", cardID, amountOfMoney);
                 return systemMsg;
+            }
         }
         else {
-            logger.info(String.format("Card with id %s error during withdraw.", cardID));
+            logger.info("Card with id {} error during withdraw.", cardID);
             return "";
         }
     }
 
     /***
      * Show money method
-     * @param money
+     * @param money - amount of money after operation
      */
     @Async
     @KafkaListener(
@@ -168,33 +169,28 @@ public class OperationService {
             isLoggedIn = false;
 
             if(this.systemMsg.isEmpty()) {
-                logger.info(String.format("Card with id %s error during showing account status.", cardID));
+                logger.info("Card with id {} error during showing account status.", cardID);
                 return "";
             }
             else {
-                logger.info(String.format("Card with id %s checks its account status.", cardID));
+                logger.info("Card with id {} checks its account status.", cardID);
                 return systemMsg;
             }
         }
         else {
-            logger.info(String.format("Card with id %s error during showing account status.", cardID));
+            logger.info("Card with id {} error during showing account status.", cardID);
             return "";
         }
     }
 
     /***
-     * Autmomaticly logout user after 10 seconds
+     * Autmomaticly logout user after 30 seconds
      */
     @Async
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 30000)
     public void logOut() {
         if (Boolean.TRUE.equals(isLoggedIn)) {
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            logger.info(String.format("Card with id %s logged out.", this.actualCard));
+            logger.info("Card with id {} logged out.", this.actualCard);
             isLoggedIn = false;
         }
     }

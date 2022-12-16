@@ -1,67 +1,186 @@
 package cash.machine.cashmachine.services;
 
+import cash.machine.cashmachine.config.KafkaTopicConfig;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.kafka.core.KafkaTemplate;
+
+import java.lang.reflect.Field;
+
+import static org.assertj.core.api.Assertions.as;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class OperationServiceTest {
 
-    /*@Mock
-    BankingAppClient bankingAppClient;
-
     @Mock
     PropertiesConnector propertiesConnector;
+
+    @Mock
+    KafkaTemplate<String, String> kafkaTemplate;
+
+    @Mock
+    KafkaTopicConfig kafkaTopicConfig;
 
     @InjectMocks
     OperationService operationService;
 
+    @Test
+    void logging() {
+        operationService.logging("OK");
+
+        Field privateField;
+        try {
+            privateField = OperationService.class.getDeclaredField("isLoggedIn");
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
+        privateField.setAccessible(true);
+
+        Boolean isPinOk;
+        try {
+            isPinOk = (Boolean) privateField.get(operationService);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertThat(isPinOk).isTrue();
+    }
 
     @Test
-    void makeAPayment_noCardWithTheGivenId() {
-        mockCardShouldReturn(false);
-        var operationEntity = VALID_OPERATION_ENTITY();
-        var response = operationService.makeAPayment(operationEntity, null);
+    void logInto_BadData() {
+        var response = operationService.logInto(1234L, "1234");
         assertThat(response).isEqualTo("AUTH_ERROR");
     }
 
     @Test
-    void makeAPayment_validData() {
-        mockCardShouldReturn(true);
-        when(bankingAppClient.addCashToAccount(anyLong(), anyDouble(), anyString(), any())).
-                thenReturn(ResponseEntity.ok("Operation successful! " +
-                        "Cash was added successfuly! Now you have: 1000.0"));
+    void logInto_OKData() {
+        operationService.logging("OK");
 
-        var operationEntity = VALID_OPERATION_ENTITY();
-        var response = operationService.makeAPayment(operationEntity, Locale.US);
+        Field privateField;
+        try {
+            privateField = OperationService.class.getDeclaredField("isLoggedIn");
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
+        privateField.setAccessible(true);
 
-        assertThat(response).contains("Operation successful! Cash was added successfuly! Now you have:");
+        Boolean isPinOk;
+        try {
+            isPinOk = (Boolean) privateField.get(operationService);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertThat(isPinOk).isTrue();
+        var response = operationService.logInto(1234L, "1234");
+        assertThat(response).isEqualTo("OK");
     }
 
     @Test
-    void withdrawMoney_noCardWithTheGivenId() {
-        mockCardShouldReturn(false);
-        var operationEntity = VALID_OPERATION_ENTITY();
-        var response = operationService.withdrawMoney(operationEntity, null);
-        assertThat(response).isEqualTo("AUTH_ERROR");
-    }
+    void paymentListening() {
+        operationService.paymentListening("Payment_OK");
 
+        Field privateField;
+        try {
+            privateField = OperationService.class.getDeclaredField("systemMsg");
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
+        privateField.setAccessible(true);
+
+        String systemMsg;
+        try {
+            systemMsg = (String) privateField.get(operationService);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertThat(systemMsg).isEqualTo("Payment_OK");
+    }
 
     @Test
-    void withdrawMoney_validData() {
-        mockCardShouldReturn(true);
-        when(bankingAppClient.withdrawCash(anyLong(), anyDouble(), anyString(), any())).
-                thenReturn(ResponseEntity.ok("Operation successful! Now you have: 100.0"));
+    void makeAPayment() {
 
-        var operationEntity = VALID_OPERATION_ENTITY();
-        var response = operationService.withdrawMoney(operationEntity, Locale.US);
-
-        assertThat(response).contains("Operation successful! Now you have:");
     }
 
-    private void mockCardShouldReturn(Boolean shouldReturn) {
-        when(propertiesConnector.getId()).thenReturn("3");
-        when(bankingAppClient.isPINCorrect(anyLong(), anyString(), anyString()))
-                .thenReturn(ResponseEntity.badRequest().body(shouldReturn));
+    @Test
+    void withdrawListening() {
+        operationService.withdrawListening("Withdraw_OK");
+
+        Field privateField;
+        try {
+            privateField = OperationService.class.getDeclaredField("systemMsg");
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
+        privateField.setAccessible(true);
+
+        String systemMsg;
+        try {
+            systemMsg = (String) privateField.get(operationService);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertThat(systemMsg).isEqualTo("Withdraw_OK");
     }
-*/
+
+    @Test
+    void makeAWithdraw() {
+    }
+
+    @Test
+    void showing() {
+        operationService.showing("Account_status");
+
+        Field privateField;
+        try {
+            privateField = OperationService.class.getDeclaredField("systemMsg");
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
+        privateField.setAccessible(true);
+
+        String systemMsg;
+        try {
+            systemMsg = (String) privateField.get(operationService);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertThat(systemMsg).isEqualTo("Account_status");
+    }
+
+    @Test
+    void showMoney() {
+    }
+
+    @Test
+    void logOut() {
+        operationService.logging("OK");
+        operationService.logOut();
+
+        Field privateField;
+        try {
+            privateField = OperationService.class.getDeclaredField("isLoggedIn");
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
+        privateField.setAccessible(true);
+
+        Boolean isPinOk;
+        try {
+            isPinOk = (Boolean) privateField.get(operationService);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertThat(isPinOk).isFalse();
+    }
 }

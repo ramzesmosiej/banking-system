@@ -35,10 +35,6 @@ Pbanking-app/src/test/java/com/bankingapp/bankingapp/service/UserServiceTest.jav
 Tbanking-app/src/test/java/com/bankingapp/bankingapp/service/PasswordServiceTest.java,3\9\39e5811c4ce089d9363656330bca122dace6bb9f
 ƒ
 Sbanking-app/src/test/java/com/bankingapp/bankingapp/service/AccountServiceTest.java,6\7\67d13fc6da6516ba1103a7f6723f34d12cb559e8
-r
-Bcashmachine/src/test/java/cash/machine/cashmachine/TestConsts.java,0\9\09c9ce22805e975439cd9dcf7c08db874a0645a7
-ƒ
-Scashmachine/src/test/java/cash/machine/cashmachine/CashmachineApplicationTests.java,8\c\8cdbffbf2c426bde02f132443bf144a16dfb8536
 ƒ
 Sbanking-app/src/test/java/com/bankingapp/bankingapp/BankingAppApplicationTests.java,0\b\0ba1c031f9750e4e2b63f6eeba92564ed87a38ef
 €
@@ -59,8 +55,6 @@ Scashmachine/src/main/java/cash/machine/cashmachine/errors/ResponseErrorHandler.
 Nbanking-app/src/main/java/com/bankingapp/bankingapp/config/SecurityConfig.java,e\0\e06e8c8ebed10312020f33e53a1add52a5b1c44f
 C
 banking-app/pom.xml,e\c\ec0b19d76d2aa62c52c47bd80843f54867908c4e
-„
-Tcashmachine/src/main/java/cash/machine/cashmachine/services/PropertiesConnector.java,d\c\dc815cd1bd56f933310746ff833229959ca9e4f1
 C
 cashmachine/pom.xml,7\3\73b0629212d73f7c11df45b309cbbc36db6d1ee8
 ‚
@@ -71,8 +65,6 @@ v
 Fbanking-app/src/main/java/com/bankingapp/bankingapp/security/Role.java,0\3\0382f439618589afb4f53b81d6f39eb430cab884
 „
 Tbanking-app/src/main/java/com/bankingapp/bankingapp/security/jwt/JwtTokenFilter.java,6\3\63a3d3bf64f4328a8e7333b831e0ea25a889efca
-…
-Ucashmachine/src/test/java/cash/machine/cashmachine/services/OperationServiceTest.java,f\8\f82b19401b7b2e31c895a75f13676b8710f38d19
 x
 Hcashmachine/src/main/java/cash/machine/cashmachine/models/PinEntity.java,f\3\f360aef0681d1cc674321d36ebaed5f89b4634a5
 ˆ
@@ -89,8 +81,6 @@ Sbanking-app/src/main/java/com/bankingapp/bankingapp/config/KafkaConsumerConfig.
 Zbanking-app/src/main/java/com/bankingapp/bankingapp/config/BankAuthenticationProvider.java,1\3\13723fa1251e7f8b89ddc7145329aaae63db0659
 ƒ
 Sbanking-app/src/main/java/com/bankingapp/bankingapp/config/KafkaProducerConfig.java,8\f\8ffc5387a31c0db5627b86d4b54e96d554986328
-€
-Pbanking-app/src/main/java/com/bankingapp/bankingapp/config/KafkaTopicConfig.java,3\d\3dc846fe62503457039c225e90a233efe10c3bcb
 |
 Lbanking-app/src/main/java/com/bankingapp/bankingapp/service/AuthService.java,b\3\b35cc768669bce6501d2be8990d961917bffdece
 ~
