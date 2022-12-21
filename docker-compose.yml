@@ -71,7 +71,7 @@ services:
       - kafka
 
   cash-machine-dominikanski:
-    image: remmo1/cashmachine:0.0.1-SNAPSHOT
+    image: remmo1/cashmachine:0.0.2-SNAPSHOT
     container_name: cash-machine-dominikanski
     ports:
       - "8001:8001"
@@ -85,7 +85,7 @@ services:
       - kafka
 
   cash-machine-grunwaldzki:
-    image: remmo1/cashmachine:0.0.1-SNAPSHOT
+    image: remmo1/cashmachine:0.0.2-SNAPSHOT
     container_name: cash-machine-grunwaldzki
     ports:
       - "8002:8002"
