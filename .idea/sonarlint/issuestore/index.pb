@@ -39,8 +39,6 @@ s
 Cbanking-app/src/test/java/com/bankingapp/bankingapp/TestConsts.java,3\7\37c3cd258039a305838ad339d6a3e21beab1e858
 €
 Pbanking-app/src/test/java/com/bankingapp/bankingapp/rest/AuthControllerTest.java,5\6\56bd5e8c7e3110befa274cb716177fb5dfe245a7
-Œ
-\banking-app/src/test/java/com/bankingapp/bankingapp/rest/AccountOperationControllerTest.java,2\2\22940fc3099969433e7a837a3971545adfc50a58
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 w
