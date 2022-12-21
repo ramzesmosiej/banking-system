@@ -69,8 +69,6 @@ y
 Icashmachine/src/main/java/cash/machine/cashmachine/models/CheckMoney.java,4\a\4a904606beec436e29a2582236e9584a057a34f0
 ƒ
 Sbanking-app/src/main/java/com/bankingapp/bankingapp/config/KafkaConsumerConfig.java,0\b\0bd559915d5f9f5346b88b8db188225270def7ba
-Š
-Zbanking-app/src/main/java/com/bankingapp/bankingapp/config/BankAuthenticationProvider.java,1\3\13723fa1251e7f8b89ddc7145329aaae63db0659
 ƒ
 Sbanking-app/src/main/java/com/bankingapp/bankingapp/config/KafkaProducerConfig.java,8\f\8ffc5387a31c0db5627b86d4b54e96d554986328
 ~

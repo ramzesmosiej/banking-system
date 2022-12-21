@@ -29,7 +29,7 @@ public class BankAuthenticationProvider implements AuthenticationProvider {
         String password = String.valueOf(authentication.getCredentials());
 
         var userToAuthenticate = userRepository.findUserByLogin(login).orElseThrow(
-                () -> new UserNotFoundException("Login doesn't exists in DB!")
+                () -> new BadCredentialsException("Bad credentials")
         );
 
         Collection<SimpleGrantedAuthority> authorities = userToAuthenticate.getGrantedAuthorities();
@@ -39,7 +39,7 @@ public class BankAuthenticationProvider implements AuthenticationProvider {
         if (encoder.matches(password, userToAuthenticate.getPassword())) {
             return new UsernamePasswordAuthenticationToken(login, password, authorities);
         } else {
-            throw new BadCredentialsException("error");
+            throw new BadCredentialsException("Bad credentials");
         }
     }
 
