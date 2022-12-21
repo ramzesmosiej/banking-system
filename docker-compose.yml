@@ -58,7 +58,7 @@ services:
 
   # Banking app
   banking-system:
-    image: remmo1/banking-app:0.0.1-SNAPSHOT
+    image: remmo1/banking-app:0.0.2-SNAPSHOT
     container_name: banking-system
     ports:
       - "8080:8080"
