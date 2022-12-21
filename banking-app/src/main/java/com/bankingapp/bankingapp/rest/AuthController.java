@@ -10,17 +10,20 @@ import com.bankingapp.bankingapp.service.CardService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 @AllArgsConstructor
 @Controller
 @RequestMapping("api/auth")
+@Validated
 public class AuthController {
 
     private final AccountService accountService;
@@ -28,24 +31,24 @@ public class AuthController {
     private final CardService cardService;
 
     @PostMapping("/changepin")
-    public ResponseEntity<String> changePin(@RequestBody ChangePinRequest changePinRequest) {
+    public ResponseEntity<String> changePin(@RequestBody @Valid ChangePinRequest changePinRequest) {
         return ResponseEntity.ok(cardService.changePIN(changePinRequest.getCardID(), changePinRequest.getNewPin()));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<String> login(@RequestBody @Valid LoginRequest loginRequest) {
         return ResponseEntity.ok(authService.loginIntoSystem(loginRequest.getLogin(), loginRequest.getPassword()));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody RegistrationRequest inputUser) throws URISyntaxException {
+    public ResponseEntity<String> registerUser(@RequestBody @Valid RegistrationRequest inputUser) throws URISyntaxException {
         User savedUser = authService.registerUser(inputUser);
         return ResponseEntity.created(new URI("/api/operations/" + savedUser.getId())).body("New user with id: "
                 + savedUser.getId() + " and login: " + savedUser.getLogin() + " registered.");
     }
 
     @PostMapping("/register-with-account")
-    public ResponseEntity<String> registerUserWithAccount(@RequestBody RegistrationRequest inputUser)
+    public ResponseEntity<String> registerUserWithAccount(@RequestBody @Valid RegistrationRequest inputUser)
             throws URISyntaxException {
 
         var user = authService.registerUser(inputUser);

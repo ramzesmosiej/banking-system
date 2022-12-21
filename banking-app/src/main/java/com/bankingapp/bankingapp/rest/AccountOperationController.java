@@ -53,7 +53,7 @@ public class AccountOperationController {
     }
 
     @PutMapping("/transfer/money")
-    public ResponseEntity<String> transferMoney(@RequestBody MoneyTransferRequest transferRequest)
+    public ResponseEntity<String> transferMoney(@RequestBody @Valid MoneyTransferRequest transferRequest)
             throws InterruptedException {
         return ResponseEntity.ok(accountService.transferMoney(
                 transferRequest.getSenderId(),

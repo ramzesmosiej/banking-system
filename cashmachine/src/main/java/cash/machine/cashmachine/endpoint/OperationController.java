@@ -5,7 +5,6 @@ import cash.machine.cashmachine.models.OperationEntity;
 import cash.machine.cashmachine.models.PinEntity;
 import cash.machine.cashmachine.services.OperationService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -28,7 +27,7 @@ public class OperationController {
 
     @PostMapping("/login")
     public ResponseEntity<String> logIntoSystem(
-            @RequestBody PinEntity pinEntity,
+            @Valid @RequestBody PinEntity pinEntity,
             @RequestHeader Locale lang
     ) {
         return Objects.equals(operationService.logInto(pinEntity.getCardID(), pinEntity.getCardPIN()), "OK") ?
@@ -38,7 +37,7 @@ public class OperationController {
 
     @PostMapping("/payment")
     public ResponseEntity<String> makeAPayment(
-            @RequestBody OperationEntity operationEntity,
+            @Valid @RequestBody OperationEntity operationEntity,
             @RequestHeader Locale lang
     ) {
         var msgFromServer = operationService.makeAPayment(
@@ -53,7 +52,7 @@ public class OperationController {
 
     @PostMapping("/withdraw")
     public ResponseEntity<String> makeAWithdraw(
-            @RequestBody OperationEntity operationEntity,
+            @Valid @RequestBody OperationEntity operationEntity,
             @RequestHeader Locale lang
     ) {
         var msgFromServer = operationService.makeAWithdraw(
@@ -68,7 +67,7 @@ public class OperationController {
 
     @PostMapping("/show")
     public ResponseEntity<String> showAccountMoney(
-            @RequestBody CheckMoney checkMoney,
+            @Valid @RequestBody CheckMoney checkMoney,
             @RequestHeader Locale lang
     ) {
         var msgFromServer = operationService.showMoney(

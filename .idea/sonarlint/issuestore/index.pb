@@ -100,10 +100,6 @@ Scashmachine/src/test/java/cash/machine/cashmachine/CashmachineApplicationTests.
 r
 Bcashmachine/src/test/java/cash/machine/cashmachine/TestConsts.java,0\9\09c9ce22805e975439cd9dcf7c08db874a0645a7
 Ñ
-Tcashmachine/src/main/java/cash/machine/cashmachine/endpoint/OperationController.java,0\8\08e07de8e16a1491c03550b1888eb9b666497c34
-Ö
-Ucashmachine/src/test/java/cash/machine/cashmachine/services/OperationServiceTest.java,f\8\f82b19401b7b2e31c895a75f13676b8710f38d19
-Ñ
 Tcashmachine/src/main/java/cash/machine/cashmachine/services/PropertiesConnector.java,d\c\dc815cd1bd56f933310746ff833229959ca9e4f1
 å
 \banking-app/src/main/java/com/bankingapp/bankingapp/service/PropertiesLanguageConnector.java,9\e\9ea0bb4fde88f32f64e896245fb49912394debc9
@@ -113,5 +109,3 @@ bbanking-app/src/main/java/com/bankingapp/bankingapp/service/PropertiesCashMachi
 Obanking-app/src/main/java/com/bankingapp/bankingapp/domain/CashMachineList.java,d\c\dcbf1e33db2851ad6d7a347e2055ab0af0e24958
 É
 Sbanking-app/src/main/java/com/bankingapp/bankingapp/service/CashMachineService.java,4\c\4cce20d5d1642950ef5739adf3c378edecf6d94b
-Å
-Qcashmachine/src/main/java/cash/machine/cashmachine/services/OperationService.java,a\f\af3b8e3efe27d2a0474acd27d049620b4ebf03e4

@@ -10,10 +10,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 import java.lang.reflect.Field;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class OperationServiceTest {
