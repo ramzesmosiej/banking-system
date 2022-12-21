@@ -9,6 +9,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.bankingapp.bankingapp.repository.UserRepository;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class JwtUtil {
 
-    private final String jwtSecret = "CctlD5JL16m8wLTgsFNhzqjQP";
+    private static final String jwtSecret = "CctlD5JL16m8wLTgsFNhzqjQP";
 
     private final UserRepository userRepository;
 
@@ -28,8 +29,9 @@ public class JwtUtil {
     public String generateAccessToken(String login) {
         Algorithm algorithm = Algorithm.HMAC512(jwtSecret.getBytes());
 
-        String claims = userRepository.findUserByLogin(login).get().getGrantedAuthorities().stream().map(SimpleGrantedAuthority::getAuthority).collect(Collectors.joining(","));
-
+        String claims = userRepository.findUserByLogin(login).orElseThrow(() -> new BadCredentialsException(""))
+                .getGrantedAuthorities().stream().map(SimpleGrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
 
         return JWT.create()
                 .withSubject(login)

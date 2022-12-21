@@ -1,7 +1,5 @@
 package com.bankingapp.bankingapp.security.jwt;
 
-import com.bankingapp.bankingapp.domain.Authority;
-import com.bankingapp.bankingapp.service.PropertiesCashMachineIdsConnector;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,8 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 
 @AllArgsConstructor
 @Service
@@ -47,14 +43,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         var authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         filterChain.doFilter(request, response);
-    }
-
-    private List<String> cashMachineIds(PropertiesCashMachineIdsConnector propertiesCashMachineIdsConnector) {
-        return List.of(
-                propertiesCashMachineIdsConnector.getDominikanski(),
-                propertiesCashMachineIdsConnector.getDworzec_glowny(),
-                propertiesCashMachineIdsConnector.getGrunwaldzki()
-        );
     }
 
 }
