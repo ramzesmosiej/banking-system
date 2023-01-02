@@ -37,6 +37,11 @@ public class AuthController {
         return ResponseEntity.ok(authService.loginIntoSystem(loginRequest.getLogin(), loginRequest.getPassword()));
     }
 
+    @GetMapping("/ping")
+    public ResponseEntity<String> pingMainSystem() {
+        return ResponseEntity.ok("OK");
+    }
+
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody RegistrationRequest inputUser) throws URISyntaxException {
         User savedUser = authService.registerUser(inputUser);

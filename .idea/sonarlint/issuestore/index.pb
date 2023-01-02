@@ -49,8 +49,6 @@ w
 Gcashmachine/src/main/java/cash/machine/cashmachine/errors/ApiError.java,6\b\6b639d3b052131280c6085ff195d2a3c999695e5
 ƒ
 Scashmachine/src/main/java/cash/machine/cashmachine/errors/ResponseErrorHandler.java,c\c\ccc846304c5ab3dc3c6263e94fbd8517c9618fd9
-~
-Nbanking-app/src/main/java/com/bankingapp/bankingapp/config/SecurityConfig.java,e\0\e06e8c8ebed10312020f33e53a1add52a5b1c44f
 C
 banking-app/pom.xml,e\c\ec0b19d76d2aa62c52c47bd80843f54867908c4e
 C
@@ -65,8 +63,6 @@ Fbanking-app/src/main/java/com/bankingapp/bankingapp/security/Role.java,0\3\038
 Tbanking-app/src/main/java/com/bankingapp/bankingapp/security/jwt/JwtTokenFilter.java,6\3\63a3d3bf64f4328a8e7333b831e0ea25a889efca
 x
 Hcashmachine/src/main/java/cash/machine/cashmachine/models/PinEntity.java,f\3\f360aef0681d1cc674321d36ebaed5f89b4634a5
-ˆ
-Xbanking-app/src/main/java/com/bankingapp/bankingapp/rest/AccountOperationController.java,f\2\f2cb3e7b3b734ff070b51c2d546009b75da2a411
 
 Ocashmachine/src/main/java/cash/machine/cashmachine/config/KafkaTopicConfig.java,a\2\a2f3cd30e3edfa3d7883d559a242100d3b6e9b89
 ~
