@@ -57,8 +57,6 @@ Rcashmachine/src/main/java/cash/machine/cashmachine/config/KafkaProducerConfig.j
 Rcashmachine/src/main/java/cash/machine/cashmachine/config/KafkaConsumerConfig.java,3\f\3fc93988ab872ce827f582d9f04d3415e83e3641
 v
 Fbanking-app/src/main/java/com/bankingapp/bankingapp/security/Role.java,0\3\0382f439618589afb4f53b81d6f39eb430cab884
-„
-Tbanking-app/src/main/java/com/bankingapp/bankingapp/security/jwt/JwtTokenFilter.java,6\3\63a3d3bf64f4328a8e7333b831e0ea25a889efca
 x
 Hcashmachine/src/main/java/cash/machine/cashmachine/models/PinEntity.java,f\3\f360aef0681d1cc674321d36ebaed5f89b4634a5
 

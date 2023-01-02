@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -24,21 +25,27 @@ import java.util.Objects;
 public class OperationController {
 
     private final OperationService operationService;
-    private final WebClient webClient = WebClient.create("http://localhost:8080/ping");
+    private final WebClient webClient = WebClient.create("http://localhost:8080/api/auth/ping");
 
     @PostMapping("/login")
     public ResponseEntity<String> logIntoSystem(
             @RequestBody PinEntity pinEntity,
             @RequestHeader Locale lang
     ) {
-        var response = webClient.get().exchangeToMono(
-                clientResponse -> clientResponse.bodyToMono(String.class)
-        );
-        System.out.println(response);
-
-        return Objects.equals(operationService.logInto(pinEntity.getCardID(), pinEntity.getCardPIN()), "OK") ?
+        String response;
+        try {
+            response = webClient.get().exchangeToMono(clientResponse ->
+                    clientResponse.bodyToMono(String.class)
+            ).block();
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Main server isn't working");
+        }
+        if (response != null)
+            return Objects.equals(operationService.logInto(pinEntity.getCardID(), pinEntity.getCardPIN()), "OK") ?
                 ResponseEntity.ok("Logged into") :
                 ResponseEntity.status(403).build();
+        else
+            return ResponseEntity.status(500).body("Main server isn't working");
     }
 
     @PostMapping("/payment")
