@@ -5,7 +5,6 @@ import cash.machine.cashmachine.models.OperationEntity;
 import cash.machine.cashmachine.models.PinEntity;
 import cash.machine.cashmachine.services.OperationService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -13,8 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.reactive.function.client.WebClient;
 
-import javax.validation.Valid;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -25,12 +24,18 @@ import java.util.Objects;
 public class OperationController {
 
     private final OperationService operationService;
+    private final WebClient webClient = WebClient.create("http://localhost:8080/ping");
 
     @PostMapping("/login")
     public ResponseEntity<String> logIntoSystem(
             @RequestBody PinEntity pinEntity,
             @RequestHeader Locale lang
     ) {
+        var response = webClient.get().exchangeToMono(
+                clientResponse -> clientResponse.bodyToMono(String.class)
+        );
+        System.out.println(response);
+
         return Objects.equals(operationService.logInto(pinEntity.getCardID(), pinEntity.getCardPIN()), "OK") ?
                 ResponseEntity.ok("Logged into") :
                 ResponseEntity.status(403).build();

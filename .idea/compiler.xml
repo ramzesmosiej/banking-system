@@ -9,10 +9,10 @@
         <outputRelativeToContentRoot value="true" />
         <module name="banking-app" />
         <module name="cashmachine" />
-        <module name="main-system-connector" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="main-system-connector" target="17" />
       <module name="open-feign" target="17" />
     </bytecodeTargetLevel>
   </component>

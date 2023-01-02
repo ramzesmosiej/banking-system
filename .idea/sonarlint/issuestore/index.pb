@@ -51,8 +51,6 @@ Gcashmachine/src/main/java/cash/machine/cashmachine/errors/ApiError.java,6\b\6b
 Scashmachine/src/main/java/cash/machine/cashmachine/errors/ResponseErrorHandler.java,c\c\ccc846304c5ab3dc3c6263e94fbd8517c9618fd9
 C
 banking-app/pom.xml,e\c\ec0b19d76d2aa62c52c47bd80843f54867908c4e
-C
-cashmachine/pom.xml,7\3\73b0629212d73f7c11df45b309cbbc36db6d1ee8
 ‚
 Rcashmachine/src/main/java/cash/machine/cashmachine/config/KafkaProducerConfig.java,6\a\6a0a96c03d6773c5e973533450c3162bd1f6f580
 ‚

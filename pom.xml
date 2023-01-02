@@ -12,7 +12,6 @@
   <modules>
     <module>banking-app</module>
     <module>cashmachine</module>
-    <module>main-system-connector</module>
   </modules>
 
   <name>banking-system</name>
