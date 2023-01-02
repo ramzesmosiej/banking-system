@@ -22,6 +22,7 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @NotNull
     @Pattern(regexp = "\\d\\d\\d\\d")
     @Size(min = 4, max = 4)
@@ -29,11 +30,7 @@ public class Card {
 
     private Boolean isActive;
 
-    /*@JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "card_id", referencedColumnName = "id")
-    private User user;*/
-
+    @JsonIgnore
     @OneToOne(mappedBy = "card")
     private Account account;
 
