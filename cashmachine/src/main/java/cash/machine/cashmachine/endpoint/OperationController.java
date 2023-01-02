@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -32,15 +31,8 @@ public class OperationController {
             @RequestBody PinEntity pinEntity,
             @RequestHeader Locale lang
     ) {
-        String response;
-        try {
-            response = webClient.get().exchangeToMono(clientResponse ->
-                    clientResponse.bodyToMono(String.class)
-            ).block();
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Main server isn't working");
-        }
-        if (response != null)
+        String responseFromMainSystem = pingMainApp();
+        if (responseFromMainSystem != null && responseFromMainSystem.equals("OK"))
             return Objects.equals(operationService.logInto(pinEntity.getCardID(), pinEntity.getCardPIN()), "OK") ?
                 ResponseEntity.ok("Logged into") :
                 ResponseEntity.status(403).build();
@@ -53,14 +45,19 @@ public class OperationController {
             @RequestBody OperationEntity operationEntity,
             @RequestHeader Locale lang
     ) {
-        var msgFromServer = operationService.makeAPayment(
-                operationEntity.getCardID(),
-                operationEntity.getAmountOfMoney(),
-                lang
-        );
-        return msgFromServer.isEmpty() ?
-                ResponseEntity.status(403).build() :
-                ResponseEntity.ok(msgFromServer);
+        String responseFromMainSystem = pingMainApp();
+        if (responseFromMainSystem != null && responseFromMainSystem.equals("OK")) {
+            var msgFromServer = operationService.makeAPayment(
+                    operationEntity.getCardID(),
+                    operationEntity.getAmountOfMoney(),
+                    lang
+            );
+            return msgFromServer.isEmpty() ?
+                    ResponseEntity.status(403).build() :
+                    ResponseEntity.ok(msgFromServer);
+        }
+        else
+            return ResponseEntity.status(500).body("Main server isn't working");
     }
 
     @PostMapping("/withdraw")
@@ -68,14 +65,19 @@ public class OperationController {
             @RequestBody OperationEntity operationEntity,
             @RequestHeader Locale lang
     ) {
-        var msgFromServer = operationService.makeAWithdraw(
-                operationEntity.getCardID(),
-                operationEntity.getAmountOfMoney(),
-                lang
-        );
-        return msgFromServer.isEmpty() ?
-                ResponseEntity.status(403).build() :
-                ResponseEntity.ok(msgFromServer);
+        String responseFromMainSystem = pingMainApp();
+        if (responseFromMainSystem != null && responseFromMainSystem.equals("OK")) {
+            var msgFromServer = operationService.makeAWithdraw(
+                    operationEntity.getCardID(),
+                    operationEntity.getAmountOfMoney(),
+                    lang
+            );
+            return msgFromServer.isEmpty() ?
+                    ResponseEntity.status(403).build() :
+                    ResponseEntity.ok(msgFromServer);
+        }
+        else
+            return ResponseEntity.status(500).body("Main server isn't working");
     }
 
     @PostMapping("/show")
@@ -83,13 +85,28 @@ public class OperationController {
             @RequestBody CheckMoney checkMoney,
             @RequestHeader Locale lang
     ) {
-        var msgFromServer = operationService.showMoney(
-                checkMoney.getCardID(),
-                lang
-        );
-        return msgFromServer.isEmpty() ?
-                ResponseEntity.status(403).build() :
-                ResponseEntity.ok(msgFromServer);
+        String responseFromMainSystem = pingMainApp();
+        if (responseFromMainSystem != null && responseFromMainSystem.equals("OK")) {
+            var msgFromServer = operationService.showMoney(
+                    checkMoney.getCardID(),
+                    lang
+            );
+            return msgFromServer.isEmpty() ?
+                    ResponseEntity.status(403).build() :
+                    ResponseEntity.ok(msgFromServer);
+        }
+        else
+            return ResponseEntity.status(500).body("Main server isn't working");
+    }
+
+    private String pingMainApp() {
+        try {
+            return webClient.get().exchangeToMono(clientResponse ->
+                    clientResponse.bodyToMono(String.class)
+            ).block();
+        } catch (Exception e) {
+            return "Error";
+        }
     }
 
 }
