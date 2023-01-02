@@ -45,8 +45,6 @@ Cbanking-app/src/test/java/com/bankingapp/bankingapp/TestConsts.java,3\7\37c3cd
 Pbanking-app/src/test/java/com/bankingapp/bankingapp/rest/AuthControllerTest.java,5\6\56bd5e8c7e3110befa274cb716177fb5dfe245a7
 å
 \banking-app/src/test/java/com/bankingapp/bankingapp/rest/AccountOperationControllerTest.java,2\2\22940fc3099969433e7a837a3971545adfc50a58
-7
-pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 w
 Gcashmachine/src/main/java/cash/machine/cashmachine/errors/ApiError.java,6\b\6b639d3b052131280c6085ff195d2a3c999695e5
 É
@@ -103,3 +101,5 @@ y
 Ibanking-app/src/main/java/com/bankingapp/bankingapp/DTO/LoginRequest.java,c\4\c42167e5c5ae684da71ffbc6a67e79b146f87b72
 Å
 Qbanking-app/src/main/java/com/bankingapp/bankingapp/DTO/CashOperationRequest.java,e\6\e625a9b8a2aaac54b188094e68c493abde1790bd
+B
+docker-compose.yml,3\5\35b8c13cf2eb2a194eada000eb310d65aed53b2a
