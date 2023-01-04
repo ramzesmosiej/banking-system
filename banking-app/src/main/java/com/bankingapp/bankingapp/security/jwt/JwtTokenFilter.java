@@ -1,6 +1,5 @@
 package com.bankingapp.bankingapp.security.jwt;
 
-import com.bankingapp.bankingapp.domain.Authority;
 import com.bankingapp.bankingapp.service.PropertiesCashMachineIdsConnector;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @AllArgsConstructor
 @Service

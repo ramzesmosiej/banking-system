@@ -9,10 +9,14 @@ import com.bankingapp.bankingapp.service.AccountService;
 import com.bankingapp.bankingapp.service.AuthService;
 import com.bankingapp.bankingapp.service.CardService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -32,8 +36,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-        return ResponseEntity.ok(authService.loginIntoSystem(loginRequest.getLogin(), loginRequest.getPassword()));
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+        var token = authService.loginIntoSystem(loginRequest.getLogin(), loginRequest.getPassword());
+        response.addCookie(new Cookie("token", token));
+        return ResponseEntity.ok(new LoginResponse(token));
     }
 
     @GetMapping("/ping")

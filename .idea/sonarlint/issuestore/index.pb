@@ -49,8 +49,6 @@ C
 Rcashmachine/src/main/java/cash/machine/cashmachine/config/KafkaProducerConfig.java,6\a\6a0a96c03d6773c5e973533450c3162bd1f6f580
 ‚
 Rcashmachine/src/main/java/cash/machine/cashmachine/config/KafkaConsumerConfig.java,3\f\3fc93988ab872ce827f582d9f04d3415e83e3641
-v
-Fbanking-app/src/main/java/com/bankingapp/bankingapp/security/Role.java,0\3\0382f439618589afb4f53b81d6f39eb430cab884
 x
 Hcashmachine/src/main/java/cash/machine/cashmachine/models/PinEntity.java,f\3\f360aef0681d1cc674321d36ebaed5f89b4634a5
 
@@ -89,12 +87,6 @@ C
 cashmachine/pom.xml,7\3\73b0629212d73f7c11df45b309cbbc36db6d1ee8
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
-~
-Nbanking-app/src/main/java/com/bankingapp/bankingapp/config/SecurityConfig.java,e\0\e06e8c8ebed10312020f33e53a1add52a5b1c44f
-„
-Tbanking-app/src/main/java/com/bankingapp/bankingapp/security/jwt/JwtTokenFilter.java,6\3\63a3d3bf64f4328a8e7333b831e0ea25a889efca
-}
-Mbanking-app/src/main/java/com/bankingapp/bankingapp/security/jwt/JwtUtil.java,7\a\7a59eaa5b872ffec278f42ff4795533a5db1da71
 
 Obanking-app/src/main/java/com/bankingapp/bankingapp/domain/CashMachineList.java,d\c\dcbf1e33db2851ad6d7a347e2055ab0af0e24958
 „
@@ -107,5 +99,3 @@ t
 Dbanking-app/src/main/java/com/bankingapp/bankingapp/domain/Card.java,2\8\28183856ef4e47212426fe98068f9a05a44d7d1a
 t
 Dbanking-app/src/main/java/com/bankingapp/bankingapp/domain/User.java,3\c\3c3b404016ea03c6bf8b5eae8b26992c679a9afc
-‚
-Rbanking-app/src/main/java/com/bankingapp/bankingapp/rest/UserThingsController.java,3\a\3ad03b4b474e1c5f0df288b586fd4d5b2d88d6c0

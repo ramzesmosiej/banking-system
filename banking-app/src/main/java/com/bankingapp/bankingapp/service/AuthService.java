@@ -7,6 +7,7 @@ import com.bankingapp.bankingapp.security.jwt.JwtUtil;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -24,12 +25,12 @@ public class AuthService {
     private final UserService userService;
 
 
-    public LoginResponse loginIntoSystem(String login, String password) {
+    public String loginIntoSystem(String login, String password) {
         var token = new UsernamePasswordAuthenticationToken(login, password);
         authenticationManager.authenticate(token);
         String jwtToken = jwtUtil.generateAccessToken(login);
         logger.info("Generate JWT token for user :" + login);
-        return new LoginResponse(jwtToken);
+        return jwtToken;
     }
 
     public User registerUser(RegistrationRequest inputUser) {
