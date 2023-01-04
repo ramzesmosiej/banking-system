@@ -2,6 +2,7 @@ package com.bankingapp.bankingapp.rest;
 
 import com.bankingapp.bankingapp.DTO.ChangePinRequest;
 import com.bankingapp.bankingapp.DTO.LoginRequest;
+import com.bankingapp.bankingapp.DTO.LoginResponse;
 import com.bankingapp.bankingapp.DTO.RegistrationRequest;
 import com.bankingapp.bankingapp.domain.User;
 import com.bankingapp.bankingapp.service.AccountService;
@@ -10,16 +11,14 @@ import com.bankingapp.bankingapp.service.CardService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
 @AllArgsConstructor
 @Controller
+@CrossOrigin("http://localhost:4200/")
 @RequestMapping("api/auth")
 public class AuthController {
 
@@ -33,7 +32,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok(authService.loginIntoSystem(loginRequest.getLogin(), loginRequest.getPassword()));
     }
 

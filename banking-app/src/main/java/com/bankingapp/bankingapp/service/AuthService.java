@@ -1,5 +1,6 @@
 package com.bankingapp.bankingapp.service;
 
+import com.bankingapp.bankingapp.DTO.LoginResponse;
 import com.bankingapp.bankingapp.DTO.RegistrationRequest;
 import com.bankingapp.bankingapp.domain.User;
 import com.bankingapp.bankingapp.security.jwt.JwtUtil;
@@ -23,12 +24,12 @@ public class AuthService {
     private final UserService userService;
 
 
-    public String loginIntoSystem(String login, String password) {
+    public LoginResponse loginIntoSystem(String login, String password) {
         var token = new UsernamePasswordAuthenticationToken(login, password);
         authenticationManager.authenticate(token);
         String jwtToken = jwtUtil.generateAccessToken(login);
         logger.info("Generate JWT token for user :" + login);
-        return jwtToken;
+        return new LoginResponse(jwtToken);
     }
 
     public User registerUser(RegistrationRequest inputUser) {
