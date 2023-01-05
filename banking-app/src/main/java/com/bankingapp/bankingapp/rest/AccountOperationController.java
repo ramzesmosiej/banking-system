@@ -25,12 +25,6 @@ public class AccountOperationController {
 
     private final AccountService accountService;
 
-
-    @GetMapping("/{userId}")
-    public ResponseEntity<User> getUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(accountService.getUser(userId));
-    }
-
     @PostMapping(value = "/payment")
     public ResponseEntity<OperationResponse> payment(
             @RequestHeader(name = "lang", required = false) Locale locale,

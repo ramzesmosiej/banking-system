@@ -57,16 +57,6 @@ Ocashmachine/src/main/java/cash/machine/cashmachine/config/KafkaTopicConfig.java
 Ncashmachine/src/main/java/cash/machine/cashmachine/models/OperationEntity.java,2\9\29dde524071b8afa0a46fec60b224179f390c40f
 y
 Icashmachine/src/main/java/cash/machine/cashmachine/models/CheckMoney.java,4\a\4a904606beec436e29a2582236e9584a057a34f0
-ƒ
-Sbanking-app/src/main/java/com/bankingapp/bankingapp/config/KafkaConsumerConfig.java,0\b\0bd559915d5f9f5346b88b8db188225270def7ba
-Š
-Zbanking-app/src/main/java/com/bankingapp/bankingapp/config/BankAuthenticationProvider.java,1\3\13723fa1251e7f8b89ddc7145329aaae63db0659
-ƒ
-Sbanking-app/src/main/java/com/bankingapp/bankingapp/config/KafkaProducerConfig.java,8\f\8ffc5387a31c0db5627b86d4b54e96d554986328
-~
-Nbanking-app/src/main/java/com/bankingapp/bankingapp/BankingAppApplication.java,b\a\bac740dce4deeff55ac71335fe51d67458dc192b
-|
-Lbanking-app/src/main/java/com/bankingapp/bankingapp/service/UserService.java,6\7\672899d896a40f568229d816ff033f51d4c7c743
 €
 Pbanking-app/src/main/java/com/bankingapp/bankingapp/service/PasswordService.java,9\d\9d986736d121fa0365736b86b43f9eb7baa4427e
 |
@@ -91,8 +81,6 @@ Obanking-app/src/main/java/com/bankingapp/bankingapp/domain/CashMachineList.java
 Tcashmachine/src/main/java/cash/machine/cashmachine/endpoint/OperationController.java,0\8\08e07de8e16a1491c03550b1888eb9b666497c34
 w
 Gbanking-app/src/main/java/com/bankingapp/bankingapp/domain/Account.java,2\4\24ada487e3a10780cf7224d20b4a5d2f590a22bb
-y
-Ibanking-app/src/main/java/com/bankingapp/bankingapp/domain/Authority.java,5\c\5c583da221bb98a5236c458033cb6784bcdaed08
 t
 Dbanking-app/src/main/java/com/bankingapp/bankingapp/domain/Card.java,2\8\28183856ef4e47212426fe98068f9a05a44d7d1a
 t
@@ -103,7 +91,3 @@ Lbanking-app/src/main/java/com/bankingapp/bankingapp/service/AuthService.java,b
 Tbanking-app/src/main/java/com/bankingapp/bankingapp/security/jwt/JwtTokenFilter.java,6\3\63a3d3bf64f4328a8e7333b831e0ea25a889efca
 }
 Mbanking-app/src/main/java/com/bankingapp/bankingapp/security/jwt/JwtUtil.java,7\a\7a59eaa5b872ffec278f42ff4795533a5db1da71
-v
-Fbanking-app/src/main/java/com/bankingapp/bankingapp/security/Role.java,0\3\0382f439618589afb4f53b81d6f39eb430cab884
-~
-Nbanking-app/src/main/java/com/bankingapp/bankingapp/config/SecurityConfig.java,e\0\e06e8c8ebed10312020f33e53a1add52a5b1c44f

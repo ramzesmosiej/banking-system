@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -28,6 +29,9 @@ public class UserService {
     private final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
 
+    public List<User> getUsers() {
+        return userRepository.findAll();
+    }
 
     public User registerUser(RegistrationRequest registrationRequest) {
 
