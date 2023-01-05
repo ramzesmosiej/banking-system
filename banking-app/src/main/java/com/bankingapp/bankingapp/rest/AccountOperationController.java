@@ -1,7 +1,9 @@
 package com.bankingapp.bankingapp.rest;
 
 import com.bankingapp.bankingapp.DTO.CashOperationRequest;
+import com.bankingapp.bankingapp.DTO.LoginResponse;
 import com.bankingapp.bankingapp.DTO.MoneyTransferRequest;
+import com.bankingapp.bankingapp.DTO.OperationResponse;
 import com.bankingapp.bankingapp.domain.User;
 import com.bankingapp.bankingapp.service.AccountService;
 import lombok.AllArgsConstructor;
@@ -16,6 +18,7 @@ import java.util.Locale;
 
 @AllArgsConstructor
 @Controller
+@CrossOrigin("http://localhost:4200/")
 @RequestMapping("/api/operations")
 @Validated
 public class AccountOperationController {
@@ -28,16 +31,19 @@ public class AccountOperationController {
         return ResponseEntity.ok(accountService.getUser(userId));
     }
 
-    @PostMapping(value = "/payment", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> payment(
+    @PostMapping(value = "/payment")
+    public ResponseEntity<OperationResponse> payment(
             @RequestHeader(name = "lang", required = false) Locale locale,
             @RequestBody @Valid CashOperationRequest cashOperationRequest
     ) {
-        return ResponseEntity.ok(accountService.addCashToAccount(
+        var message = accountService.addCashToAccount(
                 cashOperationRequest.getAccountId(),
                 cashOperationRequest.getCash(),
-                locale)
+                locale
         );
+        var response = new OperationResponse(message);
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping(value = "/paycheck", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)

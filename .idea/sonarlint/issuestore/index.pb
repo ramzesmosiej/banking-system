@@ -71,8 +71,6 @@ Lbanking-app/src/main/java/com/bankingapp/bankingapp/service/UserService.java,6
 Pbanking-app/src/main/java/com/bankingapp/bankingapp/service/PasswordService.java,9\d\9d986736d121fa0365736b86b43f9eb7baa4427e
 |
 Lbanking-app/src/main/java/com/bankingapp/bankingapp/service/CardService.java,6\b\6bc2e76f0a0760a9d834fa3b530a03e56b2c5be3
-
-Obanking-app/src/main/java/com/bankingapp/bankingapp/service/AccountService.java,c\4\c4b68ef0dece94337d9060d4d010bbe71fde9cbd
 Ä
 Pbanking-app/src/main/java/com/bankingapp/bankingapp/DTO/RegistrationRequest.java,5\4\5424e7615edf6bcb02c33873a4faa1f5e11a6e38
 Å
@@ -99,3 +97,13 @@ t
 Dbanking-app/src/main/java/com/bankingapp/bankingapp/domain/Card.java,2\8\28183856ef4e47212426fe98068f9a05a44d7d1a
 t
 Dbanking-app/src/main/java/com/bankingapp/bankingapp/domain/User.java,3\c\3c3b404016ea03c6bf8b5eae8b26992c679a9afc
+|
+Lbanking-app/src/main/java/com/bankingapp/bankingapp/service/AuthService.java,b\3\b35cc768669bce6501d2be8990d961917bffdece
+Ñ
+Tbanking-app/src/main/java/com/bankingapp/bankingapp/security/jwt/JwtTokenFilter.java,6\3\63a3d3bf64f4328a8e7333b831e0ea25a889efca
+}
+Mbanking-app/src/main/java/com/bankingapp/bankingapp/security/jwt/JwtUtil.java,7\a\7a59eaa5b872ffec278f42ff4795533a5db1da71
+v
+Fbanking-app/src/main/java/com/bankingapp/bankingapp/security/Role.java,0\3\0382f439618589afb4f53b81d6f39eb430cab884
+~
+Nbanking-app/src/main/java/com/bankingapp/bankingapp/config/SecurityConfig.java,e\0\e06e8c8ebed10312020f33e53a1add52a5b1c44f
