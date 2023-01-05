@@ -46,16 +46,19 @@ public class AccountOperationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(value = "/paycheck", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> paycheck(
+    @PostMapping(value = "/paycheck")
+    public ResponseEntity<OperationResponse> paycheck(
             @RequestHeader(name = "lang", required = false) Locale locale,
             @RequestBody @Valid CashOperationRequest cashOperationRequest
     ) {
-        return ResponseEntity.ok(accountService.takeCashFromAccount(
+        var message = accountService.takeCashFromAccount(
                 cashOperationRequest.getAccountId(),
                 cashOperationRequest.getCash(),
-                locale)
+                locale
         );
+        var response = new OperationResponse(message);
+
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/transfer/money")
